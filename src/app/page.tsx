@@ -1,11 +1,10 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y, Autoplay } from "swiper/modules";
 import "swiper/css";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-
 
 // Reusable components (assumed to be defined elsewhere)
 const SlideCard = dynamic(() => import("@/app/components/SlideCard"), {
@@ -55,6 +54,7 @@ interface SwiperInstance {
 const locations: string[] = ["Vị trí hiện tại", "Nhơn Trạch", "Long Thành"];
 const types: string[] = ["Tất cả", "Đất nền", "Nhà phố", "Biệt thự"];
 const prices: string[] = ["Tất cả", "Dưới 1 tỷ", "1-2 tỷ", "Trên 2 tỷ"];
+const needs = ["Mua", "Thuê", "Đầu tư"];
 
 const exploreListings: Listing[] = [
   {
@@ -155,7 +155,7 @@ const Home: React.FC = () => {
         email: "",
         message: "",
       }));
-    } catch (e) {
+    } catch {
       setSupportError(true);
     } finally {
       setSupportLoading(false);
@@ -163,9 +163,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    
     <div className="min-h-screen bg-ink text-black">
-
       {/* Hero */}
       <section className="relative">
         <div className="relative container-std py-12 md:py-16">
@@ -187,7 +185,7 @@ const Home: React.FC = () => {
                 </h1>
 
                 {/* Search Bar */}
-                <div className="mt-6 card p-4 md:p-5">
+                <div className="mt-6 card p-4 md:p-5 ">
                   <div className="grid md:grid-cols-3 gap-3 items-end ">
                     <Dropdown
                       label="Vị trí"
@@ -591,20 +589,14 @@ const Home: React.FC = () => {
                     <span className="block text-xs text-[var(--color-mute)] mb-1">
                       Nhu cầu
                     </span>
-                    <select
+                    <Dropdown
+                      label="Chọn nhu cầu"
+                      options={needs}
                       value={supportForm.need}
-                      onChange={(e) =>
-                        setSupportForm((prev) => ({
-                          ...prev,
-                          need: e.target.value,
-                        }))
+                      onChange={(value: string) =>
+                        setSupportForm((prev) => ({ ...prev, need: value }))
                       }
-                      className="h-12 w-full rounded-[var(--radius-xl2)] bg-[var(--color-ink)] border border-black/10 px-4 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40"
-                    >
-                      <option>Mua</option>
-                      <option>Thuê</option>
-                      <option>Đầu tư</option>
-                    </select>
+                    />
                   </label>
 
                   <label className="block sm:col-span-2">

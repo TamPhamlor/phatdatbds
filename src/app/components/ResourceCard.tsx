@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React from "react";
 
 interface SlideCardProps {
@@ -19,13 +20,15 @@ const SlideCard: React.FC<SlideCardProps> = ({ title, text, cta, image }) => {
       "
     >
       {/* Image */}
-      <div className="relative h-40">
-        <img
-          src={image}
-          alt={title}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      </div>
+      <div className="relative h-40 w-full">
+  <Image
+    src={image}       // link ảnh (có thể là URL ngoài nếu đã thêm domain vào next.config.js)
+    alt={title}
+    fill              // cho Image chiếm toàn bộ container
+    className="object-cover"
+    unoptimized       // nếu muốn load từ URL ngoài mà không cần khai báo domain
+  />
+</div>
 
       {/* Content */}
       <div className="p-5 flex-1 flex flex-col">

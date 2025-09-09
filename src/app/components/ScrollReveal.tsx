@@ -9,8 +9,6 @@ interface RevealProps {
 }
 
 const Reveal: React.FC<RevealProps> = ({
-  initialClass = "opacity-0 translate-y-10",
-  enterClass = "opacity-100 translate-y-0",
   children,
 }) => {
   const elRef = useRef<HTMLDivElement | null>(null);
@@ -35,10 +33,7 @@ const Reveal: React.FC<RevealProps> = ({
   return (
     <div
       ref={elRef}
-      className={`
-        transition-all duration-700 ease-out
-        ${visible ? enterClass : initialClass}
-      `}
+      className={`transition-opacity duration-700 ease-out ${visible ? 'opacity-100' : 'opacity-0'}`}
     >
       {children}
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 interface CardItem {
   img: string;
@@ -22,19 +23,22 @@ const Card: React.FC<CardProps> = ({ item }) => {
         bg-[var(--color-card)]
         border border-black/10
         transition-all duration-300
+        group
       "
     >
       <div className="relative h-48 overflow-hidden rounded-t-[var(--radius-xl2)]">
-  <img
-    src={item.img}
-    alt={item.title}
-    className="
-      absolute inset-0 w-full h-full object-cover
-      group-hover:scale-[1.02] transition-transform duration-300
-      rounded-t-[var(--radius-xl2)]
-    "
-  />
-</div>
+        <Image
+          src={item.img}
+          alt={item.title}
+          fill
+          className="
+            object-cover
+            group-hover:scale-[1.02] transition-transform duration-300
+            rounded-t-[var(--radius-xl2)]
+          "
+          unoptimized // nếu muốn dùng link ảnh ngoài
+        />
+      </div>
 
       {/* Content */}
       <div className="p-4">

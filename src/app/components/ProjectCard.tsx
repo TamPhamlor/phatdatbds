@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { FavoriteBorder, BedroomParent, Bathtub, SquareFoot, LocationOn } from "@mui/icons-material";
 
 interface ProjectCardProps {
@@ -43,25 +44,34 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     minute: "2-digit",
   });
 
+  // Helper để xác định khi nào cần bỏ tối ưu (link ngoài)
+  const isExternal = (url: string) => url.startsWith("http");
+
   return (
     <div className="flex flex-col md:flex-row-reverse border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300 p-4 gap-4 bg-white">
       {/* Image section */}
       <div className="w-full md:w-1/2 flex flex-col relative gap-2">
-        <img
-          src={mainImage}
-          alt={title}
-          className="w-full h-64 md:h-70 object-cover rounded-2xl"
-        />
+        <div className="relative w-full h-64 md:h-70 rounded-2xl overflow-hidden">
+          <Image
+            src={mainImage}
+            alt={title}
+            fill
+            className="object-cover"
+            unoptimized={isExternal(mainImage)}
+          />
+        </div>
 
         {/* Sub images */}
         {subImages.length > 0 && (
           <div className="grid grid-cols-3 gap-2 mt-2">
             {subImages.map((img, idx) => (
-              <div key={idx} className="relative">
-                <img
+              <div key={idx} className="relative w-full h-20 rounded-xl overflow-hidden">
+                <Image
                   src={img}
                   alt={`sub-${idx}`}
-                  className="w-full h-20 object-cover rounded-xl"
+                  fill
+                  className="object-cover"
+                  unoptimized={isExternal(img)}
                 />
                 {idx === 2 && remaining > 0 && (
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-semibold text-sm rounded-xl">
@@ -111,11 +121,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         {/* Author & contact */}
         <div className="flex items-center justify-between pt-3">
           <div className="flex items-center gap-3">
-            <img
-              src={avatar}
-              alt={author}
-              className="w-10 h-10 rounded-full object-cover"
-            />
+            <div className="relative w-10 h-10 rounded-full overflow-hidden">
+              <Image
+                src={avatar}
+                alt={author || "avatar"}
+                fill
+                className="object-cover"
+                unoptimized={isExternal(avatar)}
+              />
+            </div>
             <div className="flex flex-col">
               <span className="text-sm font-medium text-gray-800">{author}</span>
               <span className="text-xs text-gray-500">{formattedDate}</span>
