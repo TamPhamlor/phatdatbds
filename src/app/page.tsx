@@ -5,6 +5,8 @@ import { Navigation, A11y, Autoplay } from "swiper/modules";
 import "swiper/css";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import Head from "next/head";
+
 
 // Reusable components (assumed to be defined elsewhere)
 const SlideCard = dynamic(() => import("@/app/components/SlideCard"), {
@@ -162,7 +164,12 @@ const Home: React.FC = () => {
   };
 
   return (
+    
     <div className="min-h-screen bg-ink text-black">
+      <Head>
+        <title>Trang Chủ - Bất Động Sản</title>
+        <meta name="description" content="Trang chủ website bất động sản, tổng quan dự án và tin tức" />
+      </Head>
       {/* Header */}
       <header className="sticky top-0 z-50 bg-ink/80 backdrop-blur border-b border-black/10">
         <div className="container-std flex items-center justify-between py-4">
