@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import ProjectCard from "@/app/components/ProjectCard";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 interface Listing {
   id: number;
@@ -41,8 +39,6 @@ export default function NhaDatBanContent() {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      {/* Header */}
-      <Header />
 
       {/* Content */}
       <main className="container-std flex flex-col md:flex-row gap-6 mt-6 mb-6">
@@ -72,9 +68,6 @@ export default function NhaDatBanContent() {
           )}
         </div>
       </main>
-
-      {/* Footer */}
-      <Footer/>
     </div>
   );
 }

@@ -5,8 +5,6 @@ import { Navigation, A11y, Autoplay } from "swiper/modules";
 import "swiper/css";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 
 
 // Reusable components (assumed to be defined elsewhere)
@@ -167,7 +165,6 @@ const Home: React.FC = () => {
   return (
     
     <div className="min-h-screen bg-ink text-black">
-      <Header />
 
       {/* Hero */}
       <section className="relative">
@@ -695,9 +692,6 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <Footer/>
     </div>
   );
 };
