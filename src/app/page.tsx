@@ -97,13 +97,6 @@ const Home: React.FC = () => {
     price: prices[0],
   });
 
-  useEffect(() => {
-    const section = document.getElementById("explore");
-    if (section) {
-      section.scrollIntoView();
-    }
-  }, []);
-
   const [supportForm, setSupportForm] = useState<SupportFormState>({
     name: "",
     email: "",
@@ -284,7 +277,7 @@ const Home: React.FC = () => {
                   width={600}
                   height={400}
                   className="shadow-soft border border-black/10"
-                  style={{borderRadius: "20px"}}
+                  style={{ borderRadius: "20px" }}
                 />
               </div>
             </ScrollReveal>
@@ -586,122 +579,147 @@ const Home: React.FC = () => {
 
               {/* Form capture */}
               <form
-  onSubmit={submitSupport}
-  className="bg-[var(--color-ink)] rounded-[var(--radius-xl2)] p-4 md:p-5 border border-black/10 shadow-sm w-full"
->
-  <div className="grid sm:grid-cols-2 gap-3">
-    <label className="block">
-      <span className="block text-xs text-[var(--color-mute)] mb-1">
-        Họ và tên
-      </span>
-      <input
-        value={supportForm.name}
-        onChange={(e) =>
-          setSupportForm((prev) => ({ ...prev, name: e.target.value }))
-        }
-        required
-        type="text"
-        className="h-12 w-full rounded-[var(--radius-xl2)] bg-[var(--color-ink)] border border-black/10 px-4 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40"
-      />
-    </label>
+                onSubmit={submitSupport}
+                className="bg-[var(--color-ink)] rounded-[var(--radius-xl2)] p-4 md:p-5 border border-black/10 shadow-sm w-full"
+              >
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <label className="block">
+                    <span className="block text-xs text-[var(--color-mute)] mb-1">
+                      Họ và tên
+                    </span>
+                    <input
+                      value={supportForm.name}
+                      onChange={(e) =>
+                        setSupportForm((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
+                      required
+                      type="text"
+                      className="h-12 w-full rounded-[var(--radius-xl2)] bg-[var(--color-ink)] border border-black/10 px-4 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40"
+                    />
+                  </label>
 
-    <label className="block">
-      <span className="block text-xs text-[var(--color-mute)] mb-1">Email</span>
-      <input
-        value={supportForm.email}
-        onChange={(e) =>
-          setSupportForm((prev) => ({ ...prev, email: e.target.value }))
-        }
-        required
-        type="email"
-        className="h-12 w-full rounded-[var(--radius-xl2)] bg-[var(--color-ink)] border border-black/10 px-4 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40"
-      />
-    </label>
+                  <label className="block">
+                    <span className="block text-xs text-[var(--color-mute)] mb-1">
+                      Email
+                    </span>
+                    <input
+                      value={supportForm.email}
+                      onChange={(e) =>
+                        setSupportForm((prev) => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
+                      required
+                      type="email"
+                      className="h-12 w-full rounded-[var(--radius-xl2)] bg-[var(--color-ink)] border border-black/10 px-4 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40"
+                    />
+                  </label>
 
-    <label className="block sm:col-span-2">
-      <span className="block text-xs text-[var(--color-mute)] mb-1">Nhu cầu</span>
-      <select
-        value={supportForm.need}
-        onChange={(e) =>
-          setSupportForm((prev) => ({ ...prev, need: e.target.value }))
-        }
-        className="h-12 w-full rounded-[var(--radius-xl2)] bg-[var(--color-ink)] border border-black/10 px-4 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40"
-      >
-        <option>Mua</option>
-        <option>Thuê</option>
-        <option>Đầu tư</option>
-      </select>
-    </label>
+                  <label className="block sm:col-span-2">
+                    <span className="block text-xs text-[var(--color-mute)] mb-1">
+                      Nhu cầu
+                    </span>
+                    <select
+                      value={supportForm.need}
+                      onChange={(e) =>
+                        setSupportForm((prev) => ({
+                          ...prev,
+                          need: e.target.value,
+                        }))
+                      }
+                      className="h-12 w-full rounded-[var(--radius-xl2)] bg-[var(--color-ink)] border border-black/10 px-4 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40"
+                    >
+                      <option>Mua</option>
+                      <option>Thuê</option>
+                      <option>Đầu tư</option>
+                    </select>
+                  </label>
 
-    <label className="block sm:col-span-2">
-      <span className="block text-xs text-[var(--color-mute)] mb-1">Ghi chú (tuỳ chọn)</span>
-      <textarea
-        value={supportForm.message}
-        onChange={(e) =>
-          setSupportForm((prev) => ({ ...prev, message: e.target.value }))
-        }
-        rows={3}
-        className="w-full rounded-[var(--radius-xl2)] bg-[var(--color-ink)] border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40"
-        placeholder="Ngân sách, vị trí ưa thích, thời gian dự kiến..."
-      />
-    </label>
-  </div>
+                  <label className="block sm:col-span-2">
+                    <span className="block text-xs text-[var(--color-mute)] mb-1">
+                      Ghi chú (tuỳ chọn)
+                    </span>
+                    <textarea
+                      value={supportForm.message}
+                      onChange={(e) =>
+                        setSupportForm((prev) => ({
+                          ...prev,
+                          message: e.target.value,
+                        }))
+                      }
+                      rows={3}
+                      className="w-full rounded-[var(--radius-xl2)] bg-[var(--color-ink)] border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40"
+                      placeholder="Ngân sách, vị trí ưa thích, thời gian dự kiến..."
+                    />
+                  </label>
+                </div>
 
-  <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
-    <label className="inline-flex items-center gap-2 text-xs text-[var(--color-mute)]">
-      <input
-        checked={supportForm.subscribe}
-        onChange={(e) =>
-          setSupportForm((prev) => ({ ...prev, subscribe: e.target.checked }))
-        }
-        type="checkbox"
-        className="rounded border-black/20"
-      />
-      Nhận email về dự án mới & ưu đãi
-    </label>
-    <button
-      disabled={supportLoading}
-      className="btn btn-primary h-12 w-full sm:w-auto"
-    >
-      {supportLoading ? (
-        <span className="inline-flex items-center gap-2">
-          <svg className="animate-spin" width="16" height="16" viewBox="0 0 24 24">
-            <circle
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-              fill="none"
-              opacity=".25"
-            />
-            <path
-              d="M22 12a10 10 0 0 1-10 10"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-          </svg>
-          Đang gửi...
-        </span>
-      ) : (
-        "Nhận tư vấn miễn phí"
-      )}
-    </button>
-  </div>
+                <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                  <label className="inline-flex items-center gap-2 text-xs text-[var(--color-mute)]">
+                    <input
+                      checked={supportForm.subscribe}
+                      onChange={(e) =>
+                        setSupportForm((prev) => ({
+                          ...prev,
+                          subscribe: e.target.checked,
+                        }))
+                      }
+                      type="checkbox"
+                      className="rounded border-black/20"
+                    />
+                    Nhận email về dự án mới & ưu đãi
+                  </label>
+                  <button
+                    disabled={supportLoading}
+                    className="btn btn-primary h-12 w-full sm:w-auto"
+                  >
+                    {supportLoading ? (
+                      <span className="inline-flex items-center gap-2">
+                        <svg
+                          className="animate-spin"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                            opacity=".25"
+                          />
+                          <path
+                            d="M22 12a10 10 0 0 1-10 10"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                        </svg>
+                        Đang gửi...
+                      </span>
+                    ) : (
+                      "Nhận tư vấn miễn phí"
+                    )}
+                  </button>
+                </div>
 
-  {supportSuccess && (
-    <p className="mt-3 text-green-600 text-sm">
-      Cảm ơn bạn! Chúng tôi sẽ liên hệ trong thời gian sớm nhất.
-    </p>
-  )}
-  {supportError && (
-    <p className="mt-3 text-red-600 text-sm">
-      Có lỗi khi gửi thông tin. Vui lòng thử lại.
-    </p>
-  )}
-</form>
-
+                {supportSuccess && (
+                  <p className="mt-3 text-green-600 text-sm">
+                    Cảm ơn bạn! Chúng tôi sẽ liên hệ trong thời gian sớm nhất.
+                  </p>
+                )}
+                {supportError && (
+                  <p className="mt-3 text-red-600 text-sm">
+                    Có lỗi khi gửi thông tin. Vui lòng thử lại.
+                  </p>
+                )}
+              </form>
             </div>
           </div>
         </div>
