@@ -564,7 +564,7 @@ const Home: React.FC = () => {
                 {/* Simple search fallback */}
                 <div className="mt-4 grid grid-cols-1 gap-3">
                   <label className="block">
-                    <span className="sr-only">Từ khóa</span>
+                    <span className="sr-only">Từ Khóa</span>
                     <input
                       value={supportForm.query}
                       onChange={(e) =>
