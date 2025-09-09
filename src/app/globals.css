@@ -1,26 +1,98 @@
 @import "tailwindcss";
 
+/* Root variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-ink: #FFFFFF;
+  --color-card: #F9FAFB;
+  --color-accent: #16A34A;
+  --color-mute: #6B7280;
+  --color-text: #333333;
+
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol';
+
+  --radius-xl2: 1.25rem;
+
+  --shadow-soft: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-ring: 0 0 0 6px rgba(22,163,74,0.2);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Base styles */
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background-color: var(--color-ink);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Container */
+.container-std {
+  max-width: 72rem; /* tương đương maxWidth.6xl */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;  /* spacing.4 */
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container-std {
+    padding-left: 1.5rem; /* spacing.6 */
+    padding-right: 1.5rem;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (min-width: 1024px) {
+  .container-std {
+    padding-left: 2rem; /* spacing.8 */
+    padding-right: 2rem;
+  }
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xl2);
+  padding: 0.75rem 1.25rem; /* spacing.3 top/bottom, spacing.5 left/right */
+  font-weight: 600; /* semibold */
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: var(--color-accent);
+  color: var(--color-ink);
+}
+
+.btn-primary:hover {
+  box-shadow: var(--shadow-ring);
+}
+
+.btn-dark {
+  background-color: rgba(0,0,0,0.05);
+  color: var(--color-text);
+}
+
+.btn-dark:hover {
+  background-color: rgba(0,0,0,0.1);
+}
+
+/* Card */
+.card {
+  border-radius: var(--radius-xl2);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(0,0,0,0.05);
+  background-color: var(--color-card);
+}
+
+/* Tag */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem; /* spacing.1 top/bottom, spacing.3 left/right */
+  font-size: 0.875rem; /* sm */
+  font-weight: 500; /* medium */
+  background-color: var(--color-accent);
+  color: var(--color-ink);
 }
