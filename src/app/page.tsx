@@ -5,7 +5,8 @@ import { Navigation, A11y, Autoplay } from "swiper/modules";
 import "swiper/css";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import Head from "next/head";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 
 // Reusable components (assumed to be defined elsewhere)
@@ -166,44 +167,7 @@ const Home: React.FC = () => {
   return (
     
     <div className="min-h-screen bg-ink text-black">
-      <Head>
-        <title>Trang Chủ - Bất Động Sản</title>
-        <meta name="description" content="Trang chủ website bất động sản, tổng quan dự án và tin tức" />
-      </Head>
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-ink/80 backdrop-blur border-b border-black/10">
-        <div className="container-std flex items-center justify-between py-4">
-          <div className="flex items-center gap-2">
-            <img
-              src="/logo_phat_dat_bat_don_san.png"
-              alt="Phát Đạt Bất Động Sản"
-              className="h-[50px]"
-            />
-            <span className="sr-only">Phát Đạt Bất Động Sản</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-mute">
-            <a href="#explore" className="hover:text-black">
-              Khám phá
-            </a>
-            <a href="#rent" className="hover:text-black">
-              Cho thuê
-            </a>
-            <a href="#own" className="hover:text-black">
-              Mua bán
-            </a>
-            <a href="#manage" className="hover:text-black">
-              Quản lý
-            </a>
-            <a href="#resources" className="hover:text-black">
-              Tài nguyên
-            </a>
-          </nav>
-          <div className="flex items-center gap-3">
-            <button className="btn btn-dark text-sm">Đăng tin</button>
-            <button className="btn btn-primary text-sm">Đăng nhập</button>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero */}
       <section className="relative">
@@ -733,25 +697,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-black/10 py-8 text-sm text-mute">
-        <div className="container-std flex flex-col md:flex-row items-center justify-between gap-4">
-          <p>
-            © {new Date().getFullYear()} Phát Đạt Bất Động Sản Nhơn Trạch. Đã
-            đăng ký bản quyền.
-          </p>
-          <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-black">
-              Chính sách bảo mật
-            </a>
-            <a href="#" className="hover:text-black">
-              Điều khoản sử dụng
-            </a>
-            <a href="#" className="hover:text-black">
-              Liên hệ
-            </a>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 };

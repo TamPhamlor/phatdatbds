@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import ProjectCard from "@/app/components/ProjectCard";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 interface Listing {
   id: number;
@@ -40,27 +42,7 @@ export default function NhaDatBanContent() {
   return (
     <div className="min-h-screen bg-white text-black">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
-        <div className="container-std flex items-center justify-between py-3">
-          <div className="flex items-center gap-2">
-            <img
-              src="/logo_phat_dat_bat_don_san.png"
-              alt="Phát Đạt BĐS"
-              className="h-[40px]"
-            />
-          </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-gray-600">
-            <a href="#">Nhà đất bán</a>
-            <a href="#">Nhà đất cho thuê</a>
-            <a href="#">Dự án</a>
-            <a href="#">Tin tức</a>
-          </nav>
-          <div className="flex items-center gap-3">
-            <button className="btn btn-dark text-sm">Đăng tin</button>
-            <button className="btn btn-primary text-sm">Đăng nhập</button>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Content */}
       <main className="container-std flex flex-col md:flex-row gap-6 mt-6 mb-6">
@@ -92,18 +74,7 @@ export default function NhaDatBanContent() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-black/10 py-8 text-sm text-mute">
-        <div className="container-std flex flex-col md:flex-row items-center justify-between gap-4">
-          <p>
-            © {new Date().getFullYear()} Phát Đạt Bất Động Sản Nhơn Trạch. Đã đăng ký bản quyền.
-          </p>
-          <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-black">Chính sách bảo mật</a>
-            <a href="#" className="hover:text-black">Điều khoản sử dụng</a>
-            <a href="#" className="hover:text-black">Liên hệ</a>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 }
