@@ -533,7 +533,7 @@ const Home: React.FC = () => {
       {/* Support CTA: Email tư vấn + Smart search */}
       <section id="cta-support" className="py-10 md:py-14">
         <div className="container-std">
-          <div className="card p-6 md:p-8">
+          <div className="card p-4 md:p-6">
             <div className="grid lg:grid-cols-2 gap-8 items-start">
               {/* Copy + quick presets */}
               <div>
