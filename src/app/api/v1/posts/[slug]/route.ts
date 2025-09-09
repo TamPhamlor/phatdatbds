@@ -4,10 +4,14 @@ import { extApiFetch } from "@/lib/extApi";
 
 export const runtime = "nodejs";
 
-export async function GET(_req: NextRequest, context: { params: Promise<{ slug: string }> }) {
+export async function GET(
+  _req: NextRequest,
+  context: { params: Promise<{ slug: string }> }
+) {
   try {
     const { slug } = await context.params; // <-- await ở đây
-    if (!slug) return NextResponse.json({ error: "Missing slug" }, { status: 400 });
+    if (!slug)
+      return NextResponse.json({ error: "Missing slug" }, { status: 400 });
 
     const res = await extApiFetch(`/api/v1/posts/${encodeURIComponent(slug)}`);
     const data = await res.json().catch(() => ({}));

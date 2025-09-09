@@ -5,7 +5,10 @@ import { extApiFetch } from "@/lib/extApi";
 export const runtime = "nodejs";
 
 // context.params là Promise<{ id: string }>
-export async function GET(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
+export async function GET(
+  _req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     const { id } = await context.params;
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
