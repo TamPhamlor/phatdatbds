@@ -85,13 +85,12 @@ const exploreListings: Listing[] = [
     title: "Biệt thự Đại Phước",
     img: "/1-15651645335071869680987.jpg",
     address: "Đại Phước, Nhơn Trạch, Đồng Nai",
-    beds: "200m² – 300m²",
-    price: "2.5 tỷ – 4 tỷ",
+    beds: "200m² - 300m²",
+    price: "2.5 tỷ - 4 tỷ",
   },
 ];
 
 const Home: React.FC = () => {
-  // State management
   const [filters, setFilters] = useState<FilterState>({
     location: locations[0],
     type: types[0],
@@ -101,7 +100,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     const section = document.getElementById("explore");
     if (section) {
-      section.scrollIntoView(); // scroll mượt
+      section.scrollIntoView();
     }
   }, []);
 
