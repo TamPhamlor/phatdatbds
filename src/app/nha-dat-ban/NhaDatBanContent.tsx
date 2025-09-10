@@ -23,11 +23,11 @@ export default function NhaDatBanContent() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const res = await fetch(
-          "https://api.phatdatbatdongsan.com/api/v1/listings"
-        );
+        const res = await fetch("/api/v1/listings"); // Gọi API Route server
         const data = await res.json();
-        setProjects(data.data);
+        setProjects(data.data || []);
+        console.log(res);
+        
       } catch (error) {
         console.error("Error fetching listings:", error);
       } finally {
