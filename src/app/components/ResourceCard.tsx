@@ -39,7 +39,6 @@ const SlideCard: React.FC<SlideCardProps> = ({ title, text, cta, image }) => {
           className="
             btn btn-dark mt-4 w-max
             rounded-[var(--radius-xl2)]
-            border border-black/10
             bg-[rgba(0,0,0,0.05)]
             text-[var(--color-text)]
             hover:bg-[rgba(0,0,0,0.1)]

@@ -20,7 +20,6 @@ const Card: React.FC<CardProps> = ({ item }) => {
     <div
       className="
         rounded-[var(--radius-xl2)]
-        bg-[var(--color-card)]
         border border-black/10
         transition-all duration-300
         group
@@ -49,7 +48,7 @@ const Card: React.FC<CardProps> = ({ item }) => {
 
         <div className="mt-3 flex items-center justify-between">
           <span className="text-xs text-[var(--color-mute)]">{item.beds}</span>
-          <span className="text-sm font-semibold text-[var(--color-text)]">
+          <span className="text-mb font-semibold text-[var(--color-text)]">
             {item.price}
           </span>
         </div>

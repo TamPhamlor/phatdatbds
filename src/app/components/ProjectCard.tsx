@@ -84,7 +84,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         )}
 
         {/* Love icon */}
-        <button className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-1 shadow-md hover:bg-white">
+        <button className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-1 shadow-md hover:bg-white py-[4px] px-[8px]">
           <FavoriteBorder className="text-red-500" fontSize="small" />
         </button>
       </div>

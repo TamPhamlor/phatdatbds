@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+
 
 /* Root variables */
 :root {
@@ -17,6 +21,7 @@
 body {
   color: var(--color-text);
   background-color: var(--color-ink);
+  font-family: var(--font-manrope);
 }
 
 /* Container */

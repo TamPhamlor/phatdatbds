@@ -166,7 +166,12 @@ const Home: React.FC = () => {
     <div className="min-h-screen bg-ink text-black">
       {/* Hero */}
       <section className="relative">
-        <div className="relative container-std py-12 md:py-16">
+        <div className="relative container-std py-12 md:py-16" style={{
+    backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.9)), url("https://image3.luatvietnam.vn/uploaded/images/original/2025/07/22/de-xuat-tinh-thue-20-tren-lai-chuyen-nhuong-bat-dong-san_2207150058.jpg")`,
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+  }}>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <ScrollReveal
@@ -266,14 +271,16 @@ const Home: React.FC = () => {
             <div className="hidden md:flex items-center gap-2">
               <button
                 onClick={() => prev("explore")}
-                className="p-2 rounded-full border border-black/10 hover:bg-white/10"
+                className="rounded-full border border-black/10 hover:bg-white/10 py-[4px] px-[16px]"
+                
                 aria-label="Prev"
               >
                 ←
               </button>
               <button
                 onClick={() => next("explore")}
-                className="p-2 rounded-full border border-black/10 hover:bg-white/10"
+                className="rounded-full border border-black/10 hover:bg-white/10 py-[4px] px-[16px]"
+                
                 aria-label="Next"
               >
                 →
@@ -302,14 +309,14 @@ const Home: React.FC = () => {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => prev("explore")}
-                className="px-5 py-2 rounded-full border border-black/10 hover:bg-white/10"
+                className="rounded-full border border-black/10 hover:bg-white/10 px-[20px] py-[10px]"
                 aria-label="Prev"
               >
                 ←
               </button>
               <button
                 onClick={() => next("explore")}
-                className="px-5 py-2 rounded-full border border-black/10 hover:bg-white/10"
+                className="rounded-full border border-black/10 hover:bg-white/10 px-[20px] py-[10px]"
                 aria-label="Next"
               >
                 →
@@ -330,18 +337,18 @@ const Home: React.FC = () => {
             Nhơn Trạch, Đồng Nai.
           </p>
           <div className="mt-6 card overflow-hidden">
-            <div className="relative h-64 md:h-80">
+            <div className="relative h-64 md:h-80 bg-black">
               <Image
                 src="/1-15651645335071869680987.jpg"
                 alt="Cho thuê"
                 fill
-                className="absolute inset-0 object-cover opacity-50"
+                className="absolute inset-0 object-cover opacity-40"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-ink/60 to-transparent"></div>
               <div className="relative p-6 md:p-8 h-full flex items-end">
                 <div>
-                  <h4 className="text-xl md:text-2xl">Thuê nhà dễ dàng</h4>
-                  <p className="text-mute text-sm mt-1 max-w-xl text-gray-500">
+                  <h4 className="text-xl md:text-2xl text-white">Thuê nhà dễ dàng</h4>
+                  <p className="text-mute text-mb mt-1 max-w-xl text-white">
                     Duyệt tin đăng chất lượng, liên hệ trực tiếp, ký hợp đồng
                     nhanh chóng và an toàn với Phát Đạt.
                   </p>
@@ -564,6 +571,7 @@ const Home: React.FC = () => {
                       required
                       type="text"
                       className="h-12 w-full rounded-[var(--radius-xl2)] bg-[var(--color-ink)] border border-black/10 px-4 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40"
+                      placeholder="Họ và tên"
                     />
                   </label>
 
@@ -582,6 +590,7 @@ const Home: React.FC = () => {
                       required
                       type="email"
                       className="h-12 w-full rounded-[var(--radius-xl2)] bg-[var(--color-ink)] border border-black/10 px-4 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40"
+                      placeholder="Email"
                     />
                   </label>
 
@@ -590,7 +599,6 @@ const Home: React.FC = () => {
                       Nhu cầu
                     </span>
                     <Dropdown
-                      label="Chọn nhu cầu"
                       options={needs}
                       value={supportForm.need}
                       onChange={(value: string) =>
