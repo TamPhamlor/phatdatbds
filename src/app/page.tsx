@@ -166,12 +166,12 @@ const Home: React.FC = () => {
     <div className="min-h-screen bg-ink text-black">
       {/* Hero */}
       <section className="relative">
-        <div className="relative container-std py-12 md:py-16" style={{
-    backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.9)), url("https://image3.luatvietnam.vn/uploaded/images/original/2025/07/22/de-xuat-tinh-thue-20-tren-lai-chuyen-nhuong-bat-dong-san_2207150058.jpg")`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-  }}>
+        <div  className="
+    relative container-std py-12 md:py-16
+    bg-[linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.9)),url('https://image3.luatvietnam.vn/uploaded/images/original/2025/07/22/de-xuat-tinh-thue-20-tren-lai-chuyen-nhuong-bat-dong-san_2207150058.jpg')]
+    bg-center bg-cover bg-no-repeat
+    md:bg-none
+  ">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <ScrollReveal
