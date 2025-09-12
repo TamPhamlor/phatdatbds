@@ -74,32 +74,31 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </div>
 
         {/* Sub images chỉ hiển thị trên md trở lên */}
-        {/* Sub images chỉ hiển thị trên md trở lên */}
-{subImages.length > 0 && (
-  <div className="hidden md:grid grid-cols-3 gap-2 mt-2">
-    {subImages.map((img, idx) => (
-      <div
-        key={idx}
-        className="relative w-full h-20 rounded-xl overflow-hidden"
-      >
-        <Image
-          src={img}
-          alt={`sub-${idx}`}
-          fill
-          className="object-cover"
-          unoptimized={isExternal(img)}
-        />
+        {subImages.length > 0 && (
+          <div className="hidden md:grid grid-cols-3 gap-2 mt-2">
+            {subImages.map((img, idx) => (
+              <div
+                key={idx}
+                className="relative w-full h-20 rounded-xl overflow-hidden"
+              >
+                <Image
+                  src={img}
+                  alt={`sub-${idx}`}
+                  fill
+                  className="object-cover"
+                  unoptimized={isExternal(img)}
+                />
 
-        {/* Hiển thị +remaining nếu còn nhiều ảnh hơn */}
-        {idx === 2 && images.length > 4 && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-semibold text-sm rounded-xl">
-            +{images.length - 4}
+                {/* Hiển thị +remaining nếu còn nhiều ảnh hơn */}
+                {idx === 2 && images.length > 4 && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-semibold text-sm rounded-xl">
+                    +{images.length - 4}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         )}
-      </div>
-    ))}
-  </div>
-)}
 
 
         {/* Love icon */}
@@ -112,37 +111,37 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       <div className="w-full md:w-1/2 flex flex-col justify-between gap-4">
         {/* Title + Details chung 1 div */}
         <div>
-  {/* Title + Price */}
-  <div className="pb-3 border-b border-gray-200">
-    <h3 className="font-semibold text-2xl text-gray-800">{title}</h3>
-    <span className="text-red-600 font-bold text-lg mt-1 block">
-      {price}
-    </span>
-  </div>
+          {/* Title + Price */}
+          <div className="pb-3 border-b border-gray-200">
+            <h3 className="font-semibold text-2xl text-gray-800">{title}</h3>
+            <span className="text-red-600 font-bold text-lg mt-1 block">
+              {price}
+            </span>
+          </div>
 
-  {/* Details */}
-  <div className="flex flex-col gap-2 mt-5 text-gray-600 text-sm ">
-    <div className="flex flex-wrap gap-4">
-      <span className="flex items-center gap-1">
-        <BedroomParent fontSize="small" /> {rooms} PN
-      </span>
-      <span className="flex items-center gap-1">
-        <Bathtub fontSize="small" /> {baths} WC
-      </span>
-      <span className="flex items-center gap-1">
-        <SquareFoot fontSize="small" /> {area}
-      </span>
-      <span className="flex items-center gap-1">
-        <LocationOn fontSize="small" /> {location}
-      </span>
-    </div>
-    {description && (
-      <p className="text-gray-600 text-sm mt-3 line-clamp-3">
-        {description}
-      </p>
-    )}
-  </div>
-</div>
+          {/* Details */}
+          <div className="flex flex-col gap-2 mt-5 text-gray-600 text-sm ">
+            <div className="flex flex-wrap gap-4">
+              <span className="flex items-center gap-1">
+                <BedroomParent fontSize="small" /> {rooms} PN
+              </span>
+              <span className="flex items-center gap-1">
+                <Bathtub fontSize="small" /> {baths} WC
+              </span>
+              <span className="flex items-center gap-1">
+                <SquareFoot fontSize="small" /> {area}
+              </span>
+              <span className="flex items-center gap-1">
+                <LocationOn fontSize="small" /> {location}
+              </span>
+            </div>
+            {description && (
+              <p className="text-gray-600 text-sm mt-3 line-clamp-2 md:line-clamp-3">
+                {description}
+              </p>
+            )}
+          </div>
+        </div>
 
 
         {/* Author & contact */}

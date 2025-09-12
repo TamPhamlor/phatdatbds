@@ -78,7 +78,7 @@ export default function ImageGallery({
         modules={[FreeMode, Thumbs]}
         onSwiper={setThumbsSwiper}
         spaceBetween={10}
-        slidesPerView={3}
+        slidesPerView={3.5}
         freeMode
         watchSlidesProgress
         className="mt-4"
