@@ -1,27 +1,84 @@
 "use client";
 
 import { Listing } from "@/app/types/products";
+import {
+  SquareFoot,
+  Hotel,
+  Bathtub,
+  Layers,
+  Explore,
+  AltRoute,
+} from "@mui/icons-material";
 import React from "react";
-
 
 export default function ListingInfo({ listing }: { listing: Listing }) {
   return (
-    <div className="mb-6">
-      <h1 className="text-2xl font-bold mb-2">{listing.title}</h1>
-      <p className="mb-1">{listing.address}</p>
-      <p className="text-red-600 font-bold text-lg mb-2">{listing.price_total_text}</p>
-
-      <div className="grid grid-cols-2 gap-4 text-sm">
-        <p>Diện tích đất: {listing.area_land} m²</p>
-        <p>Diện tích xây: {listing.area_built} m²</p>
-        <p>Phòng ngủ: {listing.bedrooms}</p>
-        <p>Phòng tắm: {listing.bathrooms}</p>
-        <p>Số tầng: {listing.floors}</p>
-        <p>Hướng: {listing.direction}</p>
-        <p>Đường rộng: {listing.road_width}m</p>
+    <div className="mt-2">
+      {/* Thông tin mô tả */}
+      <div className="mb-2">
+        <h2 className="font-bold text-lg mb-2">Thông tin mô tả</h2>
+        <p className="text-gray-700 font-semibold leading-relaxed whitespace-pre-line border-b pb-3 border-gray-200">
+          {listing.description}
+        </p>
       </div>
 
-      <p className="mt-4">{listing.description}</p>
+      {/* Đặc điểm bất động sản */}
+      <div>
+        <h2 className="font-semibold text-lg">
+          Đặc điểm bất động sản
+        </h2>
+        <div className="grid md:grid-cols-2 gap-x-10 text-sm text-gray-800">
+          {/* Cột trái */}
+          <div className="flex flex-col">
+            <div className="flex items-center justify-between py-4 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <SquareFoot className="text-gray-500" fontSize="small" />
+                <span>Diện tích đất</span>
+              </div>
+              <span>{listing.area_land} m²</span>
+            </div>
+            <div className="flex items-center justify-between py-4 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <Layers className="text-gray-500" fontSize="small" />
+                <span>Diện tích xây</span>
+              </div>
+              <span>{listing.area_built} m²</span>
+            </div>
+            <div className="flex items-center justify-between py-4 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <Hotel className="text-gray-500" fontSize="small" />
+                <span>Số phòng ngủ</span>
+              </div>
+              <span>{listing.bedrooms} phòng</span>
+            </div>
+          </div>
+
+          {/* Cột phải */}
+          <div className="flex flex-col">
+            <div className="flex items-center justify-between py-4 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <Bathtub className="text-gray-500" fontSize="small" />
+                <span>Số phòng tắm</span>
+              </div>
+              <span>{listing.bathrooms} phòng</span>
+            </div>
+            <div className="flex items-center justify-between py-4 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <AltRoute className="text-gray-500" fontSize="small" />
+                <span>Số tầng</span>
+              </div>
+              <span>{listing.floors}</span>
+            </div>
+            <div className="flex items-center justify-between py-4 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <Explore className="text-gray-500" fontSize="small" />
+                <span>Hướng</span>
+              </div>
+              <span>{listing.direction}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

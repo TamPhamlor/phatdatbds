@@ -51,7 +51,7 @@ export interface Listing {
   expired_at: string;
   created_at: string;
   updated_at: string;
-
+  author:string,
   // Quan hệ
   images: Image[];
   amenities: Amenity[];

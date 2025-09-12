@@ -13,18 +13,18 @@ export default function ListingAmenities({ amenities }: { amenities: Amenity[] }
   if (!amenities || amenities.length === 0) return null;
 
   return (
-    <div className="mt-6">
+    <div className="mt-2">
       <h2 className="text-xl font-semibold mb-3">Tiện ích</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+      <ul className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2 list-disc list-inside text-gray-700">
         {amenities.map((amenity) => (
-          <span
+          <li
             key={amenity.id}
-            className="px-3 py-2 bg-gray-100 rounded-xl text-sm"
+            className="hover:text-blue-600 transition-colors duration-200"
           >
             {amenity.name}
-          </span>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
