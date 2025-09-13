@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { Listing } from "./types";
 
 interface DetailPanelProps {
@@ -16,22 +17,26 @@ export default function DetailPanel({ listing, isOpen }: DetailPanelProps) {
 
   return (
     <aside
-      className={`w-[380px] shrink-0 transition-all duration-300 ${
+      className={`w-full md:w-[380px] shrink-0 transition-all duration-300 ${
         isOpen ? "block" : "hidden"
       }`}
     >
       <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4 sticky top-16">
         <div className="relative aspect-video rounded-xl overflow-hidden bg-gray-100 mb-3">
-          <Image
-            src={coverImage}
-            alt={listing.title}
-            fill
-            unoptimized
-            className="object-cover rounded-xl"
-          />
+          <Link href={`/nha-dat-ban/${listing.id}`} passHref>
+            <Image
+              src={coverImage}
+              alt={listing.title}
+              fill
+              unoptimized
+              className="object-cover rounded-xl cursor-pointer hover:opacity-90 transition-opacity"
+            />
+          </Link>
         </div>
         <div className="font-semibold text-gray-900 text-lg">
-          {listing.title}
+          <Link href={`/nha-dat-ban/${listing.id}`} className="hover:text-indigo-600 transition-colors">
+            {listing.title}
+          </Link>
           <span className="text-gray-500 text-base font-normal">
             {listing.price_total_text}
             <span className="text-gray-400">/month</span>
@@ -68,13 +73,16 @@ export default function DetailPanel({ listing, isOpen }: DetailPanelProps) {
           </div>
         </div>
         <div className="mt-4 rounded-xl overflow-hidden aspect-[4/3] bg-gray-100">
-          <iframe
-            src={`https://www.google.com/maps?q=${listing.lat},${listing.lng}&hl=vi&z=15&output=embed`}
-            className="w-full h-full border-0"
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+          <Link href={`/nha-dat-ban/${listing.id}`} passHref>
+            <iframe
+              src={`https://www.google.com/maps?q=${listing.lat},${listing.lng}&hl=vi&z=15&output=embed`}
+              className="w-full h-full border-0 cursor-pointer"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Map"
+            />
+          </Link>
         </div>
         <div className="mt-4 grid grid-cols-2 gap-2">
           <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm hover:bg-gray-50">

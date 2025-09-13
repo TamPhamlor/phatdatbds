@@ -1,9 +1,25 @@
 "use client"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function CategoryFilter() {
   const [activeCategory, setActiveCategory] = useState('Villa');
   const [showFilterPanel, setShowFilterPanel] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    // Chỉ chạy trên client
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setShowFilterPanel(false);
+      } else {
+        setShowFilterPanel(true);
+      }
+    };
+    handleResize();
+    setHydrated(true);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const categories = [
     { name: 'House', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M3 10.5L12 3l9 7.5M4.5 9.75V21h15V9.75" /></svg> },
@@ -75,61 +91,64 @@ export default function CategoryFilter() {
             </button>
           </div>
         </div>
-        <div
-          className={`
-            md:absolute md:right-8 w-full md:w-96 transition-all duration-300 z-[9999]
-            ${showFilterPanel ? 'opacity-100 translate-x-0 max-h-[1000px]' : 'opacity-0 translate-x-4 pointer-events-none max-h-0'}
-            overflow-hidden md:overflow-visible
-          `}
-        >
-          <div className="mx-4 md:mx-0 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
-            <div className="mb-4 text-base font-semibold text-gray-900">Filters</div>
-            <div className="space-y-5">
-              <div className="flex flex-col space-y-2">
-                <label className="text-sm font-medium text-gray-700">Tỉnh/Thành phố</label>
-                <select
-                  className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option value="">Chọn Tỉnh/Thành phố</option>
-                  <option value="hcm">TP Hồ Chí Minh</option>
-                  <option value="hn">Hà Nội</option>
-                </select>
+        {hydrated && (
+          <div
+            className={`
+              md:absolute md:right-8 w-full md:w-96 transition-all duration-300 z-[9999]
+              ${showFilterPanel ? 'md:opacity-100 md:translate-x-0 md:max-h-[1000px] md:pointer-events-auto' : 'md:hidden'}
+              ${showFilterPanel ? 'opacity-100 translate-x-0 max-h-[1000px] pointer-events-auto' : 'opacity-0 translate-x-4 pointer-events-none max-h-0'}
+              overflow-hidden md:overflow-visible
+            `}
+          >
+            <div className="mx-4 md:mx-0 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
+              <div className="mb-4 text-base font-semibold text-gray-900">Filters</div>
+              <div className="space-y-5">
+                <div className="flex flex-col space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Tỉnh/Thành phố</label>
+                  <select
+                    className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option value="">Chọn Tỉnh/Thành phố</option>
+                    <option value="hcm">TP Hồ Chí Minh</option>
+                    <option value="hn">Hà Nội</option>
+                  </select>
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Xã/Phường</label>
+                  <select
+                    className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
+                    disabled
+                  >
+                    <option value="">Chọn Xã/Phường</option>
+                  </select>
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Price (min–max)</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
+                    placeholder="$100 – $1000"
+                  />
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Bedrooms</label>
+                  <select
+                    className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option>Any</option>
+                    <option>1+</option>
+                    <option>2+</option>
+                    <option>3+</option>
+                  </select>
+                </div>
               </div>
-              <div className="flex flex-col space-y-2">
-                <label className="text-sm font-medium text-gray-700">Xã/Phường</label>
-                <select
-                  className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
-                  disabled
-                >
-                  <option value="">Chọn Xã/Phường</option>
-                </select>
+              <div className="mt-6 flex justify-end gap-3">
+                <button className="text-sm px-4 py-2 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-gray-50">Reset</button>
+                <button className="text-sm px-4 py-2 rounded-full bg-indigo-600 text-white shadow-sm hover:bg-indigo-700">Apply</button>
               </div>
-              <div className="flex flex-col space-y-2">
-                <label className="text-sm font-medium text-gray-700">Price (min–max)</label>
-                <input
-                  type="text"
-                  className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
-                  placeholder="$100 – $1000"
-                />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="text-sm font-medium text-gray-700">Bedrooms</label>
-                <select
-                  className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option>Any</option>
-                  <option>1+</option>
-                  <option>2+</option>
-                  <option>3+</option>
-                </select>
-              </div>
-            </div>
-            <div className="mt-6 flex justify-end gap-3">
-              <button className="text-sm px-4 py-2 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-gray-50">Reset</button>
-              <button className="text-sm px-4 py-2 rounded-full bg-indigo-600 text-white shadow-sm hover:bg-indigo-700">Apply</button>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
