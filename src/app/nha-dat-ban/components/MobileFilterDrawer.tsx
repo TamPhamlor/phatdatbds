@@ -8,9 +8,25 @@ interface MobileFilterDrawerProps {
 
 export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDrawerProps) {
   return (
-    <div className={`fixed inset-0 z-50 transition-all duration-300 ${isOpen ? 'block' : 'hidden'}`}>
-      <div className="absolute inset-0 bg-black/30" onClick={onClose}></div>
-      <div className={`absolute inset-y-0 left-0 w-11/12 max-w-sm bg-white shadow-xl p-4 overflow-y-auto transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+    <div className="fixed inset-0 z-50 pointer-events-none">
+      {/* Overlay */}
+      <div
+        className={`
+          absolute inset-0 bg-black/30 transition-opacity duration-300
+          ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
+        `}
+        onClick={onClose}
+      ></div>
+      {/* Drawer */}
+      <div
+        className={`
+          absolute inset-y-0 left-0 w-11/12 max-w-sm bg-white shadow-xl p-4 overflow-y-auto
+          transform transition-transform duration-300
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+          pointer-events-auto
+        `}
+        style={{ willChange: 'transform' }}
+      >
         <div className="flex items-center justify-between mb-2">
           <div className="font-semibold text-gray-900">Customer Filter</div>
           <button className="p-2 rounded-full hover:bg-gray-100" onClick={onClose}>

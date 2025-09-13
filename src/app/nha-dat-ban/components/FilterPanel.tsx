@@ -3,7 +3,12 @@
 export default function FilterPanel({ isOpen }: { isOpen: boolean, className?: string }) {
   return (
     <aside
-      className={`w-80 shrink-0 transition-all duration-300 ${isOpen ? 'block' : 'hidden'}`}
+      className={`
+        w-80 shrink-0
+        transition-all duration-300
+        ${isOpen ? 'ml-0 opacity-100 pointer-events-auto' : '-ml-80 opacity-0 pointer-events-none'}
+      `}
+      style={{ willChange: 'margin-left, opacity' }}
     >
       <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
         <div className="mb-3 font-semibold text-gray-900">Customer Filter</div>

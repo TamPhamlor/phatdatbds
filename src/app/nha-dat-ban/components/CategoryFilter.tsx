@@ -7,12 +7,11 @@ export default function CategoryFilter() {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    // Chỉ chạy trên client
     const handleResize = () => {
       if (window.innerWidth >= 768) {
         setShowFilterPanel(false);
       } else {
-        setShowFilterPanel(true);
+        setShowFilterPanel(false); // mobile mặc định ẩn
       }
     };
     handleResize();
