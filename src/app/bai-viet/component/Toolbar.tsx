@@ -49,7 +49,7 @@ export default function Toolbar({ state, setState, onReset }: ToolbarProps) {
                 id="searchInput"
                 type="text"
                 placeholder="Tìm theo tên bài viết..."
-                className="w-72 rounded-full bg-white pl-9 pr-3 py-2 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm border-0"
+                className=" rounded-full bg-white pl-9 pr-3 py-2 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm border-0"
                 value={state.q}
                 onChange={(e) => setState({ ...state, q: e.target.value })}
               />

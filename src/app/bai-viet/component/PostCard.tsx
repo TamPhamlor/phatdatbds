@@ -11,7 +11,11 @@ export default function PostCard({ post }: PostCardProps) {
   const category = post.post_types[0]?.name || "Unknown";
 
   return (
-    <article className="card rounded-2xl overflow-hidden bg-white border border-gray-200 shadow-sm flex flex-col">
+    <Link
+      href={`/bai-viet/${post.slug}`}
+      className="card rounded-2xl overflow-hidden bg-white border border-gray-200 shadow-sm hover:shadow-md transition flex flex-col"
+    >
+      {/* Author + Category */}
       <div className="order-1 sm:order-2 px-3 pt-3 pb-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Image
@@ -37,13 +41,13 @@ export default function PostCard({ post }: PostCardProps) {
             </div>
           </div>
         </div>
-        <button className="p-1 rounded-full hover:bg-gray-100" aria-label="more">
+        <div className="p-1 rounded-full hover:bg-gray-100">
           <svg className="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
             <circle cx="5" cy="12" r="1.8" />
             <circle cx="12" cy="12" r="1.8" />
             <circle cx="19" cy="12" r="1.8" />
           </svg>
-        </button>
+        </div>
       </div>
 
       {/* Cover Image */}
@@ -52,24 +56,22 @@ export default function PostCard({ post }: PostCardProps) {
           src={post.cover_image_url}
           alt={post.title}
           fill
-          className="object-cover rounded-t-2xl"
+          className="object-cover md:rounded-t-2xl"
           unoptimized
         />
       </div>
 
+      {/* Title + Summary */}
       <div className="order-3 p-3 flex-1 flex flex-col">
         <h3 className="title font-semibold text-gray-900">{post.title}</h3>
         <p className="excerpt mt-1 text-sm text-gray-600">{post.summary}</p>
         <div className="mt-auto flex items-center justify-between">
           <div className="text-xs text-gray-500">👍 124 • 💬 12</div>
-          <Link
-            href={`/bai-viet/${post.slug}`}
-            className="rounded-full bg-indigo-600 text-white px-3 py-1 text-xs hover:bg-indigo-700"
-          >
+          <span className="rounded-full bg-indigo-600 text-white px-4 py-2 text-xs">
             Xem chi tiết
-          </Link>
+          </span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }

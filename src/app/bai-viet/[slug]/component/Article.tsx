@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useState } from 'react';
 import { Post } from '../../component/types';
 import { Tag } from './bai-viet.types';
 
@@ -12,6 +13,7 @@ interface ArticleProps {
 
 export function Article({ post, relatedPosts }: ArticleProps) {
   const router = useRouter();
+  const [expanded, setExpanded] = useState(false);
 
   const handleTagClick = (tag: string) => {
     router.push(`/?q=${encodeURIComponent(tag)}`);
@@ -42,9 +44,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
           </h1>
           <button className="hidden sm:inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm hover:bg-gray-50">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="m12 21-1.45-1.32C6 15.36 3 12.28 3 8.5A4.5 4.5 0 0 1 7.5 4 5.4 5.4 0 0 1 12 6.09 5.4 5.4 0 0 1 16.5 4 4.5 4.5 0 0 1 21 8.5c0 3.78-3 6.86-7.55 11.18L12 21z"
-              />
+              <path d="m12 21-1.45-1.32C6 15.36 3 12.28 3 8.5A4.5 4.5 0 0 1 7.5 4 5.4 5.4 0 0 1 12 6.09 5.4 5.4 0 0 1 16.5 4 4.5 4.5 0 0 1 21 8.5c0 3.78-3 6.86-7.55 11.18L12 21z" />
             </svg>
             Lưu
           </button>
@@ -89,11 +89,23 @@ export function Article({ post, relatedPosts }: ArticleProps) {
         </div>
       </section>
 
-      {/* Content */}
+      {/* Content with toggle inside */}
       <section
-        className="mt-4 rounded-2xl bg-white border border-gray-200 shadow-sm p-6 prose prose-sm sm:prose-base max-w-none prose-headings:scroll-mt-20"
-        dangerouslySetInnerHTML={{ __html: post.content.replace(/\r\n\r\n/g, '<p>') }}
-      />
+        className={`mt-4 rounded-2xl bg-white border border-gray-200 shadow-sm p-6 prose prose-sm sm:prose-base max-w-none prose-headings:scroll-mt-20 transition-all duration-300 overflow-hidden`}
+      >
+        <div
+          className={`${expanded ? '' : 'max-h-[300px] overflow-hidden'}`}
+          dangerouslySetInnerHTML={{ __html: post.content.replace(/\r\n\r\n/g, '<p>') }}
+        />
+        <div className="text-center mt-4">
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="text-indigo-600 hover:underline text-sm font-medium"
+          >
+            {expanded ? 'Thu gọn ▲' : 'Xem thêm ▼'}
+          </button>
+        </div>
+      </section>
 
       {/* Related Posts */}
       <section className="mt-4 rounded-2xl bg-white border border-gray-200 shadow-sm p-5">
