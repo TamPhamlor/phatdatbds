@@ -1,13 +1,15 @@
 import { ClientFilter } from "./ClientFilter";
 import { ApiResponse, Post } from "./component/types";
 
+export const dynamic = 'force-dynamic'; // Buộc SSR
 
-// Server Component
 export default async function Home() {
-  // Fetch posts từ server
   let posts: Post[] = [];
+
   try {
-    const res = await fetch('https://phatdatbatdongsan.com/api/v1/posts');
+    const res = await fetch('https://phatdatbatdongsan.com/api/v1/posts', {
+      cache: 'no-store', // Luôn fetch mới
+    });
     const data: ApiResponse = await res.json();
     if (data.success) posts = data.data.data;
   } catch (error) {
@@ -16,7 +18,6 @@ export default async function Home() {
 
   return (
     <div className="bg-gray-50">
-      {/* ClientFilter sẽ xử lý Toolbar, Sidebar và lọc bài viết */}
       <ClientFilter posts={posts} />
     </div>
   );

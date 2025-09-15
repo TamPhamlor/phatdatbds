@@ -8,9 +8,14 @@ export const metadata: Metadata = {
   description: 'Danh sách nhà đất bán tại Nhơn Trạch, Đồng Nai',
 };
 
+// Buộc page này SSR, không prerender static
+export const dynamic = 'force-dynamic';
+
 async function getListings(): Promise<Listing[]> {
   try {
-    const res = await fetch('https://phatdatbatdongsan.com/api/v1/listings');
+    const res = await fetch('https://phatdatbatdongsan.com/api/v1/listings', {
+      cache: 'no-store', // luôn fetch dữ liệu mới
+    });
     const data = await res.json();
     return data.data || [];
   } catch (error) {
