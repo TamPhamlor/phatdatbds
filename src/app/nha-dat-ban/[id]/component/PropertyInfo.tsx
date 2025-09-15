@@ -24,16 +24,16 @@ const PropertyInfo: React.FC<PropertyInfoProps> = ({ listing }) => {
         <div className="text-left md:text-right">
           <div className="text-xl sm:text-2xl font-bold text-gray-900">{listing.price_total_text}<span className="text-base text-gray-500 font-normal">/total</span></div>
           <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:justify-end">
-            <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm hover:bg-gray-50 w-full sm:w-auto">Contact Agent</button>
-            <a href="#schedule" className="rounded-full bg-indigo-600 text-white px-4 py-2 text-sm hover:bg-indigo-700 w-full sm:w-auto text-center">Schedule a Tour</a>
+            <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm hover:bg-gray-50 w-full sm:w-auto">Liên hệ</button>
+            <a href="#schedule" className="rounded-full bg-indigo-600 text-white px-4 py-2 text-sm hover:bg-indigo-700 w-full sm:w-auto text-center">Đặt lịch tham quan</a>
           </div>
         </div>
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
-        <span className="rounded-full border border-gray-200 px-3 py-1 text-sm">{listing.bedrooms} Beds</span>
-        <span className="rounded-full border border-gray-200 px-3 py-1 text-sm">{listing.bathrooms} Baths</span>
+        <span className="rounded-full border border-gray-200 px-3 py-1 text-sm">{listing.bedrooms} Phòng ngủ</span>
+        <span className="rounded-full border border-gray-200 px-3 py-1 text-sm">{listing.bathrooms} Phòng tắm</span>
         <span className="rounded-full border border-gray-200 px-3 py-1 text-sm">{listing.area_land} m²</span>
-        <span className="rounded-full border border-gray-200 px-3 py-1 text-sm">Built 2019</span>
+        <span className="rounded-full border border-gray-200 px-3 py-1 text-sm">Xây dựng 2019</span>
       </div>
     </section>
   );

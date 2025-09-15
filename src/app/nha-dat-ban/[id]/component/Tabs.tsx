@@ -20,32 +20,32 @@ const Tabs: React.FC<TabsProps> = ({ listing }) => {
             className={`tab-btn ${activeTab === "overview" ? "text-indigo-600" : "text-gray-600"}`}
             onClick={() => setActiveTab("overview")}
           >
-            Overview
+            Tổng quan
           </button>
           <button
             className={`tab-btn ${activeTab === "amenities" ? "text-indigo-600" : "text-gray-600"}`}
             onClick={() => setActiveTab("amenities")}
           >
-            Amenities
+            Tiện ích
           </button>
           <button
             className={`tab-btn ${activeTab === "nearby" ? "text-indigo-600" : "text-gray-600"}`}
             onClick={() => setActiveTab("nearby")}
           >
-            Nearby
+            Gần đây
           </button>
           <button
             className={`tab-btn ${activeTab === "reviews" ? "text-indigo-600" : "text-gray-600"}`}
             onClick={() => setActiveTab("reviews")}
           >
-            Reviews
+            Đánh giá
           </button>
         </div>
       </div>
 
       {/* Tabs content */}
       <div className="p-5">
-        {/* Overview */}
+        {/* Tổng quan */}
         <div className={`${activeTab === "overview" ? "" : "hidden"} space-y-5`}>
           <p className={`text-gray-700 leading-7 ${showFullOverview ? "" : "line-clamp-3"}`}>
             {listing.description}
@@ -59,27 +59,27 @@ const Tabs: React.FC<TabsProps> = ({ listing }) => {
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="rounded-xl border border-gray-200 p-4">
-              <div className="font-semibold mb-2">Highlights</div>
+              <div className="font-semibold mb-2">Điểm nổi bật</div>
               <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
-                <li>Open-plan living & dining</li>
-                <li>South-facing garden with patio</li>
-                <li>Energy efficient windows</li>
-                <li>Smart home integration</li>
+                <li>Phòng khách & phòng ăn không gian mở</li>
+                <li>Sân vườn hướng Nam với hiên</li>
+                <li>Cửa sổ tiết kiệm năng lượng</li>
+                <li>Tích hợp nhà thông minh</li>
               </ul>
             </div>
             <div className="rounded-xl border border-gray-200 p-4">
-              <div className="font-semibold mb-2">Property Facts</div>
+              <div className="font-semibold mb-2">Thông tin tài sản</div>
               <dl className="grid grid-cols-2 gap-y-2 text-sm text-gray-700">
-                <dt>Lot Size</dt><dd>{listing.area_land} m²</dd>
-                <dt>Parking</dt><dd>2 cars</dd>
-                <dt>HOA</dt><dd>$120/mo</dd>
-                <dt>MLS</dt><dd># 882731</dd>
+                <dt>Diện tích đất</dt><dd>{listing.area_land} m²</dd>
+                <dt>Bãi đỗ xe</dt><dd>2 ô tô</dd>
+                <dt>Phí quản lý</dt><dd>$120/tháng</dd>
+                <dt>Mã MLS</dt><dd># 882731</dd>
               </dl>
             </div>
           </div>
         </div>
 
-        {/* Amenities */}
+        {/* Tiện ích */}
         <div className={`${activeTab === "amenities" ? "" : "hidden"}`}>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
             {listing.amenities.map((amenity) => (
@@ -94,7 +94,7 @@ const Tabs: React.FC<TabsProps> = ({ listing }) => {
           </div>
         </div>
 
-        {/* Nearby */}
+        {/* Gần đây */}
         <div className={`${activeTab === "nearby" ? "" : "hidden"} space-y-4`}>
           <div className="rounded-xl border border-gray-200 overflow-hidden">
             <iframe
@@ -106,9 +106,9 @@ const Tabs: React.FC<TabsProps> = ({ listing }) => {
           </div>
         </div>
 
-        {/* Reviews */}
+        {/* Đánh giá */}
         <div className={`${activeTab === "reviews" ? "" : "hidden"} space-y-4`}>
-          {/* Reviews content here */}
+          {/* Nội dung đánh giá sẽ hiển thị ở đây */}
         </div>
       </div>
     </section>

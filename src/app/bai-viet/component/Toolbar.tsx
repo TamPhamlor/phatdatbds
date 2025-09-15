@@ -8,13 +8,15 @@ interface ToolbarProps {
 }
 
 const categories = [
-  { id: 'all', label: 'Tất cả' },
-  { id: 'news', label: 'News' },
-  { id: 'guide', label: 'Guide' },
-  { id: 'tips', label: 'Tips' },
-  { id: 'review', label: 'Review' },
-  { id: 'tutorial', label: 'Tutorial' },
+  { id: "all", label: "Tất cả" },
+  { id: "news", label: "Tin tức" },
+  { id: "guide", label: "Hướng dẫn" },
+  { id: "tips", label: "Mẹo" },
+  { id: "review", label: "Đánh giá" },
+  { id: "tutorial", label: "Học tập" },
+  { id: "market", label: "Thị trường" },
 ];
+
 
 export default function Toolbar({ state, setState, onReset }: ToolbarProps) {
   return (

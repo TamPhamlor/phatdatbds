@@ -22,6 +22,7 @@ export default function DetailPanel({ listing, isOpen }: DetailPanelProps) {
       }`}
     >
       <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4 sticky top-16">
+        {/* Hình ảnh chính */}
         <div className="relative aspect-video rounded-xl overflow-hidden bg-gray-100 mb-3">
           <Link href={`/nha-dat-ban/${listing.id}`} passHref>
             <Image
@@ -33,45 +34,59 @@ export default function DetailPanel({ listing, isOpen }: DetailPanelProps) {
             />
           </Link>
         </div>
+
+        {/* Tiêu đề + Giá */}
         <div className="font-semibold text-gray-900 text-lg">
-          <Link href={`/nha-dat-ban/${listing.id}`} className="hover:text-indigo-600 transition-colors">
+          <Link
+            href={`/nha-dat-ban/${listing.id}`}
+            className="hover:text-indigo-600 transition-colors"
+          >
             {listing.title}
           </Link>
+          <br />
           <span className="text-gray-500 text-base font-normal">
             {listing.price_total_text}
-            <span className="text-gray-400">/month</span>
+            <span className="text-gray-400">/tháng</span>
           </span>
         </div>
+
+        {/* Địa chỉ */}
         <div className="text-sm text-gray-500 flex items-center gap-2 mt-1">
           <span className="w-2 h-2 rounded-full bg-blue-500"></span>
           {listing.address}
         </div>
+
+        {/* Giới thiệu */}
         <div className="mt-4">
           <div className="flex gap-4 text-sm font-medium text-gray-700">
-            <button className="text-indigo-600">Overview</button>
-            <button>Reviews</button>
-            <button>About</button>
+            <button className="text-indigo-600">Tổng quan</button>
+            <button>Đánh giá</button>
+            <button>Giới thiệu</button>
           </div>
           <p className="mt-3 text-sm text-gray-600 leading-6 line-clamp-2">
-            {listing.description || "No description available."}
+            {listing.description || "Chưa có mô tả."}
           </p>
         </div>
+
+        {/* Thông tin phòng */}
         <div className="mt-4">
           <div className="text-sm font-semibold text-gray-900 mb-2">
-            Room Size
+            Diện tích & Phòng
           </div>
           <div className="flex flex-wrap gap-2">
             <span className="rounded-full border border-gray-200 px-3 py-1 text-sm">
-              {listing.bedrooms} Beds
+              {listing.bedrooms} Phòng ngủ
             </span>
             <span className="rounded-full border border-gray-200 px-3 py-1 text-sm">
-              {listing.bathrooms} Bathrooms
+              {listing.bathrooms} Phòng tắm
             </span>
             <span className="rounded-full border border-gray-200 px-3 py-1 text-sm">
-              {listing.area_land}
+              {listing.area_land} m²
             </span>
           </div>
         </div>
+
+        {/* Bản đồ */}
         <div className="mt-4 rounded-xl overflow-hidden aspect-[4/3] bg-gray-100">
           <Link href={`/nha-dat-ban/${listing.id}`} passHref>
             <iframe
@@ -80,16 +95,18 @@ export default function DetailPanel({ listing, isOpen }: DetailPanelProps) {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Map"
+              title="Bản đồ"
             />
           </Link>
         </div>
+
+        {/* Nút hành động */}
         <div className="mt-4 grid grid-cols-2 gap-2">
           <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm hover:bg-gray-50">
-            Contact Us
+            Liên hệ
           </button>
           <button className="rounded-full bg-indigo-600 text-white px-4 py-2 text-sm hover:bg-indigo-700">
-            Schedule a Tour
+            Đặt lịch
           </button>
         </div>
       </div>

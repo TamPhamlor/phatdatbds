@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { useState } from 'react';
-import { Post } from '../../component/types';
-import { Tag } from './bai-viet.types';
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { useState } from "react";
+import { Post } from "../../component/types";
+import { Tag } from "./bai-viet.types";
+import { Share2, Facebook, Copy, Check, MessageCircle } from "lucide-react";
 
 interface ArticleProps {
   post: Post;
@@ -14,6 +15,8 @@ interface ArticleProps {
 export function Article({ post, relatedPosts }: ArticleProps) {
   const router = useRouter();
   const [expanded, setExpanded] = useState(false);
+  const [openShare, setOpenShare] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleTagClick = (tag: string) => {
     router.push(`/?q=${encodeURIComponent(tag)}`);
@@ -21,6 +24,19 @@ export function Article({ post, relatedPosts }: ArticleProps) {
 
   const handleRelatedClick = (id: number) => {
     router.push(`/post/${id}`);
+  };
+
+  const currentUrl =
+    typeof window !== "undefined" ? window.location.href : "";
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(currentUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Copy failed:", err);
+    }
   };
 
   return (
@@ -42,12 +58,73 @@ export function Article({ post, relatedPosts }: ArticleProps) {
           <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
             {post.title}
           </h1>
-          <button className="hidden sm:inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm hover:bg-gray-50">
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="m12 21-1.45-1.32C6 15.36 3 12.28 3 8.5A4.5 4.5 0 0 1 7.5 4 5.4 5.4 0 0 1 12 6.09 5.4 5.4 0 0 1 16.5 4 4.5 4.5 0 0 1 21 8.5c0 3.78-3 6.86-7.55 11.18L12 21z" />
-            </svg>
-            Lưu
-          </button>
+          <div className="relative flex gap-2">
+            {/* Share Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setOpenShare(!openShare)}
+                className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm hover:bg-gray-50"
+              >
+                <Share2 className="w-4 h-4" />
+                Chia sẻ
+              </button>
+
+              {openShare && (
+                <div className="absolute right-0 mt-2 w-40 rounded-xl border border-gray-200 bg-white shadow-lg p-2 z-50">
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                      currentUrl
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-2 py-2 text-sm rounded-lg hover:bg-gray-50"
+                  >
+                    <Facebook className="w-4 h-4 text-blue-600" />
+                    Facebook
+                  </a>
+                  <a
+                    href={`https://zalo.me/share?url=${encodeURIComponent(
+                      currentUrl
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-2 py-2 text-sm rounded-lg hover:bg-gray-50"
+                  >
+                    <MessageCircle className="w-4 h-4 text-sky-500" />
+                    Zalo
+                  </a>
+                  <button
+                    onClick={copyLink}
+                    className="flex items-center gap-2 px-2 py-2 text-sm w-full rounded-lg hover:bg-gray-50"
+                  >
+                    {copied ? (
+                      <>
+                        <Check className="w-4 h-4 text-green-600" />
+                        Đã sao chép
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4" />
+                        Sao chép link
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Save Button */}
+            <button className="hidden sm:inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm hover:bg-gray-50">
+              <svg
+                className="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="m12 21-1.45-1.32C6 15.36 3 12.28 3 8.5A4.5 4.5 0 0 1 7.5 4 5.4 5.4 0 0 1 12 6.09 5.4 5.4 0 0 1 16.5 4 4.5 4.5 0 0 1 21 8.5c0 3.78-3 6.86-7.55 11.18L12 21z" />
+              </svg>
+              Lưu
+            </button>
+          </div>
         </div>
 
         {/* Author */}
@@ -55,7 +132,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 relative rounded-full overflow-hidden">
               <Image
-                src={'https://i.pravatar.cc/64'}
+                src={"https://i.pravatar.cc/64"}
                 alt={post.author.full_name}
                 fill
                 className="object-cover"
@@ -63,15 +140,19 @@ export function Article({ post, relatedPosts }: ArticleProps) {
               />
             </div>
             <div>
-              <div className="font-medium text-gray-900">{post.author.full_name}</div>
+              <div className="font-medium text-gray-900">
+                {post.author.full_name}
+              </div>
               <div className="text-gray-500">
-                <span>{new Date(post.published_at).toLocaleDateString('vi-VN')}</span> •{' '}
-                <span>{post.reading_minutes} phút đọc</span>
+                <span>
+                  {new Date(post.published_at).toLocaleDateString("vi-VN")}
+                </span>{" "}
+                • <span>{post.reading_minutes} phút đọc</span>
               </div>
             </div>
           </div>
           <span className="ml-auto inline-flex items-center rounded-full bg-indigo-50 text-indigo-700 px-3 py-1 text-xs font-medium">
-            {post.post_types[0]?.name || 'Tin tức'}
+            {post.post_types[0]?.name || "Tin tức"}
           </span>
         </div>
 
@@ -89,20 +170,20 @@ export function Article({ post, relatedPosts }: ArticleProps) {
         </div>
       </section>
 
-      {/* Content with toggle inside */}
-      <section
-        className={`mt-4 rounded-2xl bg-white border border-gray-200 shadow-sm p-6 prose prose-sm sm:prose-base max-w-none prose-headings:scroll-mt-20 transition-all duration-300 overflow-hidden`}
-      >
+      {/* Content */}
+      <section className="mt-4 rounded-2xl bg-white border border-gray-200 shadow-sm p-6 prose prose-sm sm:prose-base max-w-none prose-headings:scroll-mt-20 transition-all duration-300 overflow-hidden">
         <div
-          className={`${expanded ? '' : 'max-h-[300px] overflow-hidden'}`}
-          dangerouslySetInnerHTML={{ __html: post.content.replace(/\r\n\r\n/g, '<p>') }}
+          className={`${expanded ? "" : "max-h-[300px] overflow-hidden"}`}
+          dangerouslySetInnerHTML={{
+            __html: post.content.replace(/\r\n\r\n/g, "<p>"),
+          }}
         />
         <div className="text-center mt-4">
           <button
             onClick={() => setExpanded(!expanded)}
             className="text-indigo-600 hover:underline text-sm font-medium"
           >
-            {expanded ? 'Thu gọn ▲' : 'Xem thêm ▼'}
+            {expanded ? "Thu gọn ▲" : "Xem thêm ▼"}
           </button>
         </div>
       </section>
@@ -133,13 +214,13 @@ export function Article({ post, relatedPosts }: ArticleProps) {
               </div>
               <div className="min-w-0">
                 <div className="text-xs text-gray-500">
-                  {new Date(p.published_at).toLocaleDateString('vi-VN')}
+                  {new Date(p.published_at).toLocaleDateString("vi-VN")}
                 </div>
                 <div className="mt-0.5 font-medium text-gray-900 line-clamp-2 group-hover:text-indigo-600">
                   {p.title}
                 </div>
                 <div className="mt-1 text-[11px] text-gray-500 truncate">
-                  #{p.tags.map((t) => t.name).slice(0, 3).join(' #')}
+                  #{p.tags.map((t) => t.name).slice(0, 3).join(" #")}
                 </div>
               </div>
             </button>

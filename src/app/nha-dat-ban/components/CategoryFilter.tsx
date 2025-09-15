@@ -122,11 +122,11 @@ export default function CategoryFilter() {
                   </select>
                 </div>
                 <div className="flex flex-col space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Price (min–max)</label>
+                  <label className="text-sm font-medium text-gray-700">Giá (Nhỏ - Lớn)</label>
                   <input
                     type="text"
                     className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
-                    placeholder="$100 – $1000"
+                    placeholder="Nhập giá trị "
                   />
                 </div>
                 <div className="flex flex-col space-y-2">
