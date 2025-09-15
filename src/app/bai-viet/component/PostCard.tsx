@@ -41,13 +41,7 @@ export default function PostCard({ post }: PostCardProps) {
             </div>
           </div>
         </div>
-        <div className="p-1 rounded-full hover:bg-gray-100">
-          <svg className="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
-            <circle cx="5" cy="12" r="1.8" />
-            <circle cx="12" cy="12" r="1.8" />
-            <circle cx="19" cy="12" r="1.8" />
-          </svg>
-        </div>
+        
       </div>
 
       {/* Cover Image */}

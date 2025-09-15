@@ -96,3 +96,7 @@ body {
   background-color: var(--color-accent);
   color: var(--color-ink);
 }
+
+html {
+  scroll-behavior: smooth;
+}

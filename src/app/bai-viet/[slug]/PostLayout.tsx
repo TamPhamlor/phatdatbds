@@ -17,7 +17,7 @@ export default function PostLayout({ post, relatedPosts, children }: PostLayoutP
     <div className="bg-gray-50">
       <Breadcrumb title={post.title} />
       <MobileSidebar />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 pb-24">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-4 pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <Article post={post} relatedPosts={relatedPosts} />
           <Sidebar />
