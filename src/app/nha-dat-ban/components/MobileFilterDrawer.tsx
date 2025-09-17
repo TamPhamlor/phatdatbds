@@ -40,7 +40,9 @@ export default function MobileFilterDrawer({ isOpen, onClose, meta }: MobileFilt
         </div>
         
         {/* Truyền meta xuống để có dữ liệu thành phố */}
-        <FilterPanel isOpen={true} meta={meta} />
+        {isOpen && (
+  <FilterPanel isOpen={true} meta={meta} />
+)}
       </div>
     </div>
   );
