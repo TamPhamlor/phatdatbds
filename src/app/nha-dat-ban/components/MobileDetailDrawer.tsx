@@ -44,7 +44,7 @@ export default function MobileDetailDrawer({ isOpen, onClose, listing }: MobileD
             </svg>
           </button>
         </div>
-        <DetailPanel listing={listing} isOpen={true} />
+        <DetailPanel listing={listing} isOpen={true} onClose={onClose} />
       </div>
     </div>
   );

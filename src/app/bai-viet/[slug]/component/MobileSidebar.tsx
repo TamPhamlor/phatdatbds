@@ -6,7 +6,7 @@ import { ProjectAd } from "./ProjectAd";
 
 export function MobileSidebar() {
   return (
-    <details className="lg:hidden max-w-7xl mx-2 px-2 sm:px-6 lg:px-8 mt-4 rounded-2xl border border-gray-200 bg-white shadow-sm">
+    <details className="lg:hidden max-w-7xl mx-2 px-2 sm:px-6 lg:px-8 mt-2 mb-2 rounded-2xl border border-gray-200 bg-white shadow-sm">
       <summary className="list-none px-2 py-3 text-sm font-semibold text-gray-800 cursor-pointer flex items-center justify-between">
         Tìm nhanh & dự án
         <svg

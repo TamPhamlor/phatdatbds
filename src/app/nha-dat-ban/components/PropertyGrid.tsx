@@ -30,7 +30,7 @@ export default function PropertyGrid({ listings, filterOpen, detailOpen, onCardC
       >
         {listings.map((listing) => (
           <PropertyCard
-            key={listing.id}
+            key={listing.slug}
             listing={listing}
             onClick={() => onCardClick(listing)}
           />

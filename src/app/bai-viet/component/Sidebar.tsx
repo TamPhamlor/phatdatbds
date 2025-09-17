@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link'; // 👈 dùng Next.js Link
 import { Post } from './types';
 
 interface SidebarProps {
@@ -31,17 +32,15 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
     .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
     .slice(0, 5);
 
+  // 🔥 Chỉ thay đổi phần renderHotList
   const renderHotList = (id: string) => (
     <ul id={id} className="space-y-3">
       {sortedPosts.map((post) => (
         <li key={post.id}>
-          <a
-            href="#"
+          <Link
+            href={`/bai-viet/${post.slug}`}
             className="flex items-center gap-3 group"
-            onClick={(e) => {
-              e.preventDefault();
-              onHotPostClick(post.title);
-            }}
+            onClick={() => onHotPostClick(post.title)}
           >
             <div className="w-full h-13 relative rounded-xl overflow-hidden border border-gray-200">
               <Image
@@ -53,10 +52,14 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
               />
             </div>
             <div className="min-w-0">
-              <div className="truncate font-medium text-sm text-gray-900 group-hover:text-indigo-600">{post.title}</div>
-              <div className="text-xs text-gray-500">{new Date(post.published_at).toLocaleDateString('vi-VN')}</div>
+              <div className="truncate font-medium text-sm text-gray-900 group-hover:text-indigo-600">
+                {post.title}
+              </div>
+              <div className="text-xs text-gray-500">
+                {new Date(post.published_at).toLocaleDateString('vi-VN')}
+              </div>
             </div>
-          </a>
+          </Link>
         </li>
       ))}
     </ul>
@@ -87,8 +90,12 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
             <div className="mt-3 font-semibold">Williamsburg Inn-Castilling</div>
             <div className="text-sm text-gray-500">Evergreen 10, Jakarta</div>
             <div className="mt-2 flex items-center justify-between">
-              <div className="text-sm font-bold">$ 345.00<span className="text-gray-500 font-normal">/month</span></div>
-              <a href="#" className="rounded-full bg-indigo-600 text-white px-3 py-1 text-xs hover:bg-indigo-700">Xem chi tiết</a>
+              <div className="text-sm font-bold">
+                $ 345.00<span className="text-gray-500 font-normal">/month</span>
+              </div>
+              <a href="#" className="rounded-full bg-indigo-600 text-white px-3 py-1 text-xs hover:bg-indigo-700">
+                Xem chi tiết
+              </a>
             </div>
           </div>
           <div className="rounded-2xl border border-gray-200 p-4">
@@ -131,8 +138,12 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
             <div className="mt-3 font-semibold">Williamsburg Inn-Castilling</div>
             <div className="text-sm text-gray-500">Evergreen 10, Jakarta</div>
             <div className="mt-2 flex items-center justify-between">
-              <div className="text-sm font-bold">$ 345.00<span className="text-gray-500 font-normal">/month</span></div>
-              <a href="#" className="rounded-full bg-indigo-600 text-white px-3 py-1 text-xs hover:bg-indigo-700">Xem chi tiết</a>
+              <div className="text-sm font-bold">
+                $ 345.00<span className="text-gray-500 font-normal">/month</span>
+              </div>
+              <a href="#" className="rounded-full bg-indigo-600 text-white px-3 py-1 text-xs hover:bg-indigo-700">
+                Xem chi tiết
+              </a>
             </div>
           </div>
           <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">

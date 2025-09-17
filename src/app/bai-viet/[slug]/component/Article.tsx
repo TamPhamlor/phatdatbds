@@ -195,8 +195,8 @@ export function Article({ post, relatedPosts }: ArticleProps) {
         <div className="flex items-center justify-between mb-3">
           <div className="font-semibold">Bài viết liên quan</div>
           <Link href="#top" className="text-sm text-indigo-600 hover:underline">
-  Về danh sách
-</Link>
+            Về danh sách
+          </Link>
         </div>
         <div className="grid grid-cols-1 gap-4">
           {relatedPosts.map((p) => (

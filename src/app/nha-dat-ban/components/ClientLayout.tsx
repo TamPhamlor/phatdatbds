@@ -7,12 +7,14 @@ import DetailPanel from './DetailPanel';
 import MobileFilterDrawer from './MobileFilterDrawer';
 import MobileDetailDrawer from './MobileDetailDrawer';
 import FilterPanel from './FilterPanel';
+import { MetaListing } from '@/app/types/products';
 
 interface ClientLayoutProps {
   projects: Listing[];
+  meta?: MetaListing | null;
 }
 
-export default function ClientLayout({ projects }: ClientLayoutProps) {
+export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
   const [state, setState] = useState<FilterState>({ filterOpen: true, detailOpen: false });
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
@@ -67,17 +69,24 @@ export default function ClientLayout({ projects }: ClientLayoutProps) {
       </div>
       <div className="relative max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4">
         <div className="flex items-start gap-4">
-          {!isMobile && <FilterPanel isOpen={state.filterOpen} />}
+          {!isMobile && 
+          <FilterPanel isOpen={state.filterOpen} meta={meta}/>
+          }
           <PropertyGrid
             listings={projects}
             filterOpen={state.filterOpen}
             detailOpen={state.detailOpen}
             onCardClick={handleCardClick}
           />
-          <DetailPanel listing={selectedListing} isOpen={state.detailOpen} />
+          <DetailPanel
+            listing={selectedListing}
+            isOpen={state.detailOpen}
+            onClose={() => setState((prev) => ({ ...prev, detailOpen: false }))}
+          />
+
         </div>
       </div>
-      <MobileFilterDrawer isOpen={mobileFilterOpen} onClose={closeMobileFilter} />
+      <MobileFilterDrawer isOpen={mobileFilterOpen} onClose={closeMobileFilter} meta={meta}/>
       <MobileDetailDrawer
         isOpen={mobileDetailOpen}
         onClose={closeMobileDetail}

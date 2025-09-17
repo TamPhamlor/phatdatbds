@@ -1,12 +1,14 @@
 "use client"
 import FilterPanel from './FilterPanel';
+import { MetaListing } from "@/app/types/products";
 
 interface MobileFilterDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  meta?: MetaListing | null;   // thêm props meta
 }
 
-export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDrawerProps) {
+export default function MobileFilterDrawer({ isOpen, onClose, meta }: MobileFilterDrawerProps) {
   return (
     <div className="fixed inset-0 z-50 pointer-events-none">
       {/* Overlay */}
@@ -17,6 +19,7 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
         `}
         onClick={onClose}
       ></div>
+
       {/* Drawer */}
       <div
         className={`
@@ -35,10 +38,9 @@ export default function MobileFilterDrawer({ isOpen, onClose }: MobileFilterDraw
             </svg>
           </button>
         </div>
-        <FilterPanel isOpen={true} />
-        <div className="pt-3">
-          <button className="w-full rounded-full bg-indigo-600 text-white px-4 py-2 text-sm">Apply</button>
-        </div>
+        
+        {/* Truyền meta xuống để có dữ liệu thành phố */}
+        <FilterPanel isOpen={true} meta={meta} />
       </div>
     </div>
   );
