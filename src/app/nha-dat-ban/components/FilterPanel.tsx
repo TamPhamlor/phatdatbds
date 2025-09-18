@@ -1,6 +1,6 @@
 'use client';
 
-import { LegalStatus, MetaListing, Ward } from '@/app/types/products';
+import { LegalStatus, MetaListing } from '@/app/types/products';
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Listing, Filters } from './types';
@@ -119,10 +119,11 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
                     : `${Math.round(tempPriceRange[0] / 1000000)} triệu`}
                 </span>
                 <span>
-                  {tempPriceRange[1] >= 10000000000
+                  {tempPriceRange[1] >= 1000000000
                     ? `${(tempPriceRange[1] / 1000000000).toFixed(1)} tỷ`
                     : `${Math.round(tempPriceRange[1] / 1000000)} triệu`}
                 </span>
+
               </div>
               <input
                 type="range"
@@ -307,17 +308,17 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
           <div className="mt-3 space-y-2 text-sm">
             {meta?.property_types
               ? Object.values(meta.property_types).map((pt) => (
-                  <label key={`property-type-${pt.id}`} className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="property_type_filter"
-                      className="radio-custom"
-                      checked={filters.property_type_id === pt.id}
-                      onChange={() => handleFilterChange('property_type_id', pt.id)}
-                    />
-                    {pt.name}
-                  </label>
-                ))
+                <label key={`property-type-${pt.id}`} className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="property_type_filter"
+                    className="radio-custom"
+                    checked={filters.property_type_id === pt.id}
+                    onChange={() => handleFilterChange('property_type_id', pt.id)}
+                  />
+                  {pt.name}
+                </label>
+              ))
               : (
                 <>
                   <label key="property-type-1" className="flex items-center gap-2">
@@ -376,68 +377,48 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
         </details>
 
         {/* Tỉnh / Thành phố */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
-          <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-medium text-gray-800">
-            Tỉnh / Thành phố
-          </summary>
-          <div className="mt-3 space-y-2 text-sm">
+        <div className="group rounded-xl border border-gray-200 p-3 mb-3">
+          <label className="block mb-1 text-sm font-medium text-gray-800">Tỉnh / Thành phố</label>
+          <select
+            value={filters.province_id ?? ''}
+            onChange={(e) => {
+              const value = e.target.value ? parseInt(e.target.value) : undefined;
+              handleFilterChange('province_id', value);
+              handleFilterChange('ward_id', undefined); // reset xã/phường
+            }}
+            className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus-visible:outline-none focus:ring-indigo-500"
+          >
+            <option value="">Bất kỳ</option>
             {meta?.provinces?.map((province) => (
-              <label key={`province-${province.code}`} className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="province_filter"
-                  className="radio-custom"
-                  checked={filters.province_id === parseInt(province.code)}
-                  onChange={() => handleFilterChange('province_id', parseInt(province.code))}
-                />
+              <option key={province.code} value={province.code}>
                 {province.name}
-              </label>
-            )) || <div>Chưa có dữ liệu</div>}
-            <label key="province-any" className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="province_filter"
-                className="radio-custom"
-                checked={filters.province_id === undefined}
-                onChange={() => handleFilterChange('province_id', undefined)}
-              />
-              Bất kỳ
-            </label>
-          </div>
-        </details>
+              </option>
+            ))}
+          </select>
+        </div>
 
         {/* Phường / Xã */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
-          <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-medium text-gray-800">
-            Phường / Xã
-          </summary>
-          <div className="mt-3 space-y-2 text-sm">
-            {filters.province_id
-              ? (meta?.wards?.[filters.province_id] || []).map((ward: Ward) => (
-                  <label key={`ward-${ward.code}`} className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="ward_filter"
-                      className="radio-custom"
-                      checked={filters.ward_id === parseInt(ward.code)}
-                      onChange={() => handleFilterChange('ward_id', parseInt(ward.code))}
-                    />
-                    {ward.name}
-                  </label>
-                ))
-              : <div>Chọn tỉnh/thành phố trước</div>}
-            <label key="ward-any" className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="ward_filter"
-                className="radio-custom"
-                checked={filters.ward_id === undefined}
-                onChange={() => handleFilterChange('ward_id', undefined)}
-              />
-              Bất kỳ
-            </label>
-          </div>
-        </details>
+        <div className="group rounded-xl border border-gray-200 p-3 mb-3">
+          <label className="block mb-1 text-sm font-medium text-gray-800">Phường / Xã</label>
+          <select
+            value={filters.ward_id ?? ''}
+            onChange={(e) =>
+              handleFilterChange('ward_id', e.target.value ? parseInt(e.target.value) : undefined)
+            }
+            disabled={!filters.province_id}
+            className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500 focus-visible:outline-none"
+          >
+            <option value="">Bất kỳ</option>
+            {filters.province_id &&
+              (meta?.wards?.[filters.province_id] || []).map((ward) => (
+                <option key={ward.code} value={ward.code}>
+                  {ward.name}
+                </option>
+              ))}
+          </select>
+        </div>
+
+
 
         {/* Tình trạng pháp lý */}
         <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
@@ -447,17 +428,17 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
           <div className="mt-3 space-y-2 text-sm">
             {meta?.legal_statuses
               ? Object.values(meta.legal_statuses).map((ls: LegalStatus) => (
-                  <label key={`legal-status-${ls.id}`} className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="legal_status_filter"
-                      className="radio-custom"
-                      checked={filters.legal_status_id === ls.id}
-                      onChange={() => handleFilterChange('legal_status_id', ls.id)}
-                    />
-                    {ls.name}
-                  </label>
-                ))
+                <label key={`legal-status-${ls.id}`} className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="legal_status_filter"
+                    className="radio-custom"
+                    checked={filters.legal_status_id === ls.id}
+                    onChange={() => handleFilterChange('legal_status_id', ls.id)}
+                  />
+                  {ls.name}
+                </label>
+              ))
               : (
                 <>
                   <label key="legal-status-1" className="flex items-center gap-2">
@@ -500,13 +481,13 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
           <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-medium text-gray-800">
             Tiện ích
           </summary>
-          <div className="mt-3 space-y-2 text-sm">
+          <div className="mt-3 flex flex-wrap gap-3 text-sm">
             {meta?.amenities?.map((amenity) => (
-              <label key={`amenity-${amenity.id}`} className="flex items-center gap-2">
+              <label key={`amenity-${amenity.id}`} className="flex items-center gap-1">
                 <input
                   type="checkbox"
                   name={`amenity_filter_${amenity.id}`}
-                  className="radio-custom"
+
                   checked={filters.amenities?.includes(amenity.id.toString()) ?? false}
                   onChange={() => {
                     const newAmenities = filters.amenities?.includes(amenity.id.toString())
@@ -517,56 +498,10 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
                 />
                 {amenity.name}
               </label>
-            )) || (
-              <>
-                <label key="amenity-14" className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="amenity_filter_14"
-                    className="radio-custom"
-                    checked={filters.amenities?.includes('14') ?? false}
-                    onChange={() => {
-                      const newAmenities = filters.amenities?.includes('14')
-                        ? filters.amenities.filter((id) => id !== '14')
-                        : [...(filters.amenities ?? []), '14'];
-                      handleFilterChange('amenities', newAmenities.length ? newAmenities : undefined);
-                    }}
-                  />
-                  Hồ bơi
-                </label>
-                <label key="amenity-8" className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="amenity_filter_8"
-                    className="radio-custom"
-                    checked={filters.amenities?.includes('8') ?? false}
-                    onChange={() => {
-                      const newAmenities = filters.amenities?.includes('8')
-                        ? filters.amenities.filter((id) => id !== '8')
-                        : [...(filters.amenities ?? []), '8'];
-                      handleFilterChange('amenities', newAmenities.length ? newAmenities : undefined);
-                    }}
-                  />
-                  Máy lạnh
-                </label>
-                <label key="amenity-1" className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="amenity_filter_1"
-                    className="radio-custom"
-                    checked={filters.amenities?.includes('1') ?? false}
-                    onChange={() => {
-                      const newAmenities = filters.amenities?.includes('1')
-                        ? filters.amenities.filter((id) => id !== '1')
-                        : [...(filters.amenities ?? []), '1'];
-                      handleFilterChange('amenities', newAmenities.length ? newAmenities : undefined);
-                    }}
-                  />
-                  Chỗ để xe hơi
-                </label>
-              </>
-            )}
+            ))}
+            {!meta?.amenities?.length && <div>Chưa có tiện ích</div>}
           </div>
+
         </details>
 
         {/* Reset Button */}
