@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const Header: React.FC = () => {
   return (
-    <header className="sticky top-0 z-50 bg-ink/80 backdrop-blur border-b border-black/10" style={{fontWeight:"600", background:"rgb(255,255,255,0.8)"}}>
+    <header className="sticky top-0 z-50 bg-ink/80 backdrop-blur border-b border-black/10" style={{ fontWeight: "600", background: "rgb(255,255,255,0.8)" }}>
       <div className="container-std flex items-center justify-between py-4">
         <div className="flex items-center gap-2">
           <Image
@@ -18,21 +19,21 @@ const Header: React.FC = () => {
           <span className="sr-only">Phát Đạt Bất Động Sản</span>
         </div>
         <nav className="hidden md:flex items-center gap-6 text-sm text-mute">
-          <a href="#explore" className="hover:text-black">
-            Khám phá
-          </a>
-          <a href="#rent" className="hover:text-black">
-            Cho thuê
-          </a>
-          <a href="#own" className="hover:text-black">
+          <Link href="/" className="hover:text-black">
+            Trang chủ
+          </Link>
+          <Link href="/nha-dat-ban" className="hover:text-black">
             Mua bán
-          </a>
-          <a href="#manage" className="hover:text-black">
+          </Link>
+          <Link href="/bai-viet" className="hover:text-black">
+            Bài viết
+          </Link>
+          <Link href="#manage" className="hover:text-black">
             Quản lý
-          </a>
-          <a href="#resources" className="hover:text-black">
+          </Link>
+          <Link href="#resources" className="hover:text-black">
             Tài nguyên
-          </a>
+          </Link>
         </nav>
         <div className="flex items-center gap-3">
           <button className="btn btn-dark text-sm">Đăng tin</button>

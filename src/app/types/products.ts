@@ -139,4 +139,5 @@ export interface MetaListing {
   provinces: Province[];
   wards: Record<string, Ward[]>;
   amenities: Amenity[];
+  directions:string[];
 }

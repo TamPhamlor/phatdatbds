@@ -1,6 +1,6 @@
 'use client';
 
-import { LegalStatus, MetaListing } from '@/app/types/products';
+import { MetaListing } from '@/app/types/products';
 import { useState, useEffect, JSX } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Listing, Filters } from './types';
@@ -216,13 +216,17 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
   // Label đang hiển thị
   const provinceLabel = provinceNameFromId(filters.province_id) ?? 'Bất kỳ';
   const wardLabel = wardNameFromIds(filters.province_id, filters.ward_id) ?? 'Bất kỳ';
-
+  const numberOptions = ["Bất kỳ", ...Array.from({ length: 10 }, (_, i) => (i + 1).toString())];
+  const propertyTypeOptions = ["Bất kỳ", ...(meta?.property_types ? Object.values(meta.property_types).map(pt => pt.name) : [])];
+  const legalOptions = ["Bất kỳ", ...(meta?.legal_statuses ? Object.values(meta.legal_statuses).map(ls => ls.name) : [])];
+  const directions = meta?.directions ?? ['Đông', 'Tây', 'Nam', 'Bắc', 'Đông Bắc', 'Đông Nam', 'Tây Nam', 'Tây Bắc'];
+  const directionOptions = ["Bất kỳ", ...directions];
   return (
     <aside
       className={`w-80 shrink-0 transition-all duration-300 ${isOpen ? 'ml-0 opacity-100 pointer-events-auto' : '-ml-80 opacity-0 pointer-events-none'}`}
       style={{ willChange: 'margin-left, opacity' }}
     >
-      <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
+      <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4 z-1000">
         <div className="mb-3 font-semibold text-gray-900">Bộ lọc khách hàng</div>
 
         {/* ========== VỊ TRÍ (Dropdown) ========== */}
@@ -319,78 +323,63 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
         <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
           <SectionHeader icon={<Icon.Bed className={iconCls} />} title="Số phòng ngủ" />
           <div className="mt-3 space-y-2 text-sm">
-            {[1, 2, 3, 4, 5].map(n => (
-              <label key={n} className="flex items-center gap-2">
-                <input type="radio" name="bedrooms_filter" className="radio-custom"
-                  checked={filters.bedrooms === n} onChange={() => handleFilterChange('bedrooms', n)} />
-                {n} phòng
-              </label>
-            ))}
-            <label className="flex items-center gap-2">
-              <input type="radio" name="bedrooms_filter" className="radio-custom"
-                checked={filters.bedrooms === undefined} onChange={() => handleFilterChange('bedrooms', undefined)} />
-              Bất kỳ
-            </label>
+            <Dropdown
+              label="Số phòng ngủ"
+              options={numberOptions}
+              value={filters.bedrooms ? filters.bedrooms.toString() : "Bất kỳ"}
+              onChange={(val) => {
+                handleFilterChange("bedrooms", val === "Bất kỳ" ? undefined : parseInt(val));
+              }}
+            />
             <BodyButtons onClear={clearBedrooms} onApply={applyBedrooms} />
           </div>
         </details>
+
 
         {/* ========== PHÒNG TẮM ========== */}
         <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
           <SectionHeader icon={<Icon.Bath className={iconCls} />} title="Số phòng tắm" />
           <div className="mt-3 space-y-2 text-sm">
-            {[1, 2, 3, 4].map(n => (
-              <label key={n} className="flex items-center gap-2">
-                <input type="radio" name="bathrooms_filter" className="radio-custom"
-                  checked={filters.bathrooms === n} onChange={() => handleFilterChange('bathrooms', n)} />
-                {n} phòng
-              </label>
-            ))}
-            <label className="flex items-center gap-2">
-              <input type="radio" name="bathrooms_filter" className="radio-custom"
-                checked={filters.bathrooms === undefined} onChange={() => handleFilterChange('bathrooms', undefined)} />
-              Bất kỳ
-            </label>
+            <Dropdown
+              label="Số phòng tắm"
+              options={numberOptions}
+              value={filters.bathrooms ? filters.bathrooms.toString() : "Bất kỳ"}
+              onChange={(val) => {
+                handleFilterChange("bathrooms", val === "Bất kỳ" ? undefined : parseInt(val));
+              }}
+            />
             <BodyButtons onClear={clearBathrooms} onApply={applyBathrooms} />
           </div>
         </details>
+
 
         {/* ========== SỐ TẦNG ========== */}
         <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
           <SectionHeader icon={<Icon.Floors className={iconCls} />} title="Số tầng" />
           <div className="mt-3 space-y-2 text-sm">
-            {[1, 2, 3, 4, 5].map(n => (
-              <label key={n} className="flex items-center gap-2">
-                <input type="radio" name="floors_filter" className="radio-custom"
-                  checked={filters.floors === n} onChange={() => handleFilterChange('floors', n)} />
-                {n} tầng
-              </label>
-            ))}
-            <label className="flex items-center gap-2">
-              <input type="radio" name="floors_filter" className="radio-custom"
-                checked={filters.floors === undefined} onChange={() => handleFilterChange('floors', undefined)} />
-              Bất kỳ
-            </label>
+            <Dropdown
+              label="Số tầng"
+              options={numberOptions}
+              value={filters.floors ? filters.floors.toString() : "Bất kỳ"}
+              onChange={(val) => {
+                handleFilterChange("floors", val === "Bất kỳ" ? undefined : parseInt(val));
+              }}
+            />
             <BodyButtons onClear={clearFloors} onApply={applyFloors} />
           </div>
         </details>
+
 
         {/* ========== HƯỚNG NHÀ ========== */}
         <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
           <SectionHeader icon={<Icon.Compass className={iconCls} />} title="Hướng nhà" />
           <div className="mt-3 space-y-2 text-sm">
-            {['Đông', 'Tây', 'Nam', 'Bắc', 'Đông Bắc', 'Đông Nam', 'Tây Nam', 'Tây Bắc'].map((d) => (
-              <label key={d} className="flex items-center gap-2">
-                <input type="radio" name="direction_filter" className="radio-custom"
-                  checked={filters.direction === d} onChange={() => handleFilterChange('direction', d)} />
-                {d}
-              </label>
-            ))}
-            <label className="flex items-center gap-2">
-              <input type="radio" name="direction_filter" className="radio-custom"
-                checked={filters.direction === undefined} onChange={() => handleFilterChange('direction', undefined)} />
-              Bất kỳ
-            </label>
+            <Dropdown
+              label="Hướng"
+              options={directionOptions}
+              value={filters.direction ?? "Bất kỳ"}
+              onChange={(name) => handleFilterChange('direction', name === "Bất kỳ" ? undefined : name)}
+            />
             <BodyButtons onClear={clearDirection} onApply={applyDirection} />
           </div>
         </details>
@@ -399,30 +388,22 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
         <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
           <SectionHeader icon={<Icon.Home className={iconCls} />} title="Loại bất động sản" />
           <div className="mt-3 space-y-2 text-sm">
-            {meta?.property_types
-              ? Object.values(meta.property_types).map((pt) => (
-                <label key={pt.id} className="flex items-center gap-2">
-                  <input type="radio" name="property_type_filter" className="radio-custom"
-                    checked={filters.property_type_id === pt.id} onChange={() => handleFilterChange('property_type_id', pt.id)} />
-                  {pt.name}
-                </label>
-              ))
-              : (
-                <>
-                  {[['Căn hộ', 1], ['Nhà đơn lập', 2], ['Nhà trệt', 3], ['Chung cư / Nhà phố', 4]].map(([n, id]) => (
-                    <label key={id as number} className="flex items-center gap-2">
-                      <input type="radio" name="property_type_filter" className="radio-custom"
-                        checked={filters.property_type_id === id} onChange={() => handleFilterChange('property_type_id', id as number)} />
-                      {n}
-                    </label>
-                  ))}
-                  <label className="flex items-center gap-2">
-                    <input type="radio" name="property_type_filter" className="radio-custom"
-                      checked={filters.property_type_id === undefined} onChange={() => handleFilterChange('property_type_id', undefined)} />
-                    Bất kỳ
-                  </label>
-                </>
-              )}
+            <Dropdown
+              label="Loại BĐS"
+              options={propertyTypeOptions}
+              value={
+                filters.property_type_id
+                  ? (meta?.property_types
+                    ? Object.values(meta.property_types).find(pt => pt.id === filters.property_type_id)?.name ?? "Bất kỳ"
+                    : "Bất kỳ")
+                  : "Bất kỳ"
+              }
+              onChange={(name) => {
+                if (name === "Bất kỳ") return handleFilterChange('property_type_id', undefined);
+                const picked = meta?.property_types ? Object.values(meta.property_types).find(pt => pt.name === name) : undefined;
+                handleFilterChange('property_type_id', picked?.id);
+              }}
+            />
             <BodyButtons onClear={clearPropertyType} onApply={applyPropertyType} />
           </div>
         </details>
@@ -431,33 +412,22 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
         <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
           <SectionHeader icon={<Icon.Legal className={iconCls} />} title="Tình trạng pháp lý" />
           <div className="mt-3 space-y-2 text-sm">
-            {meta?.legal_statuses
-              ? Object.values(meta.legal_statuses).map((ls: LegalStatus) => (
-                <label key={ls.id} className="flex items-center gap-2">
-                  <input type="radio" name="legal_status_filter" className="radio-custom"
-                    checked={filters.legal_status_id === ls.id} onChange={() => handleFilterChange('legal_status_id', ls.id)} />
-                  {ls.name}
-                </label>
-              ))
-              : (
-                <>
-                  <label className="flex items-center gap-2">
-                    <input type="radio" name="legal_status_filter" className="radio-custom"
-                      checked={filters.legal_status_id === 1} onChange={() => handleFilterChange('legal_status_id', 1)} />
-                    Sổ đỏ
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input type="radio" name="legal_status_filter" className="radio-custom"
-                      checked={filters.legal_status_id === 2} onChange={() => handleFilterChange('legal_status_id', 2)} />
-                    Hợp đồng mua bán
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input type="radio" name="legal_status_filter" className="radio-custom"
-                      checked={filters.legal_status_id === undefined} onChange={() => handleFilterChange('legal_status_id', undefined)} />
-                    Bất kỳ
-                  </label>
-                </>
-              )}
+            <Dropdown
+              label="Pháp lý"
+              options={legalOptions}
+              value={
+                filters.legal_status_id
+                  ? (meta?.legal_statuses
+                    ? Object.values(meta.legal_statuses).find(ls => ls.id === filters.legal_status_id)?.name ?? "Bất kỳ"
+                    : "Bất kỳ")
+                  : "Bất kỳ"
+              }
+              onChange={(name) => {
+                if (name === "Bất kỳ") return handleFilterChange('legal_status_id', undefined);
+                const picked = meta?.legal_statuses ? Object.values(meta.legal_statuses).find(ls => ls.name === name) : undefined;
+                handleFilterChange('legal_status_id', picked?.id);
+              }}
+            />
             <BodyButtons onClear={clearLegal} onApply={applyLegal} />
           </div>
         </details>

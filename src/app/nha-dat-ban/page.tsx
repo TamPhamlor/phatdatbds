@@ -20,7 +20,7 @@ function parseNumber(value: string | string[] | undefined): number | undefined {
 }
 
 // ---- API get listings ----
-async function getListings(filters: Filters): Promise<Listing[]> {
+export async function getListings(filters: Filters): Promise<Listing[]> {
   try {
     const res = await fetch("https://phatdatbatdongsan.com/api/v1/listings", {
       cache: "no-store",
