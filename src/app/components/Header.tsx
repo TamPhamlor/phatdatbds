@@ -19,6 +19,13 @@ const Header: React.FC = () => {
   const isActive = (path: string) => pathname === path;
 
   useEffect(() => {
+  document.documentElement.style.setProperty(
+    "--header-h",
+    showBars ? "83px" : "0px"
+  );
+}, [showBars]);
+
+  useEffect(() => {
     // set giá trị ban đầu
     lastYRef.current = window.scrollY;
 

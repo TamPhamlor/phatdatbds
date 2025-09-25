@@ -1,7 +1,7 @@
 // app/components/HomeClient.tsx
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -11,26 +11,11 @@ import dynamic from "next/dynamic";
 import type { Listing } from "@/app/page";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import type { MetaListing, Ward } from "@/lib/meta"; // ✨ lấy type chung từ server-only helper
 
-/** ========= Types cho meta_listing ========= */
-type Province = { code: string; name: string };
-type Ward = { code: string; name: string; full_name?: string };
-type MetaListing = {
-  provinces: Province[];
-  wards: Record<number | string, Ward[]>;
-};
-/** ========================================= */
-
-// Reusable components
-const SlideCard = dynamic(() => import("@/app/components/SlideCard"), { ssr: false });
-const ResourceCard = dynamic(() => import("@/app/components/ResourceCard"), { ssr: false });
-const Dropdown = dynamic(() => import("@/app/components/Dropdown"), { ssr: false });
-const ScrollReveal = dynamic(() => import("@/app/components/ScrollReveal"), { ssr: false });
-
-// =================== Types (UI state) ===================
+/** ========= Types cho UI state ========= */
 interface FilterState {
-  // giữ lại để không vỡ type cũ
-  location: string;
+  location: string; // giữ lại để không vỡ type cũ
   type: string;
   price: string;
   // theo FilterPanel
@@ -45,6 +30,13 @@ interface SupportFormState {
   query: string;
   subscribe: boolean;
 }
+/** ====================================== */
+
+// Reusable components
+const SlideCard = dynamic(() => import("@/app/components/SlideCard"), { ssr: false });
+const ResourceCard = dynamic(() => import("@/app/components/ResourceCard"), { ssr: false });
+const Dropdown = dynamic(() => import("@/app/components/Dropdown"), { ssr: false });
+const ScrollReveal = dynamic(() => import("@/app/components/ScrollReveal"), { ssr: false });
 
 // =================== Mock/UI options ===================
 const types: string[] = ["Tất cả", "Đất nền", "Nhà phố", "Biệt thự"];
@@ -55,9 +47,10 @@ const needs = ["Mua", "Thuê", "Đầu tư"];
 type Props = {
   listings: Listing[];
   loadErr?: string | null;
+  meta: MetaListing | null; // ✨ nhận từ server
 };
 
-const HomeClient: React.FC<Props> = ({ listings, loadErr }) => {
+const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
   const router = useRouter();
 
   // ---- Filters (hero search) ----
@@ -67,27 +60,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr }) => {
     price: prices[0],
   });
 
-  // ---- Load meta_listing (giống FilterPanel.tsx) ----
-  const [meta, setMeta] = useState<MetaListing | null>(null);
-  const [loadingMeta, setLoadingMeta] = useState<boolean>(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoadingMeta(true);
-        const res = await fetch("/api/v1/meta_listing", { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data: MetaListing = await res.json();
-        setMeta(data);
-      } catch (err) {
-        console.error("Load /api/v1/meta_listing failed:", err);
-      } finally {
-        setLoadingMeta(false);
-      }
-    })();
-  }, []);
-
-  // Build options từ meta
+  // Build options từ meta (đã có từ server)
   const provinceOptions = useMemo(
     () => (meta?.provinces ?? []).map((p) => p.name),
     [meta]
@@ -242,11 +215,11 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr }) => {
                     <Dropdown
                       label="Tỉnh / Thành"
                       options={
-                        loadingMeta
-                          ? ["Đang tải..."]
+                        meta === null
+                          ? ["(Không tải được dữ liệu)"]
                           : provinceOptions.length
-                          ? provinceOptions
-                          : ["(Không có dữ liệu)"]
+                            ? provinceOptions
+                            : ["(Không có dữ liệu)"]
                       }
                       value={selectedProvinceName}
                       onChange={handleProvinceChange}
@@ -262,12 +235,12 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr }) => {
                         !filters.province_id
                           ? ["(Chọn tỉnh trước)"]
                           : wardOptions.length
-                          ? wardOptions
-                          : ["(Không có dữ liệu phường/xã)"]
+                            ? wardOptions
+                            : ["(Không có dữ liệu phường/xã)"]
                       }
                       value={selectedWardName}
                       onChange={handleWardChange}
-                      disabled={!filters.province_id}
+                      disabled={!filters.province_id || meta === null}
                       searchable
                       searchPlaceholder="Tìm phường/xã..."
                       className="dd-tall"
@@ -284,9 +257,9 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr }) => {
                     <button
                       className="btn btn-primary h-12 self-end text-[14px] px-5 md:col-span-3"
                       onClick={goSearch}
-                      disabled={loadingMeta}
+                      disabled={meta === null}
                     >
-                      {loadingMeta ? "Đang tải dữ liệu..." : "Tìm kiếm"}
+                      Tìm kiếm
                     </button>
                   </div>
                 </div>

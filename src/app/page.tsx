@@ -1,7 +1,7 @@
 // app/page.tsx
 
+import { getMetaListing, MetaListing } from "@/lib/meta";
 import HomeClient from "./components/HomeClient";
-
 
 interface ApiImage {
   id: number;
@@ -103,6 +103,6 @@ export default async function Page() {
   } catch (e) {
     loadErr = e instanceof Error ? e.message : "Không tải được danh sách";
   }
-
-  return <HomeClient listings={listings} loadErr={loadErr} />;
+  const meta: MetaListing | null = await getMetaListing();
+  return <HomeClient listings={listings} loadErr={loadErr} meta={meta} />;
 }

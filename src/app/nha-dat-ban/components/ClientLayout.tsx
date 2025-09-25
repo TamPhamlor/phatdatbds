@@ -50,7 +50,11 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
 
   return (
     <>
-      <div className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
+      <div className="sticky z-40 bg-white/80 backdrop-blur border-b"
+        style={{
+          top: "var(--header-h)",          // né đúng theo trạng thái header
+          transition: "top 350ms ease",    // 👈 animate khi header ẩn/hiện
+        }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <button
@@ -69,8 +73,8 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
       </div>
       <div className="relative max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4">
         <div className="flex items-start gap-4">
-          {!isMobile && 
-          <FilterPanel isOpen={state.filterOpen} meta={meta}/>
+          {!isMobile &&
+            <FilterPanel isOpen={state.filterOpen} meta={meta} />
           }
           <PropertyGrid
             listings={projects}
@@ -86,7 +90,7 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
 
         </div>
       </div>
-      <MobileFilterDrawer isOpen={mobileFilterOpen} onClose={closeMobileFilter} meta={meta}/>
+      <MobileFilterDrawer isOpen={mobileFilterOpen} onClose={closeMobileFilter} meta={meta} />
       <MobileDetailDrawer
         isOpen={mobileDetailOpen}
         onClose={closeMobileDetail}
