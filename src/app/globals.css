@@ -129,5 +129,23 @@ html {
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
 }
 
+/* Tăng chiều cao tối đa của dropdown (listbox) */
+.dd-tall [role="listbox"] {
+  max-height: 32rem !important;  /* ~512px, chỉnh số tuỳ ý */
+  overflow-y: auto;   
+  scrollbar-width: none;            /* vẫn cho cuộn khi quá dài */
+}
 
+/* Nếu muốn mobile mở dài hơn nữa (hoặc full) */
+@media (max-width: 640px) {
+  .dd-tall [role="listbox"] {
+    max-height: none !important; /* mở hết không giới hạn */
+  }
+}
 
+.dd-tall [role="listbox"] {
+  scrollbar-width: none;
+}
+.dd-tall [role="listbox"]::-webkit-scrollbar {
+  display: none;
+}

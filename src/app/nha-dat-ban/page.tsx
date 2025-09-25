@@ -83,7 +83,7 @@ export async function getListings(filters: Filters): Promise<Listing[]> {
 
 
 // ---- API get meta ----
-async function getMetaListing(): Promise<MetaListing | null> {
+export async function getMetaListing(): Promise<MetaListing | null> {
   try {
     const res = await fetch("https://phatdatbatdongsan.com/api/v1/meta_listing", {
       cache: "no-store",
