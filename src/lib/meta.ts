@@ -14,9 +14,8 @@ export const getMetaListing = cache(async (): Promise<MetaListing | null> => {
     const res = await fetch("https://phatdatbatdongsan.com/api/v1/meta_listing", {
       // Chọn 1 trong 2:
       // cache: "no-store", // luôn gọi API
-      next: { revalidate: 3600 }, // hoặc cache 1h, tuỳ nhu cầu
+      next: { revalidate: 86400 }, // hoặc cache 1h, tuỳ nhu cầu
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return (await res.json()) as MetaListing;
   } catch (e) {
     console.error("Error fetching meta_listing:", e);

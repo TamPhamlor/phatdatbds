@@ -3,16 +3,20 @@ import { NextResponse } from "next/server";
 import { extApiFetch, withForwardedQuery } from "@/lib/extApi";
 
 export const runtime = "nodejs";
+// (tuỳ chọn) cho phép static hoá route nếu toàn bộ GET có thể cache
+// export const revalidate = 3600; // cache output của route 1h (xem mục 2)
 
 export async function GET(req: Request) {
   try {
-    // Forward query parameters nếu có
     const upstreamPath = withForwardedQuery(req.url, "/api/v1/meta_listing");
-    // Gọi API ngoài
-    const res = await extApiFetch(upstreamPath);
-    // Lấy dữ liệu JSON, fallback = {}
-    const data = await res.json().catch(() => ({}));
 
+    // Cache kết quả upstream trong 1h (server-side data cache)
+    const res = await extApiFetch(upstreamPath, {
+      next: { revalidate: 86400 }, // hoặc 86400 nếu gần như tĩnh
+      // cache: "force-cache" // tương đương nếu không cần revalidate theo thời gian
+    });
+
+    const data = await res.json().catch(() => ({}));
     return NextResponse.json(data, { status: res.status });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Internal Server Error";
