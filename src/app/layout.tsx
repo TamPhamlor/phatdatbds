@@ -38,7 +38,10 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <HeaderProgress />
           </Suspense>
-          <Header />
+          <Suspense fallback={null}>
+            <Header />
+          </Suspense>
+          
           {children}
         </NetworkProgressProvider>
         <Footer/>

@@ -86,7 +86,7 @@ export async function getListings(filters: Filters): Promise<Listing[]> {
 export async function getMetaListing(): Promise<MetaListing | null> {
   try {
     const res = await fetch("https://phatdatbatdongsan.com/api/v1/meta_listing", {
-     next: { revalidate: 60 }
+      next: { revalidate: 60 }
     });
     const data: MetaListing = await res.json();
     return data;

@@ -1,13 +1,42 @@
-import Image from 'next/image';
-import { Listing } from './types';
+import Image from 'next/image'
+import { Card, CardContent, Box, Stack, Typography, Button } from '@mui/material'
+import SearchOffIcon from '@mui/icons-material/SearchOff'
+import { Listing } from './types'
 
-interface PropertyCardProps {
-  listing: Listing;
-  onClick: () => void;
-}
+type PropertyCardProps =
+  | { listing: Listing; onClick: () => void; isEmpty?: false; onClearFilters?: never }
+  | { listing?: undefined; onClick?: () => void; isEmpty: true; onClearFilters?: () => void }
 
-export default function PropertyCard({ listing, onClick }: PropertyCardProps) {
-  const coverImage = listing.images.find((img) => img.is_cover)?.url || 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=800';
+export default function PropertyCard(props: PropertyCardProps) {
+  // ----- EMPTY STATE NGAY TRONG COMPONENT -----
+  if (!props.listing || props.isEmpty) {
+    return (
+      <Card variant="outlined" sx={{ borderRadius: 2 }}>
+        <CardContent>
+          <Box sx={{ py: 3, px: 2, display: 'flex', justifyContent: 'center' }}>
+            <Stack spacing={2} alignItems="center" sx={{ maxWidth: 520, textAlign: 'center' }}>
+              <SearchOffIcon sx={{ fontSize: 48, color: 'text.disabled' }} />
+              <Typography variant="h6">Không tồn tại</Typography>
+              <Typography variant="body2" color="text.secondary">
+                Không tìm thấy bất động sản phù hợp. Hãy thử đổi bộ lọc hoặc từ khóa.
+              </Typography>
+              {props.onClearFilters ? (
+                <Button variant="outlined" onClick={props.onClearFilters}>
+                  Xoá bộ lọc
+                </Button>
+              ) : null}
+            </Stack>
+          </Box>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // ----- CARD BÌNH THƯỜNG -----
+  const { listing, onClick } = props
+  const coverImage =
+    listing.images.find((img) => img.is_cover)?.url ||
+    'https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=800'
 
   return (
     <div
@@ -17,8 +46,8 @@ export default function PropertyCard({ listing, onClick }: PropertyCardProps) {
       <Image
         src={coverImage}
         alt={listing.title}
-        width={400} // đặt chiều rộng mong muốn
-        height={160} // đặt chiều cao mong muốn
+        width={400}
+        height={160}
         unoptimized
         className="h-40 w-full object-cover"
       />
@@ -52,5 +81,5 @@ export default function PropertyCard({ listing, onClick }: PropertyCardProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

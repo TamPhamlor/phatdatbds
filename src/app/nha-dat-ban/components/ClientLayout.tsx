@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Listing, FilterState } from './types';
 import PropertyGrid from './PropertyGrid';
 import DetailPanel from './DetailPanel';
@@ -74,7 +74,9 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
       <div className="relative max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4">
         <div className="flex items-start gap-4">
           {!isMobile &&
-            <FilterPanel isOpen={state.filterOpen} meta={meta} />
+            <Suspense fallback={null}>
+              <FilterPanel isOpen={state.filterOpen} meta={meta} />
+            </Suspense>
           }
           <PropertyGrid
             listings={projects}
