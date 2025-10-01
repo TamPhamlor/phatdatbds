@@ -5,7 +5,7 @@ import PostLayout from "./PostLayout";
 
 async function fetchPost(slug: string): Promise<Post> {
   const res = await fetch(`https://phatdatbatdongsan.com/api/v1/posts/${slug}`, {
-    cache: "no-store",
+    next: { revalidate: 60 }
   });
   const data = await res.json();
   return data.data as Post;
@@ -14,7 +14,7 @@ async function fetchPost(slug: string): Promise<Post> {
 async function fetchRelatedPosts(categoryCode: string, excludeId: number): Promise<Post[]> {
   const res = await fetch(
     `https://phatdatbatdongsan.com/api/v1/posts?category=${categoryCode}&limit=5`,
-    { cache: "no-store" }
+    { next: { revalidate: 60 } }
   );
   const data = await res.json();
   if (!data.success) return [];

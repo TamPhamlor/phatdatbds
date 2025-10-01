@@ -23,7 +23,7 @@ function parseNumber(value: string | string[] | undefined): number | undefined {
 export async function getListings(filters: Filters): Promise<Listing[]> {
   try {
     const res = await fetch("https://phatdatbatdongsan.com/api/v1/listings", {
-      cache: "no-store",
+      next: { revalidate: 60 }
     });
     let listings = await res.json();
     listings = listings.data || [];
@@ -86,7 +86,7 @@ export async function getListings(filters: Filters): Promise<Listing[]> {
 export async function getMetaListing(): Promise<MetaListing | null> {
   try {
     const res = await fetch("https://phatdatbatdongsan.com/api/v1/meta_listing", {
-      cache: "no-store",
+     next: { revalidate: 60 }
     });
     const data: MetaListing = await res.json();
     return data;

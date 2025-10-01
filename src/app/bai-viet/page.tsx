@@ -8,7 +8,7 @@ export default async function Home() {
 
   try {
     const res = await fetch('https://phatdatbatdongsan.com/api/v1/posts', {
-      cache: 'no-store', // Luôn fetch mới
+      next: { revalidate: 60 } // Luôn fetch mới
     });
     const data: ApiResponse = await res.json();
     if (data.success) posts = data.data.data;

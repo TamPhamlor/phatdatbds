@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 export async function GET(req: Request) {
   try {
     const upstreamPath = withForwardedQuery(req.url, "/api/v1/listings");
-    const res = await extApiFetch(upstreamPath);
+    const res = await extApiFetch(upstreamPath, { next: { revalidate: 60 } });
     const data = await res.json().catch(() => ({}));
     return NextResponse.json(data, { status: res.status });
   } catch (e: unknown) {

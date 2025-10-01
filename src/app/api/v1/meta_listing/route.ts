@@ -8,10 +8,8 @@ export async function GET(req: Request) {
   try {
     // Forward query parameters nếu có
     const upstreamPath = withForwardedQuery(req.url, "/api/v1/meta_listing");
-console.log(upstreamPath);
     // Gọi API ngoài
     const res = await extApiFetch(upstreamPath);
-console.log(res.status);
     // Lấy dữ liệu JSON, fallback = {}
     const data = await res.json().catch(() => ({}));
 

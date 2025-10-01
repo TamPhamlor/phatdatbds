@@ -92,7 +92,7 @@ export default async function Page() {
     // Server fetch — không dùng useEffect
     // Relative URL hoạt động trong App Router khi render server
     const res = await fetch("https://phatdatbatdongsan.com/api/v1/listings", {
-      cache: "no-store", // luôn lấy mới; tùy bạn đổi sang revalidate
+      next: { revalidate: 60 } // luôn lấy mới; tùy bạn đổi sang revalidate
     });
 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
