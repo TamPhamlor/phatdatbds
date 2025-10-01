@@ -3,6 +3,9 @@ import { Manrope  } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import HeaderProgress from "./components/HeaderProgress";
+import { NetworkProgressProvider } from "./components/NetworkProgress";
+import { Suspense } from "react";
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -23,10 +26,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+    <head>
+        <meta charSet="utf-8" />
+      </head>
       <body
         className={` ${manrope.variable} antialiased`}
-      ><Header />
-        {children}
+      >
+        
+        <NetworkProgressProvider>
+          
+          <Suspense fallback={null}>
+            <HeaderProgress />
+          </Suspense>
+          <Header />
+          {children}
+        </NetworkProgressProvider>
         <Footer/>
       </body>
     </html>

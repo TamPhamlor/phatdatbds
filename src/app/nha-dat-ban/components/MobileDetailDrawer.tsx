@@ -1,4 +1,3 @@
-"use client"
 import { Listing } from './types';
 import DetailPanel from './DetailPanel';
 

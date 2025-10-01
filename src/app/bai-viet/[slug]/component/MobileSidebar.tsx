@@ -1,4 +1,4 @@
-'use client';
+
 import { PostSearch } from "./PostSearch";
 import { ProjectAd } from "./ProjectAd";
 

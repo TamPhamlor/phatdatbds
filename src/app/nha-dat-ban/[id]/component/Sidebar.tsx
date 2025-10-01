@@ -1,4 +1,3 @@
-"use client";
 import { Listing } from "@/app/types/products";
 
 interface SidebarProps {

@@ -1,5 +1,3 @@
-"use client";
-
 import { Listing } from "@/app/types/products";
 import Link from "next/link";
 

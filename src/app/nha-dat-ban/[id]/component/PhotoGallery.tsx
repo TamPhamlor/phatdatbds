@@ -1,4 +1,3 @@
-"use client"
 import { Listing } from "@/app/types/products";
 import Image from "next/image";
 

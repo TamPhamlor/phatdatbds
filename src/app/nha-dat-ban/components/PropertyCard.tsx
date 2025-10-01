@@ -1,4 +1,3 @@
-"use client"
 import Image from 'next/image';
 import { Listing } from './types';
 
@@ -16,13 +15,13 @@ export default function PropertyCard({ listing, onClick }: PropertyCardProps) {
       onClick={onClick}
     >
       <Image
-  src={coverImage}
-  alt={listing.title}
-  width={400} // đặt chiều rộng mong muốn
-  height={160} // đặt chiều cao mong muốn
-  unoptimized 
-  className="h-40 w-full object-cover"
-/>
+        src={coverImage}
+        alt={listing.title}
+        width={400} // đặt chiều rộng mong muốn
+        height={160} // đặt chiều cao mong muốn
+        unoptimized
+        className="h-40 w-full object-cover"
+      />
       <div className="p-3">
         <div className="text-xs text-indigo-600 font-medium">Home</div>
         <div className="font-semibold text-gray-900 line-clamp-2">{listing.title}</div>
