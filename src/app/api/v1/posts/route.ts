@@ -7,7 +7,10 @@ export const runtime = "nodejs";
 export async function GET(req: Request) {
   try {
     const upstreamPath = withForwardedQuery(req.url, "/api/v1/posts");
-    const res = await extApiFetch(upstreamPath);
+    const res = await extApiFetch(upstreamPath, {
+      next: { revalidate: 60 }, // hoặc 86400 nếu gần như tĩnh
+      // cache: "force-cache" // tương đương nếu không cần revalidate theo thời gian
+    });
     const data = await res.json().catch(() => ({}));
     return NextResponse.json(data, { status: res.status });
   } catch (e: unknown) {

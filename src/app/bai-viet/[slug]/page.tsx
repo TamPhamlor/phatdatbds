@@ -5,7 +5,7 @@ import PostLayout from "./PostLayout";
 
 async function fetchPost(slug: string): Promise<Post> {
   const res = await fetch(`https://phatdatbatdongsan.com/api/v1/posts/${slug}`, {
-    next: { revalidate: 60 }
+    next: { revalidate: 86400 }
   });
   const data = await res.json();
   return data.data as Post;

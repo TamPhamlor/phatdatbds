@@ -13,7 +13,7 @@ export async function GET(
     if (!slug)
       return NextResponse.json({ error: "Missing slug" }, { status: 400 });
 
-    const res = await extApiFetch(`/api/v1/posts/${encodeURIComponent(slug)}`);
+    const res = await extApiFetch(`/api/v1/posts/${encodeURIComponent(slug)}`, { next: { revalidate: 60 }});
     const data = await res.json().catch(() => ({}));
     return NextResponse.json(data, { status: res.status });
   } catch (e: unknown) {
