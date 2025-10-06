@@ -19,6 +19,7 @@ export interface Amenity {
 }
 
 export interface Listing {
+  slug: string;
   id: number;
   user_id: number | null;
   property_type_id: number;

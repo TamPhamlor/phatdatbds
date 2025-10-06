@@ -12,19 +12,35 @@ interface BreadcrumbProps {
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ?? "https://phatdatbatdongsan.com";
 
-const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
-  const pathname = usePathname(); // vd: /nha-dat-ban/can-phong-trong
+// Nếu Listing có trường slug, bạn đổi kiểu bên dưới cho đúng field trong dự án (vd: listing.slug, listing.seo_slug,...)
+function getDetailPath(listing: Listing, pathname?: string | null): string {
+  // 1) Nếu đang ở client và URL hiện tại đầy đủ -> dùng luôn
+  if (typeof window !== "undefined" && window.location?.href) {
+    return window.location.href;
+  }
 
-  const shareUrl = useMemo(() => {
-    // Nếu đang ở client (thường là có), dùng URL hiện tại (gồm query/hash nếu có)
-    if (typeof window !== "undefined" && window.location?.href) {
-      return window.location.href;
-    }
-    // Fallback khi render sớm/chưa có window: ghép BASE_URL + pathname (đã có slug)
-    return `${BASE_URL}${pathname || ""}`;
-  }, [pathname]);
+  // 2) Nếu pathname có slug (khác đúng /nha-dat-ban) -> dùng pathname
+  if (pathname && pathname !== "/nha-dat-ban") {
+    return `${BASE_URL}${pathname}`;
+  }
+
+  // 3) Fallback dựng path chi tiết từ dữ liệu listing (slug ưu tiên, không có thì id)
+  const slugOrId =
+    (listing as unknown as { slug?: string }).slug || String(listing.id);
+
+  return `${BASE_URL}/nha-dat-ban/${slugOrId}`;
+}
+
+const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
+  const pathname = usePathname(); // ví dụ: /nha-dat-ban/can-phong-trong
+
+  const shareUrl = useMemo(
+    () => getDetailPath(listing, pathname),
+    [listing, pathname]
+  );
 
   const handleShare = useCallback(async () => {
+    // 1) Web Share API (mobile/app hỗ trợ)
     if (typeof navigator !== "undefined" && "share" in navigator) {
       try {
         await (navigator as Navigator & { share?: (data: ShareData) => Promise<void> }).share?.({
@@ -34,10 +50,11 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
         });
         return;
       } catch {
-        // cancel hoặc lỗi -> fallback FB
+        // user cancel/lỗi -> fallback FB
       }
     }
 
+    // 2) Fallback: Facebook share dialog
     const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
       shareUrl
     )}`;
@@ -63,6 +80,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
       await navigator.clipboard.writeText(shareUrl);
       alert("Đã sao chép liên kết!");
     } catch {
+      // Fallback Clipboard API cũ
       const textArea = document.createElement("textarea");
       textArea.value = shareUrl;
       document.body.appendChild(textArea);
