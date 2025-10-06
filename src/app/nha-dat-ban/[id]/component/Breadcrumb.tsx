@@ -3,6 +3,7 @@
 import { Listing } from "@/app/types/products";
 import Link from "next/link";
 import { useMemo, useCallback } from "react";
+import { usePathname } from "next/navigation";
 
 interface BreadcrumbProps {
   listing: Listing;
@@ -11,20 +12,19 @@ interface BreadcrumbProps {
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ?? "https://phatdatbatdongsan.com";
 
-function getAbsoluteUrl(listingId: number): string {
-  if (typeof window !== "undefined" && window.location?.href) {
-    // Đang ở client: dùng chính URL hiện tại là chuẩn nhất
-    return window.location.href;
-  }
-  // Fallback khi SSR: dựng URL từ BASE_URL + path chi tiết
-  return `${BASE_URL}/nha-dat-ban/${listingId}`;
-}
-
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
-  const shareUrl = useMemo(() => getAbsoluteUrl(listing.id), [listing.id]);
+  const pathname = usePathname(); // vd: /nha-dat-ban/can-phong-trong
+
+  const shareUrl = useMemo(() => {
+    // Nếu đang ở client (thường là có), dùng URL hiện tại (gồm query/hash nếu có)
+    if (typeof window !== "undefined" && window.location?.href) {
+      return window.location.href;
+    }
+    // Fallback khi render sớm/chưa có window: ghép BASE_URL + pathname (đã có slug)
+    return `${BASE_URL}${pathname || ""}`;
+  }, [pathname]);
 
   const handleShare = useCallback(async () => {
-    // 1) Ưu tiên Web Share API nếu có
     if (typeof navigator !== "undefined" && "share" in navigator) {
       try {
         await (navigator as Navigator & { share?: (data: ShareData) => Promise<void> }).share?.({
@@ -34,19 +34,23 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
         });
         return;
       } catch {
-        // user cancel hoặc lỗi => rơi xuống fallback FB
+        // cancel hoặc lỗi -> fallback FB
       }
     }
 
-    // 2) Fallback: mở share Facebook
     const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
       shareUrl
     )}`;
-    // Mở popup trung tâm màn hình
     const w = 600;
     const h = 600;
-    const left = typeof window !== "undefined" ? window.screenX + (window.outerWidth - w) / 2 : 0;
-    const top = typeof window !== "undefined" ? window.screenY + (window.outerHeight - h) / 2.5 : 0;
+    const left =
+      typeof window !== "undefined"
+        ? window.screenX + (window.outerWidth - w) / 2
+        : 0;
+    const top =
+      typeof window !== "undefined"
+        ? window.screenY + (window.outerHeight - h) / 2.5
+        : 0;
     window.open(
       fbUrl,
       "fbshare",
@@ -57,16 +61,15 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
   const handleCopy = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
-      // Bạn có thể thay bằng toast của dự án nếu đang dùng (vd: sonner / toastify)
       alert("Đã sao chép liên kết!");
     } catch {
-      // Fallback khi không có Clipboard API
       const textArea = document.createElement("textarea");
       textArea.value = shareUrl;
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand("copy");
       document.body.removeChild(textArea);
+      alert("Đã sao chép liên kết!");
     }
   }, [shareUrl]);
 
