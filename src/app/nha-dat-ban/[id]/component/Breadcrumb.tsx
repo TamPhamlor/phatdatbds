@@ -2,8 +2,8 @@
 
 import { Listing } from "@/app/types/products";
 import Link from "next/link";
-import { useMemo, useCallback } from "react";
-import { usePathname } from "next/navigation";
+import { useCallback } from "react";
+import { useParams } from "next/navigation";
 
 interface BreadcrumbProps {
   listing: Listing;
@@ -12,35 +12,30 @@ interface BreadcrumbProps {
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ?? "https://phatdatbatdongsan.com";
 
-// Nếu Listing có trường slug, bạn đổi kiểu bên dưới cho đúng field trong dự án (vd: listing.slug, listing.seo_slug,...)
-function getDetailPath(listing: Listing, pathname?: string | null): string {
-  // 1) Nếu đang ở client và URL hiện tại đầy đủ -> dùng luôn
-  if (typeof window !== "undefined" && window.location?.href) {
-    return window.location.href;
+function buildShareUrl(currentHref: string | null, idFromRoute: string, listing: Listing): string {
+  // 1) Ưu tiên URL hiện tại (đầy đủ slug, query, hash…)
+  if (currentHref && currentHref !== "" && !currentHref.endsWith("/nha-dat-ban")) {
+    return currentHref;
   }
-
-  // 2) Nếu pathname có slug (khác đúng /nha-dat-ban) -> dùng pathname
-  if (pathname && pathname !== "/nha-dat-ban") {
-    return `${BASE_URL}${pathname}`;
-  }
-
-  // 3) Fallback dựng path chi tiết từ dữ liệu listing (slug ưu tiên, không có thì id)
+  // 2) Fallback: ghép từ BASE_URL + id trong route (idFromRoute chính là slug trong app router)
   const slugOrId =
-    (listing as unknown as { slug?: string }).slug || String(listing.id);
+    idFromRoute ||
+    (listing as unknown as { slug?: string }).slug ||
+    String(listing.id);
 
   return `${BASE_URL}/nha-dat-ban/${slugOrId}`;
 }
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
-  const pathname = usePathname(); // ví dụ: /nha-dat-ban/can-phong-trong
-
-  const shareUrl = useMemo(
-    () => getDetailPath(listing, pathname),
-    [listing, pathname]
-  );
+  const params = useParams(); // { id: 'can-phong-trong' } hoặc số id
+  const idFromRoute = (params?.id as string) ?? "";
 
   const handleShare = useCallback(async () => {
-    // 1) Web Share API (mobile/app hỗ trợ)
+    const currentHref =
+      typeof window !== "undefined" ? window.location?.href ?? null : null;
+    const shareUrl = buildShareUrl(currentHref, idFromRoute, listing);
+
+    // 1) Web Share API
     if (typeof navigator !== "undefined" && "share" in navigator) {
       try {
         await (navigator as Navigator & { share?: (data: ShareData) => Promise<void> }).share?.({
@@ -50,11 +45,11 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
         });
         return;
       } catch {
-        // user cancel/lỗi -> fallback FB
+        // user cancel / lỗi -> fallback FB
       }
     }
 
-    // 2) Fallback: Facebook share dialog
+    // 2) Fallback: Facebook sharer
     const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
       shareUrl
     )}`;
@@ -73,14 +68,17 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
       "fbshare",
       `width=${w},height=${h},left=${left},top=${top},status=no,toolbar=no,menubar=no,location=no`
     );
-  }, [listing.title, listing.description, shareUrl]);
+  }, [idFromRoute, listing]);
 
   const handleCopy = useCallback(async () => {
+    const currentHref =
+      typeof window !== "undefined" ? window.location?.href ?? null : null;
+    const shareUrl = buildShareUrl(currentHref, idFromRoute, listing);
+
     try {
       await navigator.clipboard.writeText(shareUrl);
       alert("Đã sao chép liên kết!");
     } catch {
-      // Fallback Clipboard API cũ
       const textArea = document.createElement("textarea");
       textArea.value = shareUrl;
       document.body.appendChild(textArea);
@@ -89,7 +87,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
       document.body.removeChild(textArea);
       alert("Đã sao chép liên kết!");
     }
-  }, [shareUrl]);
+  }, [idFromRoute, listing]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
