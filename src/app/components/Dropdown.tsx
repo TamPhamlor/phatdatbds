@@ -95,6 +95,7 @@ export default function Dropdown({
                 absolute z-50 mt-2 w-full max-h-72 overflow-auto 
                 rounded-[var(--radius-xl2)] bg-[var(--color-ink)] py-1 text-sm
                 shadow-[var(--shadow-soft)] ring-1 ring-black/5 focus:outline-none
+                nice-scroll
               "
             >
               {/* Search box */}

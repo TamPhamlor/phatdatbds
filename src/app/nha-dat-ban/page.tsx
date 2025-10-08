@@ -131,7 +131,7 @@ export default async function NhaDatBanPage({
 
   return (
     <>
-      <CategoryFilter />
+      <CategoryFilter meta={meta}/>
       <ClientLayout projects={projects} meta={meta} />
     </>
   );

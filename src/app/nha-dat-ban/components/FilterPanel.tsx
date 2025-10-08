@@ -103,7 +103,6 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
   const clearBathrooms = () => pushFilters({ ...filters, bathrooms: undefined });
   const clearFloors = () => pushFilters({ ...filters, floors: undefined });
   const clearDirection = () => pushFilters({ ...filters, direction: undefined });
-  const clearPropertyType = () => pushFilters({ ...filters, property_type_id: undefined });
   const clearLegal = () => pushFilters({ ...filters, legal_status_id: undefined });
   const clearAmenities = () => pushFilters({ ...filters, amenities: undefined });
 
@@ -115,7 +114,6 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
   const applyBathrooms = () => pushFilters({ ...filters });
   const applyFloors = () => pushFilters({ ...filters });
   const applyDirection = () => pushFilters({ ...filters });
-  const applyPropertyType = () => pushFilters({ ...filters });
   const applyLegal = () => pushFilters({ ...filters });
   const applyAmenities = () => pushFilters({ ...filters });
 
@@ -217,10 +215,36 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
   const provinceLabel = provinceNameFromId(filters.province_id) ?? 'Bất kỳ';
   const wardLabel = wardNameFromIds(filters.province_id, filters.ward_id) ?? 'Bất kỳ';
   const numberOptions = ["Bất kỳ", ...Array.from({ length: 10 }, (_, i) => (i + 1).toString())];
-  const propertyTypeOptions = ["Bất kỳ", ...(meta?.property_types ? Object.values(meta.property_types).map(pt => pt.name) : [])];
   const legalOptions = ["Bất kỳ", ...(meta?.legal_statuses ? Object.values(meta.legal_statuses).map(ls => ls.name) : [])];
   const directions = meta?.directions ?? ['Đông', 'Tây', 'Nam', 'Bắc', 'Đông Bắc', 'Đông Nam', 'Tây Nam', 'Tây Bắc'];
   const directionOptions = ["Bất kỳ", ...directions];
+
+  // helper: viền active
+const sectionCls = (active: boolean) =>
+  `group rounded-xl p-3 mb-3 border ${
+    active
+      ? "border-indigo-600 ring-1 ring-[var(--color-accent)]/20"
+      : "border-gray-200"
+  }`;
+
+// các điều kiện "đang lọc" theo từng section
+const isLocationActive =
+  !!filters.province_id || !!filters.ward_id;
+
+const isPriceActive =
+  (filters.price_total_min != null || filters.price_total_max != null) ||
+  (tempPriceRange[0] !== 1_000_000 || tempPriceRange[1] !== 10_000_000_000);
+
+const isAreaActive =
+  filters.area_land_min != null || filters.area_land_max != null;
+
+const isBedroomsActive = filters.bedrooms != null;
+const isBathroomsActive = filters.bathrooms != null;
+const isFloorsActive = filters.floors != null;
+const isDirectionActive = !!filters.direction;
+const isLegalActive = filters.legal_status_id != null;
+const isAmenitiesActive = (filters.amenities?.length ?? 0) > 0;
+
   return (
     <aside
       className={`w-80 shrink-0 transition-all duration-300 ${isOpen ? 'ml-0 opacity-100 pointer-events-auto' : '-ml-80 opacity-0 pointer-events-none'}`}
@@ -230,7 +254,7 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
         <div className="mb-3 font-semibold text-gray-900">Bộ lọc khách hàng</div>
 
         {/* ========== VỊ TRÍ (Dropdown) ========== */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
+        <details open={detailOpen} className={sectionCls(isLocationActive)}>
           <SectionHeader icon={<Icon.Location className={iconCls} />} title="Vị trí" />
           <div className="mt-3 space-y-3 text-sm">
             <Dropdown
@@ -276,7 +300,7 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
         </details>
 
         {/* ========== GIÁ ========== */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
+        <details open={detailOpen} className={sectionCls(isPriceActive)}>
           <SectionHeader icon={<Icon.Price className={iconCls} />} title="Giá bất động sản" />
           <div className="mt-3 space-y-2 text-sm">
             {priceRanges.map((r, i) => (
@@ -306,21 +330,21 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
         </details>
 
         {/* ========== DIỆN TÍCH ========== */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
+        <details open={detailOpen} className={sectionCls(isAreaActive)}>
           <SectionHeader icon={<Icon.Area className={iconCls} />} title="Diện tích" />
           <div className="mt-3 space-y-2 text-sm">
             <input type="number" placeholder="Diện tích tối thiểu (m²)" value={filters.area_land_min ?? ''}
               onChange={(e) => handleFilterChange('area_land_min', e.target.value ? parseInt(e.target.value) : undefined)}
-              className="w-full border-gray-300 rounded-md p-2" />
+              className="no-spinner w-full border-gray-300 focus:outline-none rounded-md p-2" />
             <input type="number" placeholder="Diện tích tối đa (m²)" value={filters.area_land_max ?? ''}
               onChange={(e) => handleFilterChange('area_land_max', e.target.value ? parseInt(e.target.value) : undefined)}
-              className="w-full border-gray-300 rounded-md p-2" />
+              className="no-spinner w-full border-gray-300 focus:outline-none rounded-md p-2" />
             <BodyButtons onClear={clearArea} onApply={applyArea} />
           </div>
         </details>
 
         {/* ========== PHÒNG NGỦ ========== */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
+        <details open={detailOpen} className={sectionCls(isBedroomsActive)}>
           <SectionHeader icon={<Icon.Bed className={iconCls} />} title="Số phòng ngủ" />
           <div className="mt-3 space-y-2 text-sm">
             <Dropdown
@@ -337,7 +361,7 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
 
 
         {/* ========== PHÒNG TẮM ========== */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
+        <details open={detailOpen} className={sectionCls(isBathroomsActive)}>
           <SectionHeader icon={<Icon.Bath className={iconCls} />} title="Số phòng tắm" />
           <div className="mt-3 space-y-2 text-sm">
             <Dropdown
@@ -354,7 +378,7 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
 
 
         {/* ========== SỐ TẦNG ========== */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
+        <details open={detailOpen} className={sectionCls(isFloorsActive)}>
           <SectionHeader icon={<Icon.Floors className={iconCls} />} title="Số tầng" />
           <div className="mt-3 space-y-2 text-sm">
             <Dropdown
@@ -371,7 +395,7 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
 
 
         {/* ========== HƯỚNG NHÀ ========== */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
+        <details open={detailOpen} className={sectionCls(isDirectionActive)}>
           <SectionHeader icon={<Icon.Compass className={iconCls} />} title="Hướng nhà" />
           <div className="mt-3 space-y-2 text-sm">
             <Dropdown
@@ -384,32 +408,8 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
           </div>
         </details>
 
-        {/* ========== LOẠI BĐS ========== */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
-          <SectionHeader icon={<Icon.Home className={iconCls} />} title="Loại bất động sản" />
-          <div className="mt-3 space-y-2 text-sm">
-            <Dropdown
-              label="Loại BĐS"
-              options={propertyTypeOptions}
-              value={
-                filters.property_type_id
-                  ? (meta?.property_types
-                    ? Object.values(meta.property_types).find(pt => pt.id === filters.property_type_id)?.name ?? "Bất kỳ"
-                    : "Bất kỳ")
-                  : "Bất kỳ"
-              }
-              onChange={(name) => {
-                if (name === "Bất kỳ") return handleFilterChange('property_type_id', undefined);
-                const picked = meta?.property_types ? Object.values(meta.property_types).find(pt => pt.name === name) : undefined;
-                handleFilterChange('property_type_id', picked?.id);
-              }}
-            />
-            <BodyButtons onClear={clearPropertyType} onApply={applyPropertyType} />
-          </div>
-        </details>
-
         {/* ========== PHÁP LÝ ========== */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
+        <details open={detailOpen} className={sectionCls(isLegalActive)}>
           <SectionHeader icon={<Icon.Legal className={iconCls} />} title="Tình trạng pháp lý" />
           <div className="mt-3 space-y-2 text-sm">
             <Dropdown
@@ -433,7 +433,7 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
         </details>
 
         {/* ========== TIỆN ÍCH ========== */}
-        <details open={detailOpen} className="group rounded-xl border border-gray-200 p-3 mb-3">
+        <details open={detailOpen} className={sectionCls(isAmenitiesActive)}>
           <SectionHeader icon={<Icon.Amenities className={iconCls} />} title="Tiện ích" />
           <div className="mt-3 flex flex-wrap gap-3 text-sm">
             {meta?.amenities?.map((a) => (

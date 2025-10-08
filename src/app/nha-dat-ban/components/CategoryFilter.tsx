@@ -1,153 +1,179 @@
-"use client"
-import { useState, useEffect } from 'react';
+"use client";
 
-export default function CategoryFilter() {
-  const [activeCategory, setActiveCategory] = useState('Villa');
-  const [showFilterPanel, setShowFilterPanel] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
+import React, { useMemo, useRef, useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import type { MetaListing } from "@/app/types/products";
+import type { ReactNode } from "react";
+import {
+  Home, Building2, Building, Landmark, Store,
+  Briefcase, Rows, Factory, Trees, X,
+} from "lucide-react";
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setShowFilterPanel(false);
-      } else {
-        setShowFilterPanel(false); // mobile mặc định ẩn
-      }
+interface Props { meta?: MetaListing | null; }
+
+/** Map tên tiếng Việt -> Icon (ReactNode) */
+const iconFor = (name: string): ReactNode => {
+  const key = name.trim().toLowerCase();
+  const cls = "h-4 w-4";
+  const map: Record<string, ReactNode> = {
+    "nhà phố": <Home className={cls} />,
+    "căn hộ chung cư": <Building2 className={cls} />,
+    "đất nền": <Landmark className={cls} />,
+    "biệt thự": <Building className={cls} />,
+    "shophouse": <Store className={cls} />,
+    "văn phòng": <Briefcase className={cls} />,
+    "nhà liền kề": <Rows className={cls} />,
+    "kho xưởng": <Factory className={cls} />,
+    "trang trại/nhà vườn": <Trees className={cls} />,
+  };
+  return map[key] ?? <Home className={cls} />;
+};
+
+export default function CategoryFilter({ meta }: Props) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const categories = useMemo(() => {
+    const arr = meta?.property_types ? Object.values(meta.property_types) : [];
+    return arr.map((pt) => ({ id: pt.id, name: pt.name }));
+  }, [meta]);
+
+  const activeId = (() => {
+    const pid = searchParams.get("property_type_id");
+    return pid ? Number(pid) : undefined;
+  })();
+
+  const setParam = (id?: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (!id) params.delete("property_type_id");
+    else params.set("property_type_id", String(id));
+    router.push(`/nha-dat-ban?${params.toString()}`);
+  };
+
+  /** ========= Drag-to-scroll & Wheel-to-horizontal ========== */
+  const railRef = useRef<HTMLDivElement | null>(null);
+  const [dragging, setDragging] = useState(false);
+  const posRef = useRef<{ startX: number; scrollLeft: number } | null>(null);
+
+  // Mouse drag
+  const onMouseDown: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if (!railRef.current) return;
+    setDragging(true);
+    railRef.current.classList.add("select-none");
+    posRef.current = {
+      startX: e.clientX,
+      scrollLeft: railRef.current.scrollLeft,
     };
-    handleResize();
-    setHydrated(true);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  };
 
-  const categories = [
-    { name: 'House', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M3 10.5L12 3l9 7.5M4.5 9.75V21h15V9.75" /></svg> },
-    { name: 'Hotel', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M3 21V8.5A2.5 2.5 0 0 1 5.5 6H18a3 3 0 0 1 3 3V21M3 11h18M7.5 11V7.5m4 3.5V7.5m4 3.5V7.5" /></svg> },
-    { name: 'Villa', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2c3 0 9 7 9 12a9 9 0 0 1-18 0c0-5 6-12 9-12Zm0 6.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" /></svg> },
-    { name: 'Apartment', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M4 21V6a2 2 0 0 1 2-2h5v17M11 6h7a2 2 0 0 1 2 2v13M7 9h2m-2 4h2m-2 4h2m6-8h2m-2 4h2m-2 4h2" /></svg> },
-  ];
+  const onMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if (!dragging || !railRef.current || !posRef.current) return;
+    e.preventDefault(); // chặn select text
+    const dx = e.clientX - posRef.current.startX;
+    railRef.current.scrollLeft = posRef.current.scrollLeft - dx;
+  };
+
+  const endDrag = () => {
+    setDragging(false);
+    railRef.current?.classList.remove("select-none");
+    posRef.current = null;
+  };
+
+  // Touch drag (mobile)
+  const touchRef = useRef<{ startX: number; scrollLeft: number } | null>(null);
+  const onTouchStart: React.TouchEventHandler<HTMLDivElement> = (e) => {
+    if (!railRef.current) return;
+    const x = e.touches[0].clientX;
+    touchRef.current = { startX: x, scrollLeft: railRef.current.scrollLeft };
+  };
+  const onTouchMove: React.TouchEventHandler<HTMLDivElement> = (e) => {
+    if (!railRef.current || !touchRef.current) return;
+    const x = e.touches[0].clientX;
+    const dx = x - touchRef.current.startX;
+    railRef.current.scrollLeft = touchRef.current.scrollLeft - dx;
+  };
+  const onTouchEnd = () => { touchRef.current = null; };
+
+  // Chuyển lăn dọc → cuộn ngang trong vùng 85%
+  useEffect(() => {
+    const el = railRef.current;
+    if (!el) return;
+
+    const onWheel = (ev: WheelEvent) => {
+      // Nếu có thanh cuộn dọc, chỉ khi Shift mới đổi; còn ở đây ta luôn map dọc -> ngang cho vùng rail
+      // Ghi đè mặc định để cuộn ngang mượt
+      ev.preventDefault();
+      el.scrollLeft += (ev.deltaY || 0) + (ev.deltaX || 0);
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel as EventListener);
+  }, []);
 
   return (
     <section className="w-full bg-transparent">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar md:flex-wrap p-2">
-            {categories.map((category) => (
-              <button
-                key={category.name}
-                onClick={() => setActiveCategory(category.name)}
-                className={`inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 shadow-sm border-0 whitespace-nowrap ${activeCategory === category.name ? 'ring-1 ring-indigo-100 shadow-md text-gray-900' : ''}`}
-              >
-                {category.icon}
-                {category.name}
-              </button>
-            ))}
-          </div>
-          <div className="flex items-center justify-between gap-2 p-2">
-            <label className="relative sm:block">
-              <span className="sr-only">Search</span>
-              <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-gray-400"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <circle cx="11" cy="11" r="7" strokeWidth="1.8"></circle>
-                  <path strokeWidth="1.8" d="M20 20l-3.5-3.5"></path>
-                </svg>
-              </span>
-              <input
-                type="text"
-                placeholder="Ranjinhan City, RC"
-                className="w-64 rounded-full bg-white pl-9 pr-3 py-2 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm border-0"
-              />
-            </label>
-            <button className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 shadow-sm border-0">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M4 4h16v12H7l-3 3V4z" />
-              </svg>
-            </button>
-            <button
-              onClick={() => setShowFilterPanel(!showFilterPanel)}
-              className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 shadow-sm border-0"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M3 5h18l-7 8v5l-4 2v-7L3 5z" />
-              </svg>
-              Filter
-            </button>
-          </div>
-        </div>
-        {hydrated && (
+      <div className="max-w-7xl mx-auto px-4 sm:px-4 lg:px-8 py-2">
+        {/* 2 cột: trái 85% (cuộn/drag), phải 8% (nút xóa cố định) */}
+        <div className="flex items-center gap-2">
+          {/* Cột trái 85% – cuộn ngang + drag */}
           <div
+            ref={railRef}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            onMouseLeave={endDrag}
+            onMouseUp={endDrag}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
             className={`
-              md:absolute md:right-8 w-full md:w-96 transition-all duration-300 z-[9999]
-              ${showFilterPanel ? 'md:opacity-100 md:translate-x-0 md:max-h-[1000px] md:pointer-events-auto' : 'md:hidden'}
-              ${showFilterPanel ? 'opacity-100 translate-x-0 max-h-[1000px] pointer-events-auto' : 'opacity-0 translate-x-4 pointer-events-none max-h-0'}
-              overflow-hidden md:overflow-visible
+              min-w-0 overflow-x-auto overflow-y-hidden whitespace-nowrap
+              no-scrollbar
+              cursor-grab active:cursor-grabbing
+              [-webkit-overflow-scrolling:touch] [overscroll-behavior-x:contain]
+              p-2
             `}
+            style={{ flexBasis: "85%", maxWidth: "85%" }}
           >
-            <div className="mx-4 md:mx-0 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
-              <div className="mb-4 text-base font-semibold text-gray-900">Filters</div>
-              <div className="space-y-5">
-                <div className="flex flex-col space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Tỉnh/Thành phố</label>
-                  <select
-                    className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
-                  >
-                    <option value="">Chọn Tỉnh/Thành phố</option>
-                    <option value="hcm">TP Hồ Chí Minh</option>
-                    <option value="hn">Hà Nội</option>
-                  </select>
-                </div>
-                <div className="flex flex-col space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Xã/Phường</label>
-                  <select
-                    className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
-                    disabled
-                  >
-                    <option value="">Chọn Xã/Phường</option>
-                  </select>
-                </div>
-                <div className="flex flex-col space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Giá (Nhỏ - Lớn)</label>
-                  <input
-                    type="text"
-                    className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
-                    placeholder="Nhập giá trị "
-                  />
-                </div>
-                <div className="flex flex-col space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Bedrooms</label>
-                  <select
-                    className="w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500"
-                  >
-                    <option>Any</option>
-                    <option>1+</option>
-                    <option>2+</option>
-                    <option>3+</option>
-                  </select>
-                </div>
-              </div>
-              <div className="mt-6 flex justify-end gap-3">
-                <button className="text-sm px-4 py-2 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-gray-50">Reset</button>
-                <button className="text-sm px-4 py-2 rounded-full bg-indigo-600 text-white shadow-sm hover:bg-indigo-700">Apply</button>
-              </div>
+            {/* dải pill */}
+            <div className="inline-flex items-center gap-2">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setParam(category.id)}
+                  className={`inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 shadow-sm border-0
+                    ${activeId === category.id ? "ring-1 ring-indigo-100 shadow-md text-gray-900" : ""}
+                  `}
+                >
+                  <span className="opacity-70">{iconFor(category.name)}</span>
+                  {category.name}
+                </button>
+              ))}
             </div>
           </div>
-        )}
+
+          {/* Cột phải 8% – nút Xóa luôn thấy, không cuộn */}
+          <div
+  className="flex justify-end basis-auto max-w-none md:basis-[8%] md:max-w-[8%]"
+>
+            <button
+              onClick={() => setParam(undefined)}
+              title="Xóa loại BĐS"
+              aria-label="Xóa lọc"
+              disabled={activeId === undefined}
+              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-2 text-sm shadow-sm transition
+                ${activeId !== undefined
+                  ? "border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-800 hover:border-gray-300"
+                  : "border-gray-100 bg-gray-50 text-gray-400 cursor-not-allowed"
+                }`}
+            >
+              <X className="h-4 w-4" />
+              <span className="hidden sm:inline">Xóa lọc</span>
+            </button>
+          </div>
+
+          {/* phần dư cho layout tự co giãn (~7%) */}
+          <div className="flex-1" />
+        </div>
       </div>
     </section>
   );
