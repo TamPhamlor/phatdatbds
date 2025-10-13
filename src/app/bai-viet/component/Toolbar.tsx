@@ -61,7 +61,7 @@ export default function Toolbar({ state, setState, onReset }: ToolbarProps) {
               className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 shadow-sm border-0"
               onClick={onReset}
             >
-              Reset
+              Xóa lọc
             </button>
           </div>
         </div>

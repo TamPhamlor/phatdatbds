@@ -64,8 +64,8 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M3 5h18l-7 8v5l-4 2v-7L3 5z" />
               </svg>
-              <span className='md:hidden'>Show Filter</span>
-              <span className='hidden md:inline'>{state.filterOpen ? 'Hide Filter' : 'Show Filter'}</span>
+              <span className='md:hidden'>Hiện bộ lọc</span>
+              <span className='hidden md:inline'>{state.filterOpen ? 'Ẩn bộ lọc' : 'Hiện bộ lọc'}</span>
             </button>
           </div>
         </div>

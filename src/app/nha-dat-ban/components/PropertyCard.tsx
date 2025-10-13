@@ -52,7 +52,7 @@ export default function PropertyCard(props: PropertyCardProps) {
         className="h-40 w-full object-cover"
       />
       <div className="p-3">
-        <div className="text-xs text-indigo-600 font-medium">Home</div>
+        <div className="text-xs text-indigo-600 font-medium">Nhà</div>
         <div className="font-semibold text-gray-900 line-clamp-2">{listing.title}</div>
         <div className="text-sm text-gray-500 flex items-center gap-1">
           <svg
@@ -75,7 +75,7 @@ export default function PropertyCard(props: PropertyCardProps) {
         <div className="mt-2 flex items-center justify-between">
           <div className="text-sm font-semibold">
             {listing.price_total_text}
-            <span className="text-gray-500 font-normal">/month</span>
+            <span className="text-gray-500 font-normal">/tháng</span>
           </div>
           <div className="text-xs text-amber-500">★ 4.9/5</div>
         </div>

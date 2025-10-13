@@ -30,7 +30,7 @@ export function ProjectAd({
       <div className="mt-2 flex items-center justify-between">
         <div className="text-sm font-bold">
           {price}
-          <span className="text-gray-500 font-normal">/month</span>
+          <span className="text-gray-500 font-normal">/tháng</span>
         </div>
         <a
           href="#"

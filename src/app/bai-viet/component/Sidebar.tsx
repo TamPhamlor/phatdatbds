@@ -87,11 +87,11 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
                 unoptimized
               />
             </div>
-            <div className="mt-3 font-semibold">Williamsburg Inn-Castilling</div>
-            <div className="text-sm text-gray-500">Evergreen 10, Jakarta</div>
+            <div className="mt-3 font-semibold">Khách sạn Williamsburg - Castilling</div>
+            <div className="text-sm text-gray-500">Số 10 Evergreen, Phường Tràng Tiền, Quận Hoàn Kiếm, Hà Nội, Việt Nam</div>
             <div className="mt-2 flex items-center justify-between">
               <div className="text-sm font-bold">
-                $ 345.00<span className="text-gray-500 font-normal">/month</span>
+                8 triệu 6<span className="text-gray-500 font-normal">/tháng</span>
               </div>
               <a href="#" className="rounded-full bg-indigo-600 text-white px-3 py-1 text-xs hover:bg-indigo-700">
                 Xem chi tiết
@@ -129,17 +129,17 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
             <div className="rounded-xl overflow-hidden relative w-full h-36">
               <Image
                 src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=800"
-                alt="Williamsburg Inn-Castilling"
+                alt="Khách sạn Williamsburg - Castilling"
                 fill
                 className="object-cover"
                 unoptimized
               />
             </div>
-            <div className="mt-3 font-semibold">Williamsburg Inn-Castilling</div>
+            <div className="mt-3 font-semibold">Khách sạn Williamsburg - Castilling</div>
             <div className="text-sm text-gray-500">Evergreen 10, Jakarta</div>
             <div className="mt-2 flex items-center justify-between">
               <div className="text-sm font-bold">
-                $ 345.00<span className="text-gray-500 font-normal">/month</span>
+                $ 345.00<span className="text-gray-500 font-normal">/tháng</span>
               </div>
               <a href="#" className="rounded-full bg-indigo-600 text-white px-3 py-1 text-xs hover:bg-indigo-700">
                 Xem chi tiết

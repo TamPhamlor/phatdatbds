@@ -22,9 +22,9 @@ export function MobileSidebar() {
       <div className="p-2 space-y-4 pt-0">
         <PostSearch isMobile />
         <ProjectAd
-          title="Williamsburg Inn-Castilling"
-          location="Evergreen 10, Jakarta"
-          price="$345.00"
+          title="Khách sạn Williamsburg - Castilling"
+          location="Số 10 Evergreen, Phường Tràng Tiền, Quận Hoàn Kiếm, Hà Nội, Việt Nam"
+          price="8 triệu 6"
           imageUrl="https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1200"
         />
       </div>
