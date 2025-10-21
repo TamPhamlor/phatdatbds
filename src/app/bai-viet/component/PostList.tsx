@@ -14,11 +14,16 @@ export default function PostList({ posts }: PostListProps) {
     window.location.reload();
   };
 
+  const sortedPosts = [...posts].sort(
+    (a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
+  );
+
+
   return (
     <main className="lg:col-span-9">
-      {posts && posts.length > 0 ? (
+      {sortedPosts && sortedPosts.length > 0 ? (
         <div id="grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {posts.map((post) => (
+          {sortedPosts.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
         </div>

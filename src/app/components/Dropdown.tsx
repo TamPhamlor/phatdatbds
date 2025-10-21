@@ -92,15 +92,15 @@ export default function Dropdown({
           >
             <ListboxOptions
               className="
-                absolute z-50 mt-2 w-full max-h-72 overflow-auto 
-                rounded-[var(--radius-xl2)] bg-[var(--color-ink)] py-1 text-sm
+                pt-0 absolute z-50 mt-2 w-full max-h-72 overflow-auto 
+                bg-[var(--color-ink)] py-1 text-sm
                 shadow-[var(--shadow-soft)] ring-1 ring-black/5 focus:outline-none
                 nice-scroll
               "
             >
               {/* Search box */}
               {searchable && (
-                <div className="sticky top-0 z-10 bg-[var(--color-ink)] p-2 border-b border-black/5">
+                <div className="sticky top-0 z-10 bg-[var(--color-ink)] p-2 border-black/5">
                   <div className="flex items-center gap-2 rounded-lg border border-black/10 px-2">
                     <svg width="16" height="16" viewBox="0 0 24 24" className="opacity-60">
                       <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
