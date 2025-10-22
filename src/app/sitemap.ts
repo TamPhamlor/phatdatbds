@@ -8,7 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // const listings = await fetchListings(); // [{slug: "dat-abc", updatedAt: "..."}]
 
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${SITE_URL}/`, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
+    { url: `${SITE_URL}/`, lastModified: new Date() , changeFrequency: "daily", priority: 1 },
     { url: `${SITE_URL}/nha-dat-ban`, changeFrequency: "daily", priority: 0.8 },
     { url: `${SITE_URL}/bai-viet`, changeFrequency: "daily", priority: 0.6 },
   ];
