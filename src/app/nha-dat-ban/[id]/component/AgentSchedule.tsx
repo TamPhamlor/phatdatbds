@@ -12,13 +12,57 @@ const LichHenMoiGioi: React.FC = () => {
     loiNhan: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const [loading, setLoading] = useState(false);
+  const [thongBao, setThongBao] = useState("");
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setDuLieuForm({ ...duLieuForm, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Xử lý khi gửi form
+    setLoading(true);
+    setThongBao("");
+
+    try {
+      const response = await fetch(
+        "https://api.phatdatbatdongsan.com/api/v1/contact-us",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: duLieuForm.hoTen,
+            email: duLieuForm.email,
+            phone: duLieuForm.soDienThoai,
+            message: `${duLieuForm.loiNhan}\nNgày hẹn: ${duLieuForm.ngayHen}`,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Gửi yêu cầu thất bại");
+      }
+
+      const data = await response.json();
+      console.log("Phản hồi từ server:", data);
+      setThongBao("✅ Gửi yêu cầu thành công! Chúng tôi sẽ liên hệ bạn sớm nhất.");
+      setDuLieuForm({
+        hoTen: "",
+        email: "",
+        soDienThoai: "",
+        ngayHen: "",
+        loiNhan: "",
+      });
+    } catch (error) {
+      console.error("Lỗi:", error);
+      setThongBao("❌ Có lỗi xảy ra, vui lòng thử lại sau.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -33,11 +77,13 @@ const LichHenMoiGioi: React.FC = () => {
               width={48}
               height={48}
               className="rounded-full"
-              unoptimized // cho phép load ảnh ngoài mà không cần remotePatterns
+              unoptimized
             />
             <div>
               <div className="font-semibold">Maria Johnson</div>
-              <div className="text-sm text-gray-500">Chuyên viên cao cấp, Nestify</div>
+              <div className="text-sm text-gray-500">
+                Chuyên viên cao cấp, Nestify
+              </div>
             </div>
           </div>
           <div className="flex gap-2 items-center">
@@ -48,8 +94,10 @@ const LichHenMoiGioi: React.FC = () => {
         </div>
         <div>
           <p className="text-sm text-gray-600 mt-1">
-            Maria Johnson là chuyên viên môi giới bất động sản với hơn 10 năm kinh nghiệm trong lĩnh vực nhà ở cao cấp.
-            Cô ấy luôn tận tâm hỗ trợ khách hàng tìm kiếm ngôi nhà phù hợp và cung cấp dịch vụ tư vấn chuyên nghiệp.
+            Maria Johnson là chuyên viên môi giới bất động sản với hơn 10 năm
+            kinh nghiệm trong lĩnh vực nhà ở cao cấp. Cô ấy luôn tận tâm hỗ trợ
+            khách hàng tìm kiếm ngôi nhà phù hợp và cung cấp dịch vụ tư vấn
+            chuyên nghiệp.
           </p>
         </div>
       </div>
@@ -98,15 +146,20 @@ const LichHenMoiGioi: React.FC = () => {
             value={duLieuForm.loiNhan}
             onChange={handleChange}
           />
-          <div className="mt-3 flex justify-end">
+          <div className="mt-3 flex sm:col-span-2">
             <button
               type="submit"
-              className="rounded-full bg-indigo-600 text-white px-5 py-2 text-sm hover:bg-indigo-700"
+              disabled={loading}
+              className="rounded-full bg-indigo-600 text-white px-5 py-2 text-sm hover:bg-indigo-700 disabled:opacity-50"
             >
-              Gửi yêu cầu
+              {loading ? "Đang gửi..." : "Gửi yêu cầu"}
             </button>
           </div>
         </form>
+
+        {thongBao && (
+          <p className="mt-3 text-sm text-center text-gray-700">{thongBao}</p>
+        )}
       </div>
     </section>
   );
