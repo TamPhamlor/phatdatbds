@@ -93,11 +93,6 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
               <span className="text-gray-600">Hiển thị</span>
               <span className="font-semibold text-emerald-600">{projects.length}</span>
               <span className="text-gray-600">kết quả</span>
-              {meta?.total && meta.total > projects.length && (
-                <span className="text-gray-500">
-                  / {meta.total} tổng
-                </span>
-              )}
             </div>
           </div>
           
@@ -131,7 +126,7 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-              <FilterPanel isOpen={state.filterOpen} meta={meta} />
+              <FilterPanel meta={meta} />
             </div>
           </Suspense>
         )}
@@ -142,7 +137,6 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
             <div className="flex-1 min-w-0">
               <PropertyGrid
                 listings={projects}
-                filterOpen={state.filterOpen}
                 detailOpen={state.detailOpen}
                 onCardClick={handleCardClick}
               />
@@ -154,7 +148,6 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
                 <div className="sticky" style={{ top: 'calc(var(--header-h) + 76px)' }}>
                   <DetailPanel
                     listing={selectedListing}
-                    isOpen={state.detailOpen}
                     onClose={() => setState((prev) => ({ ...prev, detailOpen: false }))}
                   />
                 </div>

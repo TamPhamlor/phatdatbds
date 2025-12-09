@@ -5,11 +5,10 @@ import { X } from "lucide-react";
 
 interface DetailPanelProps {
   listing: Listing | null;
-  isOpen: boolean;
-  onClose: () => void; // thêm prop onClose
+  onClose: () => void;
 }
 
-export default function DetailPanel({ listing, isOpen, onClose }: DetailPanelProps) {
+export default function DetailPanel({ listing, onClose }: DetailPanelProps) {
   if (!listing) return null;
 
   const coverImage =

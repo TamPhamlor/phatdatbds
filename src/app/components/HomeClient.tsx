@@ -54,12 +54,12 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
   const router = useRouter();
 
   // ---- Typing Animation ----
-  const propertyTypes = ["đất nền", "nhà phố", "biệt thự"];
   const [currentTypeIndex, setCurrentTypeIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    const propertyTypes = ["đất nền", "nhà phố", "biệt thự"];
     const currentWord = propertyTypes[currentTypeIndex];
     const typingSpeed = isDeleting ? 50 : 100;
     const pauseTime = isDeleting ? 500 : 2000;
@@ -84,7 +84,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
     }, typingSpeed);
 
     return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, currentTypeIndex, propertyTypes]);
+  }, [displayText, isDeleting, currentTypeIndex]);
 
   // ---- Filters (hero search) ----
   const [filters, setFilters] = useState<FilterState>({
@@ -159,10 +159,6 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
   const [supportLoading, setSupportLoading] = useState<boolean>(false);
   const [supportSuccess, setSupportSuccess] = useState<boolean>(false);
   const [supportError, setSupportError] = useState<boolean>(false);
-
-  const setPreset = (kw: string): void => {
-    setSupportForm((prev) => ({ ...prev, query: kw }));
-  };
 
   const submitSupport = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();

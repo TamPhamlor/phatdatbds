@@ -55,7 +55,6 @@ export default function MobileFilterDrawer({ isOpen, onClose, meta }: MobileFilt
         <div className="flex-1 overflow-y-auto">
           {isOpen && (
             <FilterPanel
-              isOpen={true}
               meta={meta}
               onFilter={() => {
                 onClose();

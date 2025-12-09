@@ -4,22 +4,15 @@ import NoResults from '@/app/components/NoResults';
 
 interface PropertyGridProps {
   listings: Listing[];
-  filterOpen: boolean;
   detailOpen: boolean;
   onCardClick: (listing: Listing) => void;
 }
 
 export default function PropertyGrid({
   listings,
-  filterOpen,
   detailOpen,
   onCardClick,
 }: PropertyGridProps) {
-  // Số cột tùy theo trạng thái panel (giữ nguyên logic cũ của bạn nếu có)
-  let cols = 4;
-  if (filterOpen && detailOpen) cols = 2;
-  else if (filterOpen || detailOpen) cols = 3;
-
   const handleClearFilters = () => {
     // Xóa toàn bộ query string filter đang có và reload
     const url = new URL(window.location.href);

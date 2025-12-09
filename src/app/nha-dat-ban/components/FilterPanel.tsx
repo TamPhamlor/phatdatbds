@@ -8,7 +8,6 @@ import Dropdown from '@/app/components/Dropdown';
 
 
 interface FilterPanelProps {
-  isOpen: boolean;
   detailOpen?: boolean;
   meta?: MetaListing | null;
   listings?: Listing[];
@@ -77,7 +76,7 @@ const Icon = {
   ),
 };
 
-export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter }: FilterPanelProps) {
+export default function FilterPanel({ detailOpen = false, meta, onFilter }: FilterPanelProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -107,7 +106,7 @@ export default function FilterPanel({ isOpen, detailOpen = false, meta, onFilter
 
   // Apply per-section
   const applyLocation = () => pushFilters({ ...filters });
-  const applyPrice = () => pushFilters({ ...filters, price_total_min: tempPriceRange[0], price_total_max: tempPriceRange[1] });
+  const applyPrice = () => pushFilters({ ...filters });
   const applyArea = () => pushFilters({ ...filters });
   const applyBedrooms = () => pushFilters({ ...filters });
   const applyBathrooms = () => pushFilters({ ...filters });

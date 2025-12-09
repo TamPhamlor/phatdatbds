@@ -6,7 +6,7 @@ import type { MetaListing } from "@/app/types/products";
 import type { ReactNode } from "react";
 import {
   Home, Building2, Building, Landmark, Store,
-  Briefcase, Rows, Factory, Trees, X,
+  Briefcase, Rows, Factory, Trees,
 } from "lucide-react";
 
 interface Props { meta?: MetaListing | null; }
