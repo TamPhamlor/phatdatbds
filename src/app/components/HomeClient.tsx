@@ -206,8 +206,12 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
     swipers.current[name]?.slidePrev();
   };
 
+  // ---- Loading state cho search ----
+  const [searchLoading, setSearchLoading] = useState(false);
+
   // ---- Điều hướng khi bấm Tìm kiếm ----
   const goSearch = () => {
+    setSearchLoading(true);
     const params = new URLSearchParams();
     if (filters.province_id) params.set("province_id", String(filters.province_id));
     if (filters.ward_id) params.set("ward_id", String(filters.ward_id));
@@ -217,6 +221,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
       ? `/nha-dat-ban?${params.toString()}`
       : `/nha-dat-ban`;
     router.push(url);
+    // Note: loading sẽ tự reset khi component unmount do navigation
   };
 
   return (
@@ -258,7 +263,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                 </p>
 
                 {/* Search Bar */}
-                <div className="mt-6 card p-4 md:p-5 relative z-50">
+                <div className="mt-6 card p-4 md:p-5 relative z-40">
                   <div className="grid md:grid-cols-3 gap-3 items-end">
                     {/* Tỉnh / Thành */}
                     <Dropdown
@@ -307,9 +312,19 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                     <button
                       className="btn btn-primary h-12 self-end text-[14px] px-5 md:col-span-3 relative z-10"
                       onClick={goSearch}
-                      disabled={meta === null}
+                      disabled={meta === null || searchLoading}
                     >
-                      Tìm kiếm
+                      {searchLoading ? (
+                        <span className="inline-flex items-center gap-2">
+                          <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                          Đang tìm...
+                        </span>
+                      ) : (
+                        "Tìm kiếm"
+                      )}
                     </button>
                   </div>
                 </div>
@@ -686,11 +701,30 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                 </div>
               </div>
               
-              <button className="btn btn-primary w-full md:w-auto">
-                Tìm đất ngay
-                <svg className="w-5 h-5 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
+              <button 
+                className="btn btn-primary w-full md:w-auto"
+                onClick={() => {
+                  setSearchLoading(true);
+                  router.push('/nha-dat-ban');
+                }}
+                disabled={searchLoading}
+              >
+                {searchLoading ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Đang tải...
+                  </>
+                ) : (
+                  <>
+                    Tìm đất ngay
+                    <svg className="w-5 h-5 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -709,8 +743,46 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
               với nhu cầu và tài chính.
             </p>
             <div className="flex gap-3">
-              <button className="btn btn-primary">Bắt đầu ngay</button>
-              <button className="btn btn-dark">Tìm hiểu thêm</button>
+              <button 
+                className="btn btn-primary"
+                onClick={() => {
+                  setSearchLoading(true);
+                  router.push('/nha-dat-ban');
+                }}
+                disabled={searchLoading}
+              >
+                {searchLoading ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Đang tải...
+                  </>
+                ) : (
+                  "Bắt đầu ngay"
+                )}
+              </button>
+              <button 
+                className="btn btn-dark"
+                onClick={() => {
+                  setSearchLoading(true);
+                  router.push('/lien-he');
+                }}
+                disabled={searchLoading}
+              >
+                {searchLoading ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Đang tải...
+                  </>
+                ) : (
+                  "Tìm hiểu thêm"
+                )}
+              </button>
             </div>
           </div>
           <div className="card overflow-hidden">
@@ -736,8 +808,25 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                 <p className="text-emerald-50 text-lg leading-relaxed">
                   Từ đất nền, nhà phố đến biệt thự cao cấp, Phát Đạt luôn có giải pháp phù hợp cho bạn tại Nhơn Trạch, Đồng Nai.
                 </p>
-                <button className="btn bg-white text-emerald-600 hover:bg-emerald-50 border-0 w-max font-semibold shadow-lg">
-                  Khám phá ngay →
+                <button 
+                  className="btn bg-white text-emerald-600 hover:bg-emerald-50 border-0 w-max font-semibold shadow-lg"
+                  onClick={() => {
+                    setSearchLoading(true);
+                    router.push('/nha-dat-ban');
+                  }}
+                  disabled={searchLoading}
+                >
+                  {searchLoading ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4 mr-2 inline text-emerald-600" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Đang tải...
+                    </>
+                  ) : (
+                    "Khám phá ngay →"
+                  )}
                 </button>
               </div>
               <div className="relative h-80 md:h-auto">

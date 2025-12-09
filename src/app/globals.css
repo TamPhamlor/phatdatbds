@@ -292,24 +292,47 @@ html {
 /* Tăng chiều cao tối đa của dropdown (listbox) */
 .dd-tall [role="listbox"] {
   max-height: 32rem !important;  /* ~512px, chỉnh số tuỳ ý */
-  overflow-y: auto;   
-  scrollbar-width: none;            /* vẫn cho cuộn khi quá dài */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
   z-index: 100 !important;
   min-width: 100%;
+  scrollbar-width: thin; /* Hiển thị scrollbar mỏng */
+  scrollbar-color: rgba(16,185,129,.5) rgba(0,0,0,.05); /* thumb | track - rõ ràng hơn */
 }
 
-/* Nếu muốn mobile mở dài hơn nữa (hoặc full) */
+/* Mobile: giới hạn chiều cao để có thể scroll */
 @media (max-width: 640px) {
   .dd-tall [role="listbox"] {
-    max-height: none !important; /* mở hết không giới hạn */
+    max-height: 60vh !important; /* Giới hạn 60% viewport height để có thể scroll */
+    overflow-y: auto !important;
+    overscroll-behavior: contain; /* Ngăn scroll lan ra ngoài */
   }
 }
 
-.dd-tall [role="listbox"] {
-  scrollbar-width: none;
-}
+/* Scrollbar rõ ràng cho WebKit (Chrome, Safari) */
 .dd-tall [role="listbox"]::-webkit-scrollbar {
-  display: none;
+  width: 6px; /* Tăng độ rộng để dễ thấy hơn */
+}
+.dd-tall [role="listbox"]::-webkit-scrollbar-thumb {
+  background: rgba(16,185,129,.5); /* Tăng opacity để dễ thấy hơn */
+  border-radius: 9999px;
+}
+.dd-tall [role="listbox"]::-webkit-scrollbar-thumb:hover {
+  background: rgba(16,185,129,.7); /* Đậm hơn khi hover */
+}
+.dd-tall [role="listbox"]::-webkit-scrollbar-track {
+  background: rgba(0,0,0,.05); /* Thêm nền nhẹ để thấy track */
+  border-radius: 9999px;
+}
+
+/* Mobile: scrollbar rõ ràng hơn */
+@media (max-width: 640px) {
+  .dd-tall [role="listbox"]::-webkit-scrollbar {
+    width: 8px; /* Rộng hơn trên mobile để dễ thấy */
+  }
+  .dd-tall [role="listbox"]::-webkit-scrollbar-thumb {
+    background: rgba(16,185,129,.6); /* Đậm hơn trên mobile */
+  }
 }
 
 /* Đảm bảo dropdown button có kích thước phù hợp */
@@ -360,6 +383,7 @@ input[type="number"].no-spinner::-webkit-inner-spin-button {
 .nice-scroll {
   scrollbar-width: thin;             /* auto | thin | none */
   scrollbar-color: var(--color-accent) transparent; /* thumb | track */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS/mobile */
 }
 
 /* Dark mode (nếu bạn có dark class hoặc prefers-color-scheme) */
@@ -569,7 +593,7 @@ input[type="checkbox"]:checked::before {
 .mobile-nav-item:active {
   transform: translateY(0);
 }
-
+        
 .mobile-nav-active {
   color: #10b981;
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(110, 231, 183, 0.12));

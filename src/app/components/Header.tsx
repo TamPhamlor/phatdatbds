@@ -122,7 +122,7 @@ const Header: React.FC = () => {
         `}
       >
         <div className="container-std py-4">
-          <div className="flex items-center justify-between bg-emerald-50/50 backdrop-blur rounded-full px-6 py-3 border border-emerald-100/50">
+          <div className="flex items-center justify-between bg-emerald-50/50 backdrop-blur rounded-full px-4 py-3 border border-emerald-100/50">
             <Link href="/" className="flex items-center gap-3">
               <Image
                 src="/logo_phat_dat_bat_don_san.png"
@@ -162,7 +162,7 @@ const Header: React.FC = () => {
       {/* Bottom navigation: mobile only + animate translate */}
       <nav
         className={`
-          md:hidden fixed bottom-0 left-0 right-0 z-50
+          md:hidden fixed bottom-0 left-0 right-0 z-[9999]
           bg-white/95 backdrop-blur-lg border-t border-emerald-100 shadow-2xl
           transition-transform duration-300 will-change-transform
           ${showNav ? "translate-y-0" : "translate-y-[130%]"}

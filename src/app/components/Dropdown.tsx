@@ -92,13 +92,18 @@ export default function Dropdown({
             afterLeave={() => setQ("")}
           >
             <ListboxOptions
+              modal={false}
               className="
-                pt-0 mt-1 w-auto min-w-full max-h-60 overflow-auto 
+                pt-0 mt-1 w-auto min-w-full max-h-60 overflow-y-auto overflow-x-hidden
                 bg-white py-1 text-sm
                 shadow-xl ring-1 ring-gray-200 focus:outline-none
                 nice-scroll rounded-lg
+                overscroll-contain
               "
-              style={{ minWidth: 'max(100%, 240px)' }}
+              style={{ 
+                minWidth: 'max(100%, 240px)',
+                WebkitOverflowScrolling: 'touch'
+              }}
             >
               {/* Search box */}
               {searchable && (
