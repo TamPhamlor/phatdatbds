@@ -13,7 +13,7 @@ export async function GET(
     const { id } = await context.params;
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-    const res = await extApiFetch(`/api/v1/listings/${encodeURIComponent(id)}`);
+    const res = await extApiFetch(`/api/v1/listings/${encodeURIComponent(id)}`,{ next: { revalidate: 600 } });
     const data = await res.json().catch(() => ({}));
     return NextResponse.json(data, { status: res.status });
   } catch (e: unknown) {

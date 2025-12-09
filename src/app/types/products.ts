@@ -19,6 +19,7 @@ export interface Amenity {
 }
 
 export interface Listing {
+  slug: string;
   id: number;
   user_id: number | null;
   property_type_id: number;
@@ -51,7 +52,7 @@ export interface Listing {
   expired_at: string;
   created_at: string;
   updated_at: string;
-
+  author:string,
   // Quan hệ
   images: Image[];
   amenities: Amenity[];
@@ -74,4 +75,70 @@ export interface FilterState {
   location: string;
   type: string;
   price: string;
+}
+
+// src/types.ts
+
+// Loại bất động sản
+export interface PropertyType {
+  id: number;
+  code: string;
+  name: string;
+}
+
+// Loại đất (Land use type)
+export interface LandUseType {
+  id: number;
+  code: string;
+  name: string;
+  descr?: string;
+}
+
+// Tình trạng pháp lý
+export interface LegalStatus {
+  id: number;
+  code: string;
+  name: string;
+}
+
+// Đơn vị hành chính (tỉnh/thành)
+export interface Province {
+  code: string;
+  name: string;
+  name_en: string;
+  full_name: string;
+  full_name_en: string;
+  code_name: string;
+  administrative_unit_id: number;
+}
+
+// Phường/xã
+export interface Ward {
+  code: string;
+  name: string;
+  name_en: string;
+  full_name: string;
+  full_name_en: string;
+  code_name: string;
+  province_code: string;
+  administrative_unit_id: number;
+}
+
+// Tiện ích
+export interface Amenity {
+  id: number;
+  code: string;
+  name: string;
+  group_name: string;
+}
+
+// Gốc dữ liệu meta_listing
+export interface MetaListing {
+  property_types: Record<string, PropertyType>;
+  land_use_types: Record<string, LandUseType>;
+  legal_statuses: Record<string, LegalStatus>;
+  provinces: Province[];
+  wards: Record<string, Ward[]>;
+  amenities: Amenity[];
+  directions:string[];
 }
