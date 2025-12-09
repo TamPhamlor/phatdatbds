@@ -45,16 +45,14 @@ export default function PropertyGrid({
   }
 
   // ======= DANH SÁCH BÌNH THƯỜNG =======
+  // Grid responsive: giảm số cột khi detail panel mở
+  const gridCols = detailOpen 
+    ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
+    : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+
   return (
     <main className="w-full">
-      <div
-        className={`
-          grid gap-4
-          ${cols === 4 ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4' : ''}
-          ${cols === 3 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : ''}
-          ${cols === 2 ? 'grid-cols-1 md:grid-cols-2' : ''}
-        `}
-      >
+      <div className={`grid gap-4 ${gridCols}`}>
         {listings.map((listing) => (
           <PropertyCard key={listing.id} listing={listing} onClick={() => onCardClick(listing)} />
         ))}

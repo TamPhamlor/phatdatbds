@@ -1,6 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Be_Vietnam_Pro } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -14,11 +14,11 @@ import { Analytics } from "@vercel/analytics/next";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://phatdatbatdongsan.com";
 const SITE_NAME = "Phát Đạt Bất Động Sản Nhơn Trạch";
 
-const beVietnam = Be_Vietnam_Pro({
-  subsets: ["vietnamese"],
+const inter = Inter({
+  subsets: ["vietnamese", "latin"],
   weight: ["300","400","500","600","700","800"],
   display: "swap",
-  variable: "--font-be-vietnam",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -91,7 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* viewport là best practice */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className={`${beVietnam.variable} antialiased`}>
+      <body className={`${inter.variable} antialiased`}>
         <NetworkProgressProvider>
           <Suspense fallback={null}><HeaderProgress /></Suspense>
           <Suspense fallback={null}><Header /></Suspense>

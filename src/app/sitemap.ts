@@ -10,7 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: new Date() , changeFrequency: "daily", priority: 1 },
     { url: `${SITE_URL}/nha-dat-ban`, changeFrequency: "daily", priority: 0.8 },
-    { url: `${SITE_URL}/bai-viet`, changeFrequency: "daily", priority: 0.6 },
+    { url: `${SITE_URL}/tin-tuc`, changeFrequency: "daily", priority: 0.6 },
   ];
 
   const dynamicRoutes: MetadataRoute.Sitemap = [

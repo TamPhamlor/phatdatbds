@@ -53,7 +53,7 @@ export default function Dropdown({
       <Listbox value={value} onChange={onChange} disabled={disabled}>
         {/* Label */}
         {label && (
-          <ListboxLabel className="block text-xs text-[var(--color-mute)] mb-1">
+          <ListboxLabel className="block text-xs font-medium text-gray-600 mb-1.5">
             {label}
           </ListboxLabel>
         )}
@@ -61,17 +61,17 @@ export default function Dropdown({
         {/* Button */}
         <ListboxButton
           className={`
-            h-12 w-full px-4 text-left flex items-center justify-between
-            rounded-[var(--radius-xl2)] border border-black/10
-            ${disabled ? "opacity-60 cursor-not-allowed" : "bg-[var(--color-ink)]"}
-            focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-opacity-40
-            transition-all
+            h-10 w-full px-3 text-left flex items-center justify-between
+            rounded-lg border border-gray-300
+            ${disabled ? "opacity-60 cursor-not-allowed bg-gray-100" : "bg-white hover:border-emerald-400"}
+            focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-40 focus:border-emerald-500
+            transition-all text-sm
           `}
         >
-          <span className={`truncate ${!value ? "text-black/50" : ""}`}>
+          <span className={`truncate ${!value ? "text-gray-400" : "text-gray-900"}`}>
             {value || placeholder}
           </span>
-          <svg width="18" height="18" viewBox="0 0 24 24" className="ml-3 shrink-0 opacity-70">
+          <svg width="16" height="16" viewBox="0 0 24 24" className="ml-2 shrink-0 text-gray-500">
             <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2" />
           </svg>
         </ListboxButton>
@@ -81,6 +81,7 @@ export default function Dropdown({
           <Transition
             // ✅ dùng div thay vì Fragment để không truyền props vào Fragment
             as="div"
+            className="absolute z-[9999] w-full"
             enter="transition ease-out duration-100"
             enterFrom="opacity-0 scale-95"
             enterTo="opacity-100 scale-100"
@@ -92,16 +93,17 @@ export default function Dropdown({
           >
             <ListboxOptions
               className="
-                pt-0 absolute z-50 mt-2 w-full max-h-72 overflow-auto 
-                bg-[var(--color-ink)] py-1 text-sm
-                shadow-[var(--shadow-soft)] ring-1 ring-black/5 focus:outline-none
-                nice-scroll
+                pt-0 mt-1 w-auto min-w-full max-h-60 overflow-auto 
+                bg-white py-1 text-sm
+                shadow-xl ring-1 ring-gray-200 focus:outline-none
+                nice-scroll rounded-lg
               "
+              style={{ minWidth: 'max(100%, 240px)' }}
             >
               {/* Search box */}
               {searchable && (
-                <div className="sticky top-0 z-10 bg-[var(--color-ink)] p-2 border-black/5">
-                  <div className="flex items-center gap-2 rounded-lg border border-black/10 px-2">
+                <div className="sticky top-0 z-10 bg-white p-2 border-b border-black/5">
+                  <div className="flex items-center gap-2 rounded-lg border border-black/10 px-2 bg-white">
                     <svg width="16" height="16" viewBox="0 0 24 24" className="opacity-60">
                       <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
                       <path d="M20 20l-3-3" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -142,21 +144,21 @@ export default function Dropdown({
                     key={opt}
                     value={opt}
                     className={({ active, selected }) =>
-                      `relative cursor-default select-none py-2 pl-10 pr-4
-                       ${active ? "bg-[var(--color-accent)]/10 text-[var(--color-text)]" : ""}
-                       ${selected ? "font-semibold" : "font-normal"}`
+                      `relative cursor-pointer select-none py-2 pl-9 pr-3
+                       ${active ? "bg-emerald-50 text-emerald-900" : "text-gray-900"}
+                       ${selected ? "font-semibold bg-emerald-50" : "font-normal"}`
                     }
                   >
                     {({ selected }) => (
                       <>
                         {selected && (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                            <svg width="18" height="18" viewBox="0 0 24 24">
-                              <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" strokeWidth="2" />
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-2.5">
+                            <svg width="16" height="16" viewBox="0 0 24 24" className="text-emerald-600">
+                              <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" strokeWidth="2.5" />
                             </svg>
                           </span>
                         )}
-                        <span className="block truncate">{opt}</span>
+                        <span className="block truncate text-sm">{opt}</span>
                       </>
                     )}
                   </ListboxOption>

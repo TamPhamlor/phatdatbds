@@ -43,10 +43,9 @@ export default function MobileFilterDrawer({ isOpen, onClose, meta }: MobileFilt
         `}
         style={{ willChange: "transform" }}
       >
-        <div className="flex items-center justify-between mb-2 shrink-0">
-          <div className="font-semibold text-gray-900">Customer Filter</div>
-          <button className="p-2 rounded-full hover:bg-gray-100" onClick={onClose}>
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <div className="flex items-center justify-end mb-2 shrink-0">
+          <button className="p-2 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors" onClick={onClose}>
+            <svg className="w-5 h-5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M6 6l12 12M6 18L18 6" />
             </svg>
           </button>

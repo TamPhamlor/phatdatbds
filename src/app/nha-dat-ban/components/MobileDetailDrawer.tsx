@@ -26,14 +26,13 @@ export default function MobileDetailDrawer({ isOpen, onClose, listing }: MobileD
           transform transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
-        <div className="flex items-center justify-between mb-2">
-          <div className="font-semibold text-gray-900">Project Detail</div>
+        <div className="flex items-center justify-end mb-2">
           <button
-            className="p-2 rounded-full hover:bg-gray-100"
+            className="p-2 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors"
             onClick={onClose}
           >
             <svg
-              className="w-5 h-5"
+              className="w-5 h-5 text-emerald-600"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

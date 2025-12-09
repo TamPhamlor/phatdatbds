@@ -12,9 +12,9 @@ import {
 interface Props { meta?: MetaListing | null; }
 
 /** Map tên tiếng Việt -> Icon (ReactNode) */
-const iconFor = (name: string): ReactNode => {
+const iconFor = (name: string, isActive: boolean): ReactNode => {
   const key = name.trim().toLowerCase();
-  const cls = "h-4 w-4";
+  const cls = `h-4 w-4 ${isActive ? 'text-white' : 'text-emerald-600'}`;
   const map: Record<string, ReactNode> = {
     "nhà phố": <Home className={cls} />,
     "căn hộ chung cư": <Building2 className={cls} />,
@@ -45,8 +45,12 @@ export default function CategoryFilter({ meta }: Props) {
 
   const setParam = (id?: number) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (!id) params.delete("property_type_id");
-    else params.set("property_type_id", String(id));
+    // Toggle: nếu đang active thì xóa, nếu chưa thì set
+    if (activeId === id) {
+      params.delete("property_type_id");
+    } else if (id) {
+      params.set("property_type_id", String(id));
+    }
     router.push(`/nha-dat-ban?${params.toString()}`);
   };
 
@@ -111,10 +115,9 @@ export default function CategoryFilter({ meta }: Props) {
   }, []);
 
   return (
-    <section className="w-full bg-transparent">
-      <div className="max-w-7xl mx-auto px-4 sm:px-4 lg:px-8 py-2">
-        {/* 2 cột: trái 85% (cuộn/drag), phải 8% (nút xóa cố định) */}
-        <div className="flex items-center gap-2">
+    <section className="w-full bg-gradient-to-r from-emerald-50/30 via-white/50 to-emerald-50/30 backdrop-blur-sm border-b border-emerald-100/30">
+      <div className="container-std py-3">
+        <div className="flex items-center gap-3">
           {/* Cột trái 85% – cuộn ngang + drag */}
           <div
             ref={railRef}
@@ -126,53 +129,34 @@ export default function CategoryFilter({ meta }: Props) {
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
             className={`
-              min-w-0 overflow-x-auto overflow-y-hidden whitespace-nowrap
+              min-w-0 overflow-x-auto overflow-y-visible whitespace-nowrap
               no-scrollbar
               cursor-grab active:cursor-grabbing
               [-webkit-overflow-scrolling:touch] [overscroll-behavior-x:contain]
-              p-2
+              py-2 flex-1
             `}
-            style={{ flexBasis: "85%", maxWidth: "85%" }}
           >
             {/* dải pill */}
-            <div className="inline-flex items-center gap-2">
+            <div className="inline-flex items-center gap-2.5 px-1">
               {categories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => setParam(category.id)}
-                  className={`inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 shadow-sm border-0
-                    ${activeId === category.id ? "ring-1 ring-indigo-100 shadow-md text-gray-900" : ""}
+                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-300 border whitespace-nowrap
+                    ${activeId === category.id 
+                      ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white border-emerald-600 shadow-lg shadow-emerald-200/50 scale-105" 
+                      : "bg-white/90 backdrop-blur text-gray-700 border-emerald-200/50 hover:bg-emerald-50 hover:border-emerald-400 hover:shadow-md hover:scale-105"
+                    }
                   `}
                 >
-                  <span className="opacity-70">{iconFor(category.name)}</span>
+                  {iconFor(category.name, activeId === category.id)}
                   {category.name}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Cột phải 8% – nút Xóa luôn thấy, không cuộn */}
-          <div
-  className="flex justify-end basis-auto max-w-none md:basis-[8%] md:max-w-[8%]"
->
-            <button
-              onClick={() => setParam(undefined)}
-              title="Xóa loại BĐS"
-              aria-label="Xóa lọc"
-              disabled={activeId === undefined}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-2 text-sm shadow-sm transition
-                ${activeId !== undefined
-                  ? "border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-800 hover:border-gray-300"
-                  : "border-gray-100 bg-gray-50 text-gray-400 cursor-not-allowed"
-                }`}
-            >
-              <X className="h-4 w-4" />
-              <span className="hidden sm:inline">Xóa lọc</span>
-            </button>
-          </div>
 
-          {/* phần dư cho layout tự co giãn (~7%) */}
-          <div className="flex-1" />
         </div>
       </div>
     </section>
