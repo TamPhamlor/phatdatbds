@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Listing } from "@/app/types/products";
+import { PHONE_CONTACT, telLink, zaloLink } from "@/lib/config";
 
 interface SidebarProps {
   listing: Listing;
@@ -120,7 +121,7 @@ const Sidebar: React.FC<SidebarProps> = ({ listing }) => {
             </div>
           </div>
           <div className="mt-4 flex gap-2">
-            <a href="tel:0365614778" className="flex-1 flex items-center justify-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:border-emerald-300 transition-all">
+            <a href={telLink(PHONE_CONTACT)} className="flex-1 flex items-center justify-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:border-emerald-300 transition-all">
               <svg className="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
@@ -145,7 +146,7 @@ const Sidebar: React.FC<SidebarProps> = ({ listing }) => {
               <div className="text-emerald-100 text-sm">Chuyên viên tư vấn</div>
             </div>
           </div>
-          <a href="https://zalo.me/0365614778" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full rounded-full bg-white text-emerald-600 px-4 py-2.5 text-sm font-medium hover:bg-emerald-50 transition-all">
+          <a href={zaloLink(PHONE_CONTACT)} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full rounded-full bg-white text-emerald-600 px-4 py-2.5 text-sm font-medium hover:bg-emerald-50 transition-all">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
             </svg>

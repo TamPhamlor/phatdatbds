@@ -1,4 +1,5 @@
 import { Listing } from "@/app/types/products";
+import { PHONE_CONTACT, telLink } from "@/lib/config";
 
 interface MobileActionBarProps {
   listing: Listing;
@@ -32,7 +33,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({ listing }) => {
         {/* Buttons */}
         <div className="flex items-center gap-1.5 flex-shrink-0">
           <a
-            href="tel:0365614778"
+            href={telLink(PHONE_CONTACT)}
             className="w-9 h-9 rounded-full border border-emerald-200 bg-white flex items-center justify-center hover:bg-emerald-50 transition-all"
             aria-label="Gọi điện"
           >

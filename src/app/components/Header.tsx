@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { PHONE_CONTACT, telLink, FACEBOOK_LINK, ZALO_LINK } from "@/lib/config";
 
 const SCROLL_DELTA = 8;     // ngưỡng chống rung: thay đổi < 8px thì bỏ qua
 const HIDE_OFFSET = 80;     // sau khi vượt 80px mới bắt đầu ẩn khi kéo xuống
@@ -16,6 +17,7 @@ const Header: React.FC = () => {
   const lastYRef = useRef(0);
   const tickingRef = useRef(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showContactPopup, setShowContactPopup] = useState(false);
 
   const isActive = (path: string) => pathname === path;
 
@@ -33,6 +35,13 @@ const Header: React.FC = () => {
       showHeader ? "83px" : "0px"
     );
   }, [showHeader]);
+
+  // Ẩn popup khi nav ẩn
+  useEffect(() => {
+    if (!showNav && showContactPopup) {
+      setShowContactPopup(false);
+    }
+  }, [showNav, showContactPopup]);
 
   useEffect(() => {
     // set giá trị ban đầu
@@ -122,7 +131,7 @@ const Header: React.FC = () => {
         `}
       >
         <div className="container-std py-4">
-          <div className="flex items-center justify-between bg-emerald-50/50 backdrop-blur rounded-full px-4 py-3 border border-emerald-100/50">
+          <div className="flex items-center justify-between bg-white/80 backdrop-blur-md rounded-full px-4 py-3 border border-emerald-100/50 shadow-sm">
             <Link href="/" className="flex items-center gap-3">
               <Image
                 src="/logo_phat_dat_bat_don_san.png"
@@ -147,12 +156,12 @@ const Header: React.FC = () => {
             </nav>
 
             <div className="flex items-center gap-3">
-              <a href="tel:0365614778" className="btn btn-primary btn-pulse text-sm flex items-center gap-2">
+              <a href={telLink(PHONE_CONTACT)} className="btn btn-primary btn-pulse text-sm flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
                 <span className="hidden sm:inline">Gọi ngay</span>
-                <span>0365614778</span>
+                <span>{PHONE_CONTACT}</span>
               </a>
             </div>
           </div>
@@ -219,16 +228,91 @@ const Header: React.FC = () => {
             <span className="text-xs font-medium mt-1">Liên hệ</span>
           </Link>
 
-          {/* Gọi ngay */}
-          <a
-            href="tel:0365614778"
-            className="mobile-nav-item"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-            <span className="text-xs font-medium mt-1">Gọi ngay</span>
-          </a>
+          {/* Gọi ngay - với popup */}
+          <div className="relative">
+            <button
+              onClick={() => setShowContactPopup(!showContactPopup)}
+              className="mobile-nav-item"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              <span className="text-xs font-medium mt-1">Gọi ngay</span>
+            </button>
+
+            {/* Contact Popup */}
+            {showContactPopup && (
+              <>
+                <div 
+                  className="fixed inset-0 z-40" 
+                  onClick={() => setShowContactPopup(false)}
+                />
+                <div className="absolute bottom-full right-0 mb-12 z-50 bg-white rounded-2xl shadow-2xl border border-emerald-100 p-3 min-w-[220px]">
+                  <div className="space-y-2">
+                    {/* Gọi ngay */}
+                    <a
+                      href={telLink(PHONE_CONTACT)}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-emerald-50 transition-colors group"
+                      onClick={() => setShowContactPopup(false)}
+                    >
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">Gọi ngay</div>
+                        <div className="text-sm text-gray-500">{PHONE_CONTACT}</div>
+                      </div>
+                    </a>
+
+                    {/* Zalo */}
+                    <a
+                      href={ZALO_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 transition-colors group"
+                      onClick={() => setShowContactPopup(false)}
+                    >
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform overflow-hidden">
+                        <Image src="/icon_zalo.svg" alt="Zalo" width={40} height={40} />
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">Zalo</div>
+                        <div className="text-sm text-gray-500">Chat ngay</div>
+                      </div>
+                    </a>
+
+                    {/* Facebook */}
+                    <a
+                      href={FACEBOOK_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 transition-colors group"
+                      onClick={() => setShowContactPopup(false)}
+                    >
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <svg className="w-10 h-10" viewBox="0 0 24 24">
+                          <defs>
+                            <linearGradient id="fb-gradient-mobile" x1="0%" y1="0%" x2="0%" y2="100%">
+                              <stop offset="0%" stopColor="#18ACFE"/>
+                              <stop offset="100%" stopColor="#0163E0"/>
+                            </linearGradient>
+                          </defs>
+                          <circle cx="12" cy="12" r="12" fill="url(#fb-gradient-mobile)"/>
+                          <path fill="#fff" d="M16.5 8.5h-2.2c-.3 0-.5.3-.5.6v1.4h2.7l-.4 2.5h-2.3v6h-2.6v-6H9.5v-2.5h1.7V8.8c0-1.7 1-2.8 2.7-2.8h2.6v2.5z"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">Facebook</div>
+                        <div className="text-sm text-gray-500">Nhắn tin</div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </nav>
     </>

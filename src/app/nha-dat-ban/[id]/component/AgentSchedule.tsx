@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { PHONE_CONTACT, formatPhone, telLink } from "@/lib/config";
 
 // Custom DatePicker component với màu emerald - dùng Portal
 function DatePicker({
@@ -265,7 +266,7 @@ const LichHenMoiGioi: React.FC = () => {
               <div className="text-sm text-gray-500">Chuyên viên tư vấn</div>
             </div>
           </div>
-          <a href="tel:0365614778" className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 text-sm font-medium hover:shadow-lg hover:shadow-emerald-500/25 transition-all">
+          <a href={telLink(PHONE_CONTACT)} className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 text-sm font-medium hover:shadow-lg hover:shadow-emerald-500/25 transition-all">
             Gọi ngay
           </a>
         </div>

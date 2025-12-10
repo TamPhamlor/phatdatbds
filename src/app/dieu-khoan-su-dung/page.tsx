@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { PHONE_CONTACT, formatPhone, telLink } from "@/lib/config";
 
 export const metadata = {
   title: "Điều khoản sử dụng | Phát Đạt Bất Động Sản",
@@ -250,7 +251,7 @@ export default function TermsOfServicePage() {
                     <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    <span>Hotline: <a href="tel:0365614778" className="text-emerald-600 font-semibold">0365 614 778</a></span>
+                    <span>Hotline: <a href={telLink(PHONE_CONTACT)} className="text-emerald-600 font-semibold">{formatPhone(PHONE_CONTACT)}</a></span>
                   </p>
                   <p className="flex items-center gap-2">
                     <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

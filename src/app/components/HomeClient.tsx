@@ -980,7 +980,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                         required
                         type="tel"
                         className="h-12 w-full rounded-xl bg-gray-50 border border-gray-200 pl-24 pr-4 text-base focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-500 focus:bg-white transition-all"
-                        placeholder="365 614 778"
+                        placeholder="97 432 6036"
                       />
                     </div>
                   </label>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PHONE_CONTACT, formatPhone, telLink } from "@/lib/config";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -94,7 +95,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">Điện thoại</p>
-                  <a href="tel:0365614778" className="text-sm text-emerald-600 hover:text-emerald-700 mt-1 block">0365 614 778</a>
+                  <a href={telLink(PHONE_CONTACT)} className="text-sm text-emerald-600 hover:text-emerald-700 mt-1 block">{formatPhone(PHONE_CONTACT)}</a>
                 </div>
               </div>
 

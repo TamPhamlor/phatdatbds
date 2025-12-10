@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PHONE_CONTACT, formatPhone, telLink } from "@/lib/config";
 
 const faqs = [
   {
@@ -250,13 +251,13 @@ export default function FAQPage() {
             Liên hệ với chúng tôi để được tư vấn trực tiếp
           </p>
           <a
-            href="tel:0365614778"
+            href={telLink(PHONE_CONTACT)}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold hover:from-emerald-600 hover:to-emerald-700 shadow-lg shadow-emerald-200/50 hover:shadow-xl hover:-translate-y-0.5 transition-all"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
-            Gọi ngay 0365614778
+            Gọi ngay {formatPhone(PHONE_CONTACT)}
           </a>
         </div>
       </div>
