@@ -18,14 +18,14 @@ export function TagCloud() {
   };
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
-      <div className="text-sm font-semibold mb-3">Tags phổ biến</div>
+    <div className="rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-4">
+      <div className="text-sm font-semibold mb-3 text-gray-800">Thẻ phổ biến</div>
       <div className="flex flex-wrap gap-2">
         {MOCK_TAGS.map(([tag, count]) => (
           <button
             key={tag}
             onClick={() => handleTagClick(tag)}
-            className="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-1 text-xs text-gray-700 hover:bg-gray-50"
+            className="inline-flex items-center gap-1 rounded-full border border-emerald-100 bg-white/80 px-3 py-1 text-xs text-gray-700 hover:bg-emerald-50 hover:border-emerald-200 transition-all"
           >
             #{tag} <span className="text-gray-400">({count})</span>
           </button>

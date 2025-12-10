@@ -1,6 +1,6 @@
-// app/bai-viet/[slug]/page.tsx
+// app/tin-tuc/[slug]/page.tsx
 import { Metadata } from "next";
-import { Post } from "./component/bai-viet.types";
+import { Post } from "../component/types";
 import PostLayout from "./PostLayout";
 
 async function fetchPost(slug: string): Promise<Post> {

@@ -10,7 +10,7 @@ interface MobileDetailDrawerProps {
 export default function MobileDetailDrawer({ isOpen, onClose, listing }: MobileDetailDrawerProps) {
   return (
     <div
-      className={`fixed inset-0 z-50 transition-all duration-300 
+      className={`fixed inset-0 z-[10000] transition-all duration-300 
         ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
     >
       {/* Overlay */}

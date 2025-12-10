@@ -23,7 +23,7 @@ export default function MobileFilterDrawer({ isOpen, onClose, meta }: MobileFilt
   }, [isOpen]);
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none">
+    <div className="fixed inset-0 z-[10000] pointer-events-none">
       {/* Overlay */}
       <div
         className={`

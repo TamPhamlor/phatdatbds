@@ -2,11 +2,11 @@ import Link from "next/link";
 
 export function Breadcrumb({ title }: { title: string }) {
   return (
-    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 p-2">
+    <div className="container-std py-2">
       <nav className="text-sm text-gray-500">
-        <a href="#" className="hover:text-gray-700">Trang chủ</a>
+        <Link href="/" className="hover:text-emerald-600 transition-colors">Trang chủ</Link>
         <span className="mx-2">/</span>
-        <Link href="/bai-viet" className="hover:text-gray-700">Bài viết</Link>
+        <Link href="/tin-tuc" className="hover:text-emerald-600 transition-colors">Tin tức</Link>
         <span className="mx-2">/</span>
         <span className="text-gray-700">{title}</span>
       </nav>

@@ -61,6 +61,7 @@ export interface Post {
   author: Author;
   tags: Tag[];
   post_types: PostType[];
+  category?: PostType;
 }
 
 export interface ApiResponse {

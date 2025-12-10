@@ -4,8 +4,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Post } from "../../component/types";
-import { Tag } from "./bai-viet.types";
-import { Share2, Facebook, Copy, Check, MessageCircle } from "lucide-react";
+import { Share2, Copy, Check, MessageCircle } from "lucide-react";
+import { FaFacebook } from "react-icons/fa";
+
+interface Tag {
+  id: number;
+  code: string;
+  name: string;
+  pivot: {
+    post_id: number;
+    tag_id: number;
+  };
+}
+
+
 
 interface ArticleProps {
   post: Post;
@@ -25,14 +37,14 @@ export function Article({ post, relatedPosts }: ArticleProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error("Copy failed:", err);
+      console.error("Sao chép thất bại:", err);
     }
   };
 
   return (
     <article className="lg:col-span-8">
       {/* Cover Image */}
-      <div className="rounded-2xl overflow-hidden bg-white border border-gray-200 shadow-sm relative w-full aspect-[16/9]">
+      <div className="rounded-2xl overflow-hidden bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm relative w-full aspect-[16/9]">
         <Image
           src={post.cover_image_url}
           alt={post.title}
@@ -43,7 +55,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
       </div>
 
       {/* Info Section */}
-      <section className="mt-4 rounded-2xl bg-white border border-gray-200 shadow-sm p-3 md:p-5">
+      <section className="mt-4 rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-3 md:p-5">
         <div className="items-start justify-between gap-3 md:flex-nowrap">
           <h1 className="text-2xl md:text-3xl mb-1 md:mb-2 font-semibold text-gray-900">
             {post.title}
@@ -54,23 +66,23 @@ export function Article({ post, relatedPosts }: ArticleProps) {
               <div className="relative inline-block">
                 <button
                   onClick={() => setOpenShare(!openShare)}
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-gray-200 bg-white p-2 sm:px-3 sm:py-1.5 text-sm hover:bg-gray-50"
+                  className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-emerald-100 bg-white/80 backdrop-blur-sm p-2 sm:px-3 sm:py-1.5 text-sm hover:bg-emerald-50 hover:border-emerald-200 transition-all"
                 >
-                  <Share2 className="w-4 h-4 sm:mr-1 flex-shrink-0" />
-                  <span className="hidden sm:inline">Chia sẻ</span>
+                  <Share2 className="w-4 h-4 sm:mr-1 flex-shrink-0 text-emerald-600" />
+                  <span className="hidden sm:inline text-gray-700">Chia sẻ</span>
                 </button>
 
                 {openShare && (
-                  <div className="absolute mt-2 w-44 rounded-xl border border-gray-200 bg-white shadow-lg p-2 z-50">
+                  <div className="absolute mt-2 w-44 rounded-xl border border-emerald-100 bg-white/95 backdrop-blur-md shadow-lg shadow-emerald-500/10 p-2 z-50">
                     <a
                       href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
                         currentUrl
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-2 py-2 text-sm rounded-lg hover:bg-gray-50"
+                      className="flex items-center gap-2 px-2 py-2 text-sm rounded-lg hover:bg-emerald-50 transition-colors"
                     >
-                      <Facebook className="w-4 h-4 text-blue-600" />
+                      <FaFacebook className="w-4 h-4 text-blue-600" />
                       Facebook
                     </a>
 
@@ -80,7 +92,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-2 py-2 text-sm rounded-lg hover:bg-gray-50"
+                      className="flex items-center gap-2 px-2 py-2 text-sm rounded-lg hover:bg-emerald-50 transition-colors"
                     >
                       <MessageCircle className="w-4 h-4 text-sky-500" />
                       Zalo
@@ -88,17 +100,17 @@ export function Article({ post, relatedPosts }: ArticleProps) {
 
                     <button
                       onClick={copyLink}
-                      className="flex items-center gap-2 px-2 py-2 text-sm w-full rounded-lg hover:bg-gray-50"
+                      className="flex items-center gap-2 px-2 py-2 text-sm w-full rounded-lg hover:bg-emerald-50 transition-colors"
                     >
                       {copied ? (
                         <>
-                          <Check className="w-4 h-4 text-green-600" />
+                          <Check className="w-4 h-4 text-emerald-600" />
                           Đã sao chép
                         </>
                       ) : (
                         <>
-                          <Copy className="w-4 h-4" />
-                          Sao chép link
+                          <Copy className="w-4 h-4 text-gray-500" />
+                          Sao chép liên kết
                         </>
                       )}
                     </button>
@@ -108,15 +120,15 @@ export function Article({ post, relatedPosts }: ArticleProps) {
             </div>
 
             {/* Save Button */}
-            <button className="inline-flex items-center justify-center rounded-full border border-gray-200 bg-white p-2 sm:px-3 sm:py-1.5 text-sm hover:bg-gray-50">
+            <button className="inline-flex items-center justify-center rounded-full border border-emerald-100 bg-white/80 backdrop-blur-sm p-2 sm:px-3 sm:py-1.5 text-sm hover:bg-emerald-50 hover:border-emerald-200 transition-all">
               <svg
-                className="w-4 h-4 sm:mr-1"
+                className="w-4 h-4 sm:mr-1 text-emerald-600"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
                 <path d="m12 21-1.45-1.32C6 15.36 3 12.28 3 8.5A4.5 4.5 0 0 1 7.5 4 5.4 5.4 0 0 1 12 6.09 5.4 5.4 0 0 1 16.5 4 4.5 4.5 0 0 1 21 8.5c0 3.78-3 6.86-7.55 11.18L12 21z" />
               </svg>
-              <span className="hidden sm:inline">Lưu</span>
+              <span className="hidden sm:inline text-gray-700">Lưu</span>
             </button>
           </div>
         </div>
@@ -124,7 +136,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
         {/* Author */}
         <div className="mt-3 items-center gap-3 text-sm">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-9 h-9 relative rounded-full overflow-hidden">
+            <div className="w-9 h-9 relative rounded-full overflow-hidden ring-2 ring-emerald-100">
               <Image
                 src={"https://i.pravatar.cc/64"}
                 alt={post.author.full_name}
@@ -150,7 +162,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
             {post.post_types.map((pt) => (
               <span
                 key={pt.id}
-                className="inline-block rounded-full bg-indigo-50 text-indigo-700 px-3 py-1 text-xs font-medium"
+                className="inline-block rounded-full bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 px-3 py-1 text-xs font-medium border border-emerald-100/50"
               >
                 {pt.name}
               </span>
@@ -164,7 +176,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
             <Link
               key={tag.id}
               href={`/?q=${encodeURIComponent(tag.name)}`}
-              className="inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1 text-xs text-gray-700 hover:bg-gray-50"
+              className="inline-flex items-center rounded-full border border-emerald-100 bg-white/80 px-3 py-1 text-xs text-gray-700 hover:bg-emerald-50 hover:border-emerald-200 transition-all"
             >
               #{tag.name}
             </Link>
@@ -173,7 +185,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
       </section>
 
       {/* Content */}
-      <section className="mt-4 rounded-2xl bg-white border border-gray-200 shadow-sm p-4 prose prose-sm sm:prose-base max-w-none prose-headings:scroll-mt-20 transition-all duration-300 overflow-hidden">
+      <section className="mt-4 rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-4 prose prose-sm sm:prose-base max-w-none prose-headings:scroll-mt-20 prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-emerald-600 prose-a:no-underline hover:prose-a:underline transition-all duration-300 overflow-hidden">
         <div
           className={`${expanded ? "" : "max-h-[300px] overflow-hidden"}`}
           dangerouslySetInnerHTML={{
@@ -183,7 +195,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
         <div className="text-center mt-4">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="text-indigo-600 hover:underline text-sm font-medium"
+            className="text-emerald-600 hover:text-emerald-700 text-sm font-medium px-4 py-2 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-all"
           >
             {expanded ? "Thu gọn ▲" : "Xem thêm ▼"}
           </button>
@@ -191,10 +203,10 @@ export function Article({ post, relatedPosts }: ArticleProps) {
       </section>
 
       {/* Related Posts */}
-      <section className="mt-4 rounded-2xl bg-white border border-gray-200 shadow-sm p-5">
+      <section className="mt-4 rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-5">
         <div className="flex items-center justify-between mb-3">
-          <div className="font-semibold">Bài viết liên quan</div>
-          <Link href="#top" className="text-sm text-indigo-600 hover:underline">
+          <div className="font-semibold text-gray-900">Bài viết liên quan</div>
+          <Link href="/tin-tuc" className="text-sm text-emerald-600 hover:text-emerald-700 hover:underline transition-colors">
             Về danh sách
           </Link>
         </div>
@@ -202,8 +214,8 @@ export function Article({ post, relatedPosts }: ArticleProps) {
           {relatedPosts.map((p) => (
             <Link
               key={p.slug}
-              href={`/bai-viet/${p.slug}`}
-              className="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white hover:border-indigo-200 hover:bg-indigo-50/30 transition p-2"
+              href={`/tin-tuc/${p.slug}`}
+              className="group flex items-center gap-3 rounded-xl border border-emerald-100/50 bg-white/80 hover:border-emerald-200 hover:bg-emerald-50/50 transition-all p-2"
             >
               <div className="w-28 sm:w-32 aspect-[4/3] relative flex-none overflow-hidden rounded-lg bg-gray-100">
                 <Image
@@ -218,7 +230,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
                 <div className="text-xs text-gray-500">
                   {new Date(p.published_at).toLocaleDateString("vi-VN")}
                 </div>
-                <div className="mt-0.5 font-medium text-gray-900 line-clamp-2 group-hover:text-indigo-600">
+                <div className="mt-0.5 font-medium text-gray-900 line-clamp-2 group-hover:text-emerald-600 transition-colors">
                   {p.title}
                 </div>
                 <div className="mt-1 text-[11px] text-gray-500 truncate">

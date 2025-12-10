@@ -6,11 +6,8 @@ import { Post } from '../../component/types';
 import { normalize } from 'path';
 import Image from 'next/image';
 
-
 // Mock posts for search (replace with API in production)
-const MOCK_POSTS: Post[] = [
-  // Same as in page.tsx
-];
+const MOCK_POSTS: Post[] = [];
 
 interface PostSearchProps {
   isMobile?: boolean;
@@ -35,12 +32,12 @@ export function PostSearch({ isMobile = false }: PostSearchProps) {
   };
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
-      <div className="text-sm font-semibold mb-2">Tìm kiếm bài viết</div>
+    <div className="rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-4">
+      <div className="text-sm font-semibold mb-2 text-gray-800">Tìm kiếm bài viết</div>
       <label className="relative block">
         <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
           <svg
-            className="h-4 w-4 text-gray-400"
+            className="h-4 w-4 text-emerald-500"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -50,7 +47,7 @@ export function PostSearch({ isMobile = false }: PostSearchProps) {
           </svg>
         </span>
         <input
-          className="w-full rounded-full bg-white pl-9 pr-3 py-2 text-sm text-gray-700 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full rounded-full bg-white/80 pl-9 pr-3 py-2 text-sm text-gray-700 border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-200 transition-all"
           placeholder="Nhập tiêu đề bài viết..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -67,15 +64,15 @@ export function PostSearch({ isMobile = false }: PostSearchProps) {
               className="flex items-center gap-3 group w-full text-left"
             >
               <Image
-  src={p.cover_image_url}
-  alt={p.title}
-  width={48}        // tương ứng w-12
-  height={48}       // tương ứng h-12
-  className="rounded-lg object-cover border border-gray-200"
-  unoptimized
-/>
+                src={p.cover_image_url}
+                alt={p.title}
+                width={48}
+                height={48}
+                className="rounded-lg object-cover border border-emerald-100"
+                unoptimized
+              />
               <div className="min-w-0">
-                <div className="truncate text-sm font-medium text-gray-900 group-hover:text-indigo-600">
+                <div className="truncate text-sm font-medium text-gray-900 group-hover:text-emerald-600 transition-colors">
                   {p.title}
                 </div>
                 <div className="text-xs text-gray-500">
