@@ -16,6 +16,11 @@ interface ListingDetailProps {
 }
 
 const ListingDetail: React.FC<ListingDetailProps> = ({ listing }) => {
+  // Scroll to top khi vào trang
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     const jsonLd = {
       "@context": "https://schema.org",

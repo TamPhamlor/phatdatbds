@@ -293,7 +293,7 @@ const LichHenMoiGioi: React.FC = () => {
             required
             name="hoTen"
             placeholder="Họ và tên"
-            className="w-full rounded-full border border-emerald-100 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+            className="w-full rounded-full border border-emerald-100 bg-white/80 px-4 py-2.5 text-base focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-500/20 transition-all"
             value={duLieuForm.hoTen}
             onChange={handleChange}
           />
@@ -302,7 +302,7 @@ const LichHenMoiGioi: React.FC = () => {
             required
             name="email"
             placeholder="Địa chỉ email"
-            className="w-full rounded-full border border-emerald-100 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+            className="w-full rounded-full border border-emerald-100 bg-white/80 px-4 py-2.5 text-base focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-500/20 transition-all"
             value={duLieuForm.email}
             onChange={handleChange}
           />
@@ -311,7 +311,7 @@ const LichHenMoiGioi: React.FC = () => {
               type="tel"
               name="soDienThoai"
               placeholder="Số điện thoại"
-              className="rounded-full border border-emerald-100 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+              className="rounded-full border border-emerald-100 bg-white/80 px-4 py-2.5 text-base focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-500/20 transition-all"
               value={duLieuForm.soDienThoai}
               onChange={handleChange}
             />
@@ -325,7 +325,7 @@ const LichHenMoiGioi: React.FC = () => {
             name="loiNhan"
             placeholder="Lời nhắn của bạn…"
             rows={3}
-            className="w-full rounded-2xl border border-emerald-100 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-500/20 transition-all resize-none"
+            className="w-full rounded-2xl border border-emerald-100 bg-white/80 px-4 py-2.5 text-base focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-500/20 transition-all resize-none"
             value={duLieuForm.loiNhan}
             onChange={handleChange}
           />
