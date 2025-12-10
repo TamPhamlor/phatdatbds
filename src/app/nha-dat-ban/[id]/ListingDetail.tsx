@@ -3,6 +3,7 @@ import { Listing } from "@/app/types/products";
 import Breadcrumb from "./component/Breadcrumb";
 import HeroGallery from "./component/HeroGallery";
 import PropertyInfo from "./component/PropertyInfo";
+import MainInfoMobile from "./component/MainInfoMobile";
 import Tabs from "./component/Tabs";
 import PhotoGallery from "./component/PhotoGallery";
 import AgentSchedule from "./component/AgentSchedule";
@@ -43,13 +44,14 @@ const ListingDetail: React.FC<ListingDetailProps> = ({ listing }) => {
   }, [listing]);
 
   return (
-    <div className="bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <Breadcrumb listing={listing} />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 pb-5">
+      <main className="container-std py-6 pb-24 lg:pb-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-8 space-y-6">
+          <div className="lg:col-span-8 space-y-5">
             <HeroGallery images={listing.images} />
             <PropertyInfo listing={listing} />
+            <MainInfoMobile listing={listing} />
             <Tabs listing={listing} />
             <PhotoGallery images={listing.images} />
             <AgentSchedule />

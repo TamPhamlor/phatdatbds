@@ -477,14 +477,14 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                 spaceBetween={16}
                 onSwiper={(swiper: SwiperType) => setRef("explore", swiper)}
               >
-              {listings.map((item) => (
-                <SwiperSlide key={item.id} className="h-auto">
+              {listings.map((item, index) => (
+                <SwiperSlide key={`listing-${item.id}-${index}`} className="h-auto">
                   <Link
                     href={item.slug ? `/nha-dat-ban/${item.slug}` : "#"}
                     aria-label={`Xem chi tiết: ${item.title}`}
                     className="block h-full"
                   >
-                    <SlideCard item={item} />
+                    <SlideCard item={item} index={index} />
                   </Link>
                 </SwiperSlide>
               ))}

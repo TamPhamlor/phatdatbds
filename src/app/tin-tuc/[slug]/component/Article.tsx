@@ -185,19 +185,47 @@ export function Article({ post, relatedPosts }: ArticleProps) {
       </section>
 
       {/* Content */}
-      <section className="mt-4 rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-4 prose prose-sm sm:prose-base max-w-none prose-headings:scroll-mt-20 prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-emerald-600 prose-a:no-underline hover:prose-a:underline transition-all duration-300 overflow-hidden">
+      <section className="mt-4 rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-4 md:p-8">
         <div
-          className={`${expanded ? "" : "max-h-[300px] overflow-hidden"}`}
+          className={`prose prose-sm md:prose-base max-w-none [&>p]:mb-6 [&>p]:md:mb-7
+            prose-headings:font-semibold prose-headings:text-gray-900 prose-headings:mt-8 prose-headings:mb-4 md:prose-headings:mt-10 md:prose-headings:mb-5
+            prose-h2:text-lg prose-h2:md:text-xl
+            prose-h3:text-base prose-h3:md:text-lg
+            prose-p:text-gray-700 prose-p:leading-7 prose-p:text-[15px] prose-p:md:text-base
+            prose-a:text-emerald-600 prose-a:font-medium hover:prose-a:underline
+            prose-strong:text-gray-900
+            prose-ul:my-5 prose-ul:pl-5 prose-li:mb-2 prose-li:text-gray-700 prose-li:text-[15px] prose-li:md:text-base
+            prose-ol:my-5 prose-ol:pl-5
+            prose-img:rounded-xl prose-img:my-6
+            prose-blockquote:border-l-4 prose-blockquote:border-emerald-500 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600 prose-blockquote:text-sm prose-blockquote:md:text-base prose-blockquote:my-6
+            ${expanded ? "" : "max-h-[400px] overflow-hidden relative"}`}
           dangerouslySetInnerHTML={{
             __html: post.content.replace(/\r\n\r\n/g, "<p>"),
           }}
         />
-        <div className="text-center mt-4">
+        {!expanded && (
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white/95 to-transparent pointer-events-none" />
+        )}
+        <div className="text-center mt-6">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="text-emerald-600 hover:text-emerald-700 text-sm font-medium px-4 py-2 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-all"
+            className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium px-5 py-2.5 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-all"
           >
-            {expanded ? "Thu gọn ▲" : "Xem thêm ▼"}
+            {expanded ? (
+              <>
+                Thu gọn
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 15l-6-6-6 6" />
+                </svg>
+              </>
+            ) : (
+              <>
+                Đọc tiếp bài viết
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </>
+            )}
           </button>
         </div>
       </section>

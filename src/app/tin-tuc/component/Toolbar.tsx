@@ -99,8 +99,8 @@ export default function Toolbar({ state, setState, onReset }: ToolbarProps) {
               <div className="flex items-center gap-2 text-sm text-emerald-700 flex-wrap">
                 <span className="font-medium">Bộ lọc:</span>
                 {state.cat !== "all" && <span className="px-2 py-1 bg-emerald-100 rounded-full text-xs">{categories.find((c) => c.id === state.cat)?.label}</span>}
-                {state.q && <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">&quot;{state.q}&quot;</span>}
-                {state.tag && <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">#{state.tag}</span>}
+                {state.q && <span className="px-2 py-1 bg-teal-100 text-teal-800 rounded-full text-xs">&quot;{state.q}&quot;</span>}
+                {state.tag && <span className="px-2 py-1 bg-emerald-200 text-emerald-800 rounded-full text-xs">#{state.tag}</span>}
               </div>
             </div>
           )}
