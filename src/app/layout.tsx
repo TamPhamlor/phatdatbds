@@ -1,11 +1,12 @@
 // app/layout.tsx
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HeaderProgress from "./components/HeaderProgress";
 import { NetworkProgressProvider } from "./components/NetworkProgress";
+import ZoomResetHandler from "./components/ZoomResetHandler";
 import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -83,15 +84,22 @@ export const metadata: Metadata = {
   },
 };
 
+// Viewport config - chặn zoom khi focus input trên iOS
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi">
       <head>
         <meta charSet="utf-8" />
-        {/* viewport - chặn zoom khi focus input trên iOS */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       </head>
       <body className={`${inter.variable} antialiased`}>
+        <ZoomResetHandler />
         <NetworkProgressProvider>
           <Suspense fallback={null}><HeaderProgress /></Suspense>
           <Suspense fallback={null}><Header /></Suspense>

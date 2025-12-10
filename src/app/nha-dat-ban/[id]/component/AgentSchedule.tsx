@@ -328,6 +328,7 @@ const LichHenMoiGioi: React.FC = () => {
             className="w-full rounded-2xl border border-emerald-100 bg-white/80 px-4 py-2.5 text-base focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-500/20 transition-all resize-none"
             value={duLieuForm.loiNhan}
             onChange={handleChange}
+            onBlur={resetZoomOnBlur}
           />
           <div>
             <button
