@@ -88,8 +88,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="vi">
       <head>
         <meta charSet="utf-8" />
-        {/* viewport là best practice */}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* viewport - chặn zoom khi focus input trên iOS */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       </head>
       <body className={`${inter.variable} antialiased`}>
         <NetworkProgressProvider>
