@@ -91,7 +91,15 @@ export default function FilterPanel({ detailOpen = false, meta, onFilter }: Filt
     });
     return `?${params.toString()}`;
   };
-  const pushFilters = (f: Filters) => { router.push(buildQueryFromFilters(f)); setFilters(f); onFilter?.(f); };
+  const pushFilters = (f: Filters) => { 
+    router.push(buildQueryFromFilters(f)); 
+    setFilters(f); 
+    onFilter?.(f);
+    // Scroll to top trên mobile
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   // Clear per-section
   const clearLocation = () => pushFilters({ ...filters, province_id: undefined, ward_id: undefined });

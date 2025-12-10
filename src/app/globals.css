@@ -224,18 +224,52 @@ html {
   }
 }
 
-/* Menu Link Hover Effect - Simple & Clean */
+/* Menu Link Hover Effect - Enhanced */
 .menu-link {
   position: relative;
   padding: 0.5rem 1.25rem;
   border-radius: 9999px;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
+  color: #374151;
+}
+
+.menu-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(20, 184, 166, 0.15));
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .menu-link:hover {
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  transform: translateY(-2px);
+}
+
+.menu-link:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.menu-link::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #10b981, #14b8a6);
+  border-radius: 9999px;
+  transform: translateX(-50%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-link:hover::after {
+  width: 60%;
 }
 
 /* Gradient Text Highlight */

@@ -209,7 +209,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
         <div className="text-center mt-6">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm font-medium px-5 py-2.5 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-all"
+            className="inline-flex items-center gap-2 text-white text-sm font-semibold px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5 transition-all"
           >
             {expanded ? (
               <>

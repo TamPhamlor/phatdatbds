@@ -52,6 +52,11 @@ export default function CategoryFilter({ meta }: Props) {
       params.set("property_type_id", String(id));
     }
     router.push(`/nha-dat-ban?${params.toString()}`);
+    
+    // Scroll to top trên mobile
+    if (window.innerWidth < 1024) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   /** ========= Drag-to-scroll & Wheel-to-horizontal ========== */

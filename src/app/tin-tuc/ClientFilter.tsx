@@ -26,9 +26,24 @@ export function ClientFilter({ posts }: ClientFilterProps) {
     });
   };
 
-  const handleReset = () => setState({ q: '', cat: 'all', tag: '' });
-  const handleTagClick = (tag: string) => setState({ ...state, tag: state.tag === tag ? '' : tag });
-  const handleHotPostClick = (title: string) => setState({ ...state, q: title });
+  const handleReset = () => {
+    setState({ q: '', cat: 'all', tag: '' });
+    if (window.innerWidth < 1024) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+  const handleTagClick = (tag: string) => {
+    setState({ ...state, tag: state.tag === tag ? '' : tag });
+    if (window.innerWidth < 1024) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+  const handleHotPostClick = (title: string) => {
+    setState({ ...state, q: title });
+    if (window.innerWidth < 1024) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const filteredPosts = applyFilter();
 
