@@ -38,6 +38,7 @@ function Lightbox({
       window.removeEventListener("keydown", handleKey);
       document.body.style.overflow = "";
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex]);
 
   return (

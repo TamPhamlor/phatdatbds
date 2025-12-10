@@ -18,9 +18,10 @@ const PropertyInfo: React.FC<PropertyInfoProps> = ({ listing }) => {
           <span className="text-2xl sm:text-3xl font-bold text-red-600">
             {listing.price_total_text}
           </span>
-          {listing.price_per_m2_text && (
+          <span className="text-red-500 font-medium">VNĐ</span>
+          {listing.price_per_m2 && (
             <span className="text-sm text-gray-500">
-              • {listing.price_per_m2_text}/m²
+              • {listing.price_per_m2}/m²
             </span>
           )}
         </div>
@@ -61,9 +62,9 @@ const PropertyInfo: React.FC<PropertyInfoProps> = ({ listing }) => {
         <span className="rounded-full border border-emerald-100 bg-emerald-50/50 px-3 py-1.5 text-sm text-emerald-700">
           {listing.area_land} m²
         </span>
-        {listing.direction?.name && (
+        {listing.direction && (
           <span className="rounded-full border border-emerald-100 bg-emerald-50/50 px-3 py-1.5 text-sm text-emerald-700">
-            Hướng {listing.direction.name}
+            Hướng {listing.direction}
           </span>
         )}
       </div>
