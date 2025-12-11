@@ -857,18 +857,21 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
               text="Hướng dẫn chi tiết về thủ tục, giấy tờ cần thiết, quy trình mua bán đất nền và nhà phố tại Nhơn Trạch."
               cta="Xem tin tức"
               image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80"
+              href="/tin-tuc"
             />
             <ResourceCard
               title="Tư vấn pháp lý miễn phí"
               text="Đội ngũ luật sư giàu kinh nghiệm hỗ trợ kiểm tra sổ đỏ, hợp đồng, giải quyết tranh chấp bất động sản."
               cta="Tư vấn ngay"
               image="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80"
+              href="/lien-he"
             />
             <ResourceCard
               title="Định giá bất động sản"
               text="Dịch vụ định giá chuyên nghiệp, chính xác giúp bạn mua bán đúng giá thị trường tại Nhơn Trạch."
               cta="Định giá ngay"
               image="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80"
+              href="/lien-he"
             />
           </div>
         </div>
