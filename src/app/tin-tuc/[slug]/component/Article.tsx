@@ -16,6 +16,14 @@ interface Tag {
   };
 }
 
+interface SavedPost {
+  slug: string;
+  title: string;
+  cover_image_url: string;
+  published_at: string;
+  savedAt: string;
+}
+
 
 
 interface ArticleProps {
@@ -50,11 +58,11 @@ export function Article({ post, relatedPosts }: ArticleProps) {
         savedAt: new Date().toISOString()
       };
       
-      const isAlreadySaved = savedPosts.some((p: any) => p.slug === post.slug);
+      const isAlreadySaved = savedPosts.some((p: SavedPost) => p.slug === post.slug);
       
       if (isAlreadySaved) {
         // Remove from saved
-        const updatedPosts = savedPosts.filter((p: any) => p.slug !== post.slug);
+        const updatedPosts = savedPosts.filter((p: SavedPost) => p.slug !== post.slug);
         localStorage.setItem('savedPosts', JSON.stringify(updatedPosts));
         setSaved(false);
       } else {
@@ -72,7 +80,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
   useEffect(() => {
     try {
       const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
-      const isAlreadySaved = savedPosts.some((p: any) => p.slug === post.slug);
+      const isAlreadySaved = savedPosts.some((p: SavedPost) => p.slug === post.slug);
       setSaved(isAlreadySaved);
     } catch (err) {
       console.error("Kiểm tra bài viết đã lưu thất bại:", err);
