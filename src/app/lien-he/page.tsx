@@ -17,10 +17,37 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setSubmitted(true);
+
+    try {
+      const response = await fetch(
+        "https://api.phatdatbatdongsan.com/api/v1/contact-us",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            message: formData.subject 
+              ? `[${formData.subject}] ${formData.message}` 
+              : formData.message,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Gửi yêu cầu thất bại");
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Lỗi:", error);
+      alert("Có lỗi xảy ra, vui lòng thử lại sau.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -37,7 +64,8 @@ export default function ContactPage() {
             </svg>
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Gửi thành công!</h2>
-          <p className="text-gray-600 mb-8">Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi trong thời gian sớm nhất.</p>
+          <p className="text-gray-600 mb-4">Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi trong thời gian sớm nhất.</p>
+          <p className="text-sm text-gray-500 mb-8">Nếu không thấy email phản hồi, vui lòng kiểm tra hộp thư Spam.</p>
           <button
             onClick={() => { setSubmitted(false); setFormData({ name: '', phone: '', email: '', subject: '', message: '' }); }}
             className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold hover:from-emerald-600 hover:to-emerald-700 shadow-lg shadow-emerald-200/50 transition-all"

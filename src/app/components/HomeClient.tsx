@@ -173,10 +173,27 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
 
     setSupportLoading(true);
     try {
-      // Mock API call
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      setSupportSuccess(true);
+      const response = await fetch(
+        "https://api.phatdatbatdongsan.com/api/v1/contact-us",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: supportForm.name,
+            email: supportForm.email,
+            phone: "",
+            message: `[Nhu cầu: ${supportForm.need}] ${supportForm.message}${supportForm.query ? ` | Tìm kiếm: ${supportForm.query}` : ""}`,
+          }),
+        }
+      );
 
+      if (!response.ok) {
+        throw new Error("Gửi yêu cầu thất bại");
+      }
+
+      setSupportSuccess(true);
       setSupportForm((prev) => ({
         ...prev,
         name: "",
@@ -1051,6 +1068,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                 {supportSuccess && (
                   <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 text-center">
                     <p className="text-green-700 font-medium">✅ Cảm ơn bạn! Chúng tôi sẽ liên hệ trong thời gian sớm nhất.</p>
+                    <p className="text-green-600 text-sm mt-1">Nếu không thấy email phản hồi, vui lòng kiểm tra hộp thư Spam.</p>
                   </div>
                 )}
                 {supportError && (

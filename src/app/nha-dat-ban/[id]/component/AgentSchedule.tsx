@@ -234,8 +234,16 @@ const LichHenMoiGioi: React.FC = () => {
 
       if (!response.ok) throw new Error("Gửi yêu cầu thất bại");
 
+      const data = await response.json();
+      console.log("Phản hồi từ server:", data);
       setThongBao("✅ Gửi yêu cầu thành công! Chúng tôi sẽ liên hệ bạn sớm nhất.");
-      setDuLieuForm({ hoTen: "", email: "", soDienThoai: "", ngayHen: "", loiNhan: "" });
+      setDuLieuForm({
+        hoTen: "",
+        email: "",
+        soDienThoai: "",
+        ngayHen: "",
+        loiNhan: "",
+      });
     } catch (error) {
       console.error("Lỗi:", error);
       setThongBao("❌ Có lỗi xảy ra, vui lòng thử lại sau.");
