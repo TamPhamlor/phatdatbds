@@ -25,7 +25,6 @@ interface ArticleProps {
 }
 
 export function Article({ post, relatedPosts }: ArticleProps) {
-  const [expanded, setExpanded] = useState(false);
   const [openShare, setOpenShare] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -187,7 +186,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
       {/* Content - mobile: bỏ padding/border để tăng diện tích */}
       <section className="mt-4 md:rounded-2xl md:bg-white/70 md:backdrop-blur-md md:border md:border-emerald-100/50 md:shadow-sm p-0 md:p-8">
         <div
-          className={`article-content prose prose-sm md:prose-base max-w-none
+          className="article-content prose prose-sm md:prose-base max-w-none
             [&>*]:!text-[15px] [&>*]:!md:text-base
             [&>p]:mb-5 [&>p]:leading-7 [&>p]:text-gray-700
             prose-headings:font-semibold prose-headings:text-gray-900 prose-headings:mt-6 prose-headings:mb-3 md:prose-headings:mt-8 md:prose-headings:mb-4
@@ -205,37 +204,11 @@ export function Article({ post, relatedPosts }: ArticleProps) {
             [&_tbody_tr]:border-b [&_tbody_tr]:border-emerald-100 [&_tbody_tr:last-child]:border-0
             [&_tbody_tr:nth-child(even)]:bg-emerald-50/50
             [&_tbody_tr]:hover:bg-emerald-50 [&_tbody_tr]:transition-colors
-            [&_td]:px-3 [&_td]:py-2.5 [&_td]:text-gray-700 [&_td]:!text-sm
-            ${expanded ? "" : "max-h-[400px] overflow-hidden relative"}`}
+            [&_td]:px-3 [&_td]:py-2.5 [&_td]:text-gray-700 [&_td]:!text-sm"
           dangerouslySetInnerHTML={{
             __html: post.content.replace(/\r\n\r\n/g, "<p>"),
           }}
         />
-        {!expanded && (
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white/95 to-transparent pointer-events-none" />
-        )}
-        <div className="text-center mt-6">
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="inline-flex items-center gap-2 text-white text-sm font-semibold px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5 transition-all"
-          >
-            {expanded ? (
-              <>
-                Thu gọn
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 15l-6-6-6 6" />
-                </svg>
-              </>
-            ) : (
-              <>
-                Đọc tiếp bài viết
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </>
-            )}
-          </button>
-        </div>
       </section>
 
       {/* Related Posts - chỉ hiện trên mobile */}
