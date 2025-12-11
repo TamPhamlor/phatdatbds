@@ -2,6 +2,7 @@
 import { Metadata } from "next";
 import { Post } from "../component/types";
 import PostLayout from "./PostLayout";
+import { generateArticleSchema, SITE_URL } from "@/lib/seo";
 
 async function fetchPost(slug: string): Promise<Post> {
   const res = await fetch(`https://phatdatbatdongsan.com/api/v1/posts/${slug}`, {
@@ -57,5 +58,25 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const post = await fetchPost(slug);
   const relatedPosts = await fetchRelatedPosts(post.category?.code || "", post.id);
 
-  return <PostLayout post={post} relatedPosts={relatedPosts} />;
+  const articleSchema = generateArticleSchema({
+    title: post.title,
+    description: post.summary || post.meta_description || "",
+    url: `${SITE_URL}/tin-tuc/${post.slug}`,
+    image: post.cover_image_url || post.og_image || "",
+    datePublished: post.published_at,
+    dateModified: post.updated_at,
+    authorName: post.author?.full_name || "Phát Đạt BĐS",
+  });
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema),
+        }}
+      />
+      <PostLayout post={post} relatedPosts={relatedPosts} />
+    </>
+  );
 }

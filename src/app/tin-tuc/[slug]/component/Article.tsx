@@ -175,7 +175,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
           {post.tags.map((tag: Tag) => (
             <Link
               key={tag.id}
-              href={`/?q=${encodeURIComponent(tag.name)}`}
+              href={`/tin-tuc?tag=${encodeURIComponent(tag.name)}`}
               className="inline-flex items-center rounded-full border border-emerald-100 bg-white/80 px-3 py-1 text-xs text-gray-700 hover:bg-emerald-50 hover:border-emerald-200 transition-all"
             >
               #{tag.name}
@@ -230,8 +230,8 @@ export function Article({ post, relatedPosts }: ArticleProps) {
         </div>
       </section>
 
-      {/* Related Posts */}
-      <section className="mt-4 rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-5">
+      {/* Related Posts - chỉ hiện trên mobile */}
+      <section className="lg:hidden mt-4 rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-5">
         <div className="flex items-center justify-between mb-3">
           <div className="font-semibold text-gray-900">Bài viết liên quan</div>
           <Link href="/tin-tuc" className="text-sm text-emerald-600 hover:text-emerald-700 hover:underline transition-colors">

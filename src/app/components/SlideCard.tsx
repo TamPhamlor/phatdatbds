@@ -221,9 +221,6 @@ const Card: React.FC<CardProps> = ({ item, index }) => {
           {/* Price badge - NỔI BẬT HƠN */}
           <div className="absolute bottom-3 left-3 right-3">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/30">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
-              </svg>
               <span className="text-base font-bold tracking-wide">{item.price}</span>
             </div>
           </div>

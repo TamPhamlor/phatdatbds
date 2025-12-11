@@ -22,7 +22,7 @@ export default function PostLayout({
       <main className="container-std py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <Article post={post} relatedPosts={relatedPosts} />
-          <Sidebar />
+          <Sidebar relatedPosts={relatedPosts} />
         </div>
         {children}
       </main>

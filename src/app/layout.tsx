@@ -9,11 +9,13 @@ import { NetworkProgressProvider } from "./components/NetworkProgress";
 import ZoomResetHandler from "./components/ZoomResetHandler";
 import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
-
-// Nên set URL site ở biến môi trường để tái dùng (Preview/Prod)
-// NEXT_PUBLIC_SITE_URL=https://phatdatbatdongsan.com
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://phatdatbatdongsan.com";
-const SITE_NAME = "Phát Đạt Bất Động Sản Nhơn Trạch";
+import {
+  organizationSchema,
+  websiteSchema,
+  localBusinessSchema,
+  SITE_URL,
+  SITE_NAME,
+} from "@/lib/seo";
 
 const inter = Inter({
   subsets: ["vietnamese", "latin"],
@@ -97,6 +99,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="vi">
       <head>
         <meta charSet="utf-8" />
+        {/* JSON-LD Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(localBusinessSchema),
+          }}
+        />
       </head>
       <body className={`${inter.variable} antialiased`}>
         <ZoomResetHandler />

@@ -1,16 +1,28 @@
 "use client";
-import { useState } from 'react';
-import { Post, FilterState } from './component/types';
-import Toolbar from './component/Toolbar';
-import Sidebar, { MobileSidebar } from './component/Sidebar';
-import PostList from './component/PostList';
+import { useState } from "react";
+import { Post, FilterState } from "./component/types";
+import Toolbar from "./component/Toolbar";
+import Sidebar, { MobileSidebar } from "./component/Sidebar";
+import PostList from "./component/PostList";
 
 interface ClientFilterProps {
   posts: Post[];
+  initialTag?: string;
+  initialQuery?: string;
+  initialCat?: string;
 }
 
-export function ClientFilter({ posts }: ClientFilterProps) {
-  const [state, setState] = useState<FilterState>({ q: '', cat: 'all', tag: '' });
+export function ClientFilter({
+  posts,
+  initialTag = "",
+  initialQuery = "",
+  initialCat = "all",
+}: ClientFilterProps) {
+  const [state, setState] = useState<FilterState>({
+    q: initialQuery,
+    cat: initialCat,
+    tag: initialTag,
+  });
 
   const normalize = (s: string) =>
     (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'd');
