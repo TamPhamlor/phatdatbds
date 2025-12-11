@@ -217,9 +217,9 @@ const Header: React.FC = () => {
 
           {/* Liên hệ */}
           <Link
-            href="#cta-support"
+            href="/lien-he"
             className={`mobile-nav-item ${
-              isActive("#cta-support") ? "mobile-nav-active" : ""
+              isActive("/lien-he") ? "mobile-nav-active" : ""
             }`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
