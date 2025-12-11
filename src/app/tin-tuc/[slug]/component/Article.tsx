@@ -184,20 +184,28 @@ export function Article({ post, relatedPosts }: ArticleProps) {
         </div>
       </section>
 
-      {/* Content */}
-      <section className="mt-4 rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-4 md:p-8">
+      {/* Content - mobile: bỏ padding/border để tăng diện tích */}
+      <section className="mt-4 md:rounded-2xl md:bg-white/70 md:backdrop-blur-md md:border md:border-emerald-100/50 md:shadow-sm p-0 md:p-8">
         <div
-          className={`prose prose-sm md:prose-base max-w-none [&>p]:mb-6 [&>p]:md:mb-7
-            prose-headings:font-semibold prose-headings:text-gray-900 prose-headings:mt-8 prose-headings:mb-4 md:prose-headings:mt-10 md:prose-headings:mb-5
-            prose-h2:text-lg prose-h2:md:text-xl
-            prose-h3:text-base prose-h3:md:text-lg
-            prose-p:text-gray-700 prose-p:leading-7 prose-p:text-[15px] prose-p:md:text-base
+          className={`article-content prose prose-sm md:prose-base max-w-none
+            [&>*]:!text-[15px] [&>*]:!md:text-base
+            [&>p]:mb-5 [&>p]:leading-7 [&>p]:text-gray-700
+            prose-headings:font-semibold prose-headings:text-gray-900 prose-headings:mt-6 prose-headings:mb-3 md:prose-headings:mt-8 md:prose-headings:mb-4
+            prose-h2:!text-lg prose-h2:md:!text-xl
+            prose-h3:!text-base prose-h3:md:!text-lg
             prose-a:text-emerald-600 prose-a:font-medium hover:prose-a:underline
             prose-strong:text-gray-900
-            prose-ul:my-5 prose-ul:pl-5 prose-li:mb-2 prose-li:text-gray-700 prose-li:text-[15px] prose-li:md:text-base
-            prose-ol:my-5 prose-ol:pl-5
-            prose-img:rounded-xl prose-img:my-6
-            prose-blockquote:border-l-4 prose-blockquote:border-emerald-500 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600 prose-blockquote:text-sm prose-blockquote:md:text-base prose-blockquote:my-6
+            prose-ul:my-4 prose-ul:pl-5 prose-li:mb-2 prose-li:text-gray-700
+            prose-ol:my-4 prose-ol:pl-5
+            prose-img:rounded-xl prose-img:my-5
+            prose-blockquote:border-l-4 prose-blockquote:border-emerald-500 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600 prose-blockquote:my-5
+            [&_table]:w-full [&_table]:border-collapse [&_table]:my-5 [&_table]:rounded-xl [&_table]:overflow-hidden [&_table]:border [&_table]:border-emerald-200
+            [&_thead]:bg-gradient-to-r [&_thead]:from-emerald-500 [&_thead]:to-teal-500
+            [&_th]:!text-white [&_th]:!font-semibold [&_th]:!text-left [&_th]:px-3 [&_th]:py-2.5 [&_th]:!text-sm [&_th]:border-b [&_th]:border-emerald-300
+            [&_tbody_tr]:border-b [&_tbody_tr]:border-emerald-100 [&_tbody_tr:last-child]:border-0
+            [&_tbody_tr:nth-child(even)]:bg-emerald-50/50
+            [&_tbody_tr]:hover:bg-emerald-50 [&_tbody_tr]:transition-colors
+            [&_td]:px-3 [&_td]:py-2.5 [&_td]:text-gray-700 [&_td]:!text-sm
             ${expanded ? "" : "max-h-[400px] overflow-hidden relative"}`}
           dangerouslySetInnerHTML={{
             __html: post.content.replace(/\r\n\r\n/g, "<p>"),
