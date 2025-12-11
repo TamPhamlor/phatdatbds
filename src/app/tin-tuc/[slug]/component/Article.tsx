@@ -113,7 +113,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
           <div className="flex items-center gap-2 mb-3">
             <div className="w-9 h-9 relative rounded-full overflow-hidden ring-2 ring-emerald-100">
               <Image
-                src={"https://i.pravatar.cc/64"}
+                src={"/phatdat_avatar.jpg"}
                 alt={post.author.full_name}
                 fill
                 className="object-cover"

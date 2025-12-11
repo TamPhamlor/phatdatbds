@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Listing } from "@/app/types/products";
 import { PHONE_CONTACT, telLink, zaloLink } from "@/lib/config";
 
@@ -136,13 +137,11 @@ const Sidebar: React.FC<SidebarProps> = ({ listing }) => {
         {/* Liên hệ nhanh */}
         <div className="rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 p-5 text-white">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
+            <div className="w-12 h-12 rounded-full overflow-hidden">
+              <Image src="/phatdat_avatar.jpg" alt="Tư vấn viên" width={48} height={48} className="object-cover" />
             </div>
             <div>
-              <div className="font-semibold">{listing.author || "Phát Đạt BĐS"}</div>
+              <div className="font-semibold">{listing.author || "Phát Đạt Bất Động Sản"}</div>
               <div className="text-emerald-100 text-sm">Chuyên viên tư vấn</div>
             </div>
           </div>

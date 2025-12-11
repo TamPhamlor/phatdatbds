@@ -36,7 +36,7 @@ export async function generateMetadata(
 
   const title = listing?.title || `Tin rao #${id} | Nhà đất bán`;
   const desc =
-    (listing?.description ?? "").slice(0, 180) ||
+    (listing?.description ?? "").replace(/<[^>]*>/g, '').slice(0, 180) ||
     "Tin rao bất động sản - thông tin chi tiết, hình ảnh, giá, pháp lý.";
 
   const cover =
@@ -95,7 +95,7 @@ export default async function ListingDetailPage({
     "@context": "https://schema.org",
     "@type": "RealEstateListing",
     name: listing.title ?? `Tin rao #${id}`,
-    description: listing.description ?? "Tin rao bất động sản chi tiết.",
+    description: (listing.description ?? "Tin rao bất động sản chi tiết.").replace(/<[^>]*>/g, ''),
     url: `${BASE_URL}/nha-dat-ban/${id}`,
     image: (listing.images ?? [])
       .map((img: ListingImage) => img.url)

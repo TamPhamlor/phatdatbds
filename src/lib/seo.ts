@@ -13,7 +13,7 @@ export const organizationSchema = {
   "@type": "RealEstateAgent",
   "@id": `${SITE_URL}/#organization`,
   name: SITE_NAME,
-  alternateName: "Phát Đạt BĐS",
+  alternateName: "Phát Đạt Bất Động Sản",
   url: SITE_URL,
   logo: {
     "@type": "ImageObject",

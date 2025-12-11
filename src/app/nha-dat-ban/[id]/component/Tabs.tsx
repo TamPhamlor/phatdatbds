@@ -12,8 +12,13 @@ const Tabs: React.FC<TabsProps> = ({ listing }) => {
     "overview" | "amenities" | "nearby" | "reviews"
   >("overview");
   const [showFullOverview, setShowFullOverview] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const tabsRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const tabs = [
     { id: "overview", label: "Tổng quan", icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" },
@@ -71,9 +76,9 @@ const Tabs: React.FC<TabsProps> = ({ listing }) => {
       <div className="p-4 md:p-5">
         {/* Tổng quan */}
         <div className={`${activeTab === "overview" ? "" : "hidden"} space-y-5`}>
-          <p className={`text-gray-700 leading-7 text-[15px] ${showFullOverview ? "" : "line-clamp-3"}`}>
-            {listing.description}
-          </p>
+          {mounted && (
+            <p className={`text-gray-700 leading-7 text-[15px] ${showFullOverview ? "" : "line-clamp-3"}`} dangerouslySetInnerHTML={{ __html: listing.description || '' }}></p>
+          )}
           <button
             className="inline-flex items-center gap-1 text-emerald-600 text-sm font-medium hover:text-emerald-700 transition-colors"
             onClick={() => setShowFullOverview(!showFullOverview)}

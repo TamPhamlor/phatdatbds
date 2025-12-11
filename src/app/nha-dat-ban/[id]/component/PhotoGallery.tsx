@@ -2,7 +2,7 @@
 
 import { Listing } from "@/app/types/products";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
 interface PhotoGalleryProps {
@@ -21,6 +21,9 @@ function Lightbox({
   setCurrentIndex: (i: number) => void;
   onClose: () => void;
 }) {
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+
   const goNext = () => setCurrentIndex((currentIndex + 1) % images.length);
   const goPrev = () =>
     setCurrentIndex((currentIndex - 1 + images.length) % images.length);
@@ -43,7 +46,7 @@ function Lightbox({
 
   return (
     <div
-      className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center"
+      className="fixed inset-0 bg-black/30 z-[9999] flex items-center justify-center"
       onClick={onClose}
     >
       {/* Close button */}
@@ -69,14 +72,14 @@ function Lightbox({
 
       {/* Prev button */}
       <button
-        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/50 md:bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 md:hover:bg-white/20 transition-colors z-10"
         onClick={(e) => {
           e.stopPropagation();
           goPrev();
         }}
       >
         <svg
-          className="w-6 h-6"
+          className="w-5 h-5 md:w-6 md:h-6"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -88,14 +91,14 @@ function Lightbox({
 
       {/* Next button */}
       <button
-        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/50 md:bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 md:hover:bg-white/20 transition-colors z-10"
         onClick={(e) => {
           e.stopPropagation();
           goNext();
         }}
       >
         <svg
-          className="w-6 h-6"
+          className="w-5 h-5 md:w-6 md:h-6"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -109,6 +112,23 @@ function Lightbox({
       <div
         className="relative max-w-[90vw] max-h-[80vh]"
         onClick={(e) => e.stopPropagation()}
+        onTouchStart={(e) => {
+          touchStartX.current = e.touches[0].clientX;
+        }}
+        onTouchMove={(e) => {
+          touchEndX.current = e.touches[0].clientX;
+        }}
+        onTouchEnd={() => {
+          if (touchStartX.current !== null && touchEndX.current !== null) {
+            const diff = touchStartX.current - touchEndX.current;
+            if (Math.abs(diff) > 50) {
+              if (diff > 0) goNext();
+              else goPrev();
+            }
+          }
+          touchStartX.current = null;
+          touchEndX.current = null;
+        }}
       >
         <Image
           src={images[currentIndex].url}

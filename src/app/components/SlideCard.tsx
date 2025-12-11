@@ -68,40 +68,32 @@ function ImageLightbox({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.95)",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
         margin: 0,
         padding: 0,
       }}
       onClick={handleOverlayClick}
     >
-      {/* Index badge */}
-      {index !== undefined && (
-        <div
-          style={{
-            position: "absolute",
-            top: "16px",
-            left: "16px",
-            padding: "8px 16px",
-            borderRadius: "9999px",
-            background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-            color: "white",
-            fontSize: "14px",
-            fontWeight: "600",
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            boxShadow: "0 4px 12px rgba(16, 185, 129, 0.4)",
-            zIndex: 2147483647,
-          }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <polyline points="21 15 16 10 5 21" />
-          </svg>
-          Ảnh #{index + 1}
-        </div>
-      )}
+      {/* Title badge */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "16px",
+          left: "16px",
+          right: "16px",
+          padding: "8px 12px",
+          borderRadius: "8px",
+          background: "rgba(0, 0, 0, 0.6)",
+          backdropFilter: "blur(8px)",
+          color: "white",
+          fontSize: "12px",
+          fontWeight: "500",
+          textAlign: "center",
+          zIndex: 2147483647,
+        }}
+      >
+        {alt}
+      </div>
 
       {/* Close button */}
       <button

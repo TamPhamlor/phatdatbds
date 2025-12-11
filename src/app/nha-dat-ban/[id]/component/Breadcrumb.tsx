@@ -40,7 +40,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ listing }) => {
       try {
         await (navigator as Navigator & { share?: (data: ShareData) => Promise<void> }).share?.({
           title: listing.title,
-          text: listing.description?.slice(0, 120),
+          text: listing.description?.replace(/<[^>]*>/g, '').slice(0, 120),
           url: shareUrl,
         });
         return;

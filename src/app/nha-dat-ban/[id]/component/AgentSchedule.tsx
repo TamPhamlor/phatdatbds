@@ -252,7 +252,7 @@ const LichHenMoiGioi: React.FC = () => {
           <div className="flex items-center gap-3">
             <div className="relative">
               <Image
-                src="https://i.pravatar.cc/64?img=32"
+                src="/phatdat_avatar.jpg"
                 alt="Môi giới"
                 width={48}
                 height={48}
@@ -262,7 +262,7 @@ const LichHenMoiGioi: React.FC = () => {
               <span className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white"></span>
             </div>
             <div>
-              <div className="font-semibold text-gray-900">Phát Đạt BĐS</div>
+              <div className="font-semibold text-gray-900">Phát Đạt Bất Động Sản</div>
               <div className="text-sm text-gray-500">Chuyên viên tư vấn</div>
             </div>
           </div>
@@ -271,7 +271,7 @@ const LichHenMoiGioi: React.FC = () => {
           </a>
         </div>
         <p className="text-sm text-gray-600 mt-4 leading-relaxed">
-          Phát Đạt BĐS là đơn vị chuyên tư vấn bất động sản tại Nhơn Trạch với hơn 10 năm kinh nghiệm. 
+          Phát Đạt Bất Động Sản là đơn vị chuyên tư vấn bất động sản tại Nhơn Trạch với hơn 10 năm kinh nghiệm. 
           Chúng tôi cam kết hỗ trợ khách hàng tìm kiếm sản phẩm phù hợp với pháp lý rõ ràng, giá tốt nhất thị trường.
         </p>
       </div>

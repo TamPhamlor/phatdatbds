@@ -38,7 +38,7 @@ export default function PostCard({ post }: PostCardProps) {
       <div className="order-2 px-3 pt-3 pb-2 flex items-center gap-2">
         <Image
           className="rounded-full ring-2 ring-emerald-100"
-          src={`https://picsum.photos/seed/${post.author_id}/40/40`}
+          src="/phatdat_avatar.jpg"
           alt="tác giả"
           width={32}
           height={32}

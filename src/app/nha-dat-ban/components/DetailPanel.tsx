@@ -67,9 +67,19 @@ export default function DetailPanel({ listing, onClose }: DetailPanelProps) {
       {/* Mô tả */}
       <div className="mt-4">
         <div className="text-sm font-semibold text-gray-900 mb-2">Mô tả</div>
-        <p className="text-sm text-gray-600 leading-6 line-clamp-4">
-          {listing.description || "Chưa có mô tả."}
-        </p>
+        <div 
+          className="text-sm text-gray-600 leading-6 line-clamp-4 prose prose-sm max-w-none
+            [&>*]:!text-sm [&>*]:!leading-6 [&>*]:!text-gray-600
+            [&>p]:mb-2 [&>p]:leading-6
+            [&>strong]:font-semibold [&>strong]:text-gray-700
+            [&>em]:italic
+            [&>a]:text-emerald-600 [&>a]:font-medium hover:[&>a]:text-emerald-700
+            [&>ul]:my-2 [&>ul]:pl-4 [&>li]:mb-1
+            [&>ol]:my-2 [&>ol]:pl-4"
+          dangerouslySetInnerHTML={{ 
+            __html: listing.description || "Chưa có mô tả." 
+          }}
+        />
       </div>
 
       {/* Thông tin phòng */}

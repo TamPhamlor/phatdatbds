@@ -65,7 +65,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     image: post.cover_image_url || post.og_image || "",
     datePublished: post.published_at,
     dateModified: post.updated_at,
-    authorName: post.author?.full_name || "Phát Đạt BĐS",
+    authorName: post.author?.full_name || "Phát Đạt Bất Động Sản",
   });
 
   return (

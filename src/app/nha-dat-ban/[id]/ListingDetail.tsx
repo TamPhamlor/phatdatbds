@@ -26,7 +26,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({ listing }) => {
       "@context": "https://schema.org",
       "@type": "Offer",
       name: listing.title,
-      description: listing.description,
+      description: listing.description?.replace(/<[^>]*>/g, '') || '',
       price: listing.price_total,
       priceCurrency: "VND",
       availability: "https://schema.org/InStock",

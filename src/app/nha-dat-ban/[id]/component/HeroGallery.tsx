@@ -26,6 +26,8 @@ function GalleryLightbox({
   const [origin, setOrigin] = useState({ x: "50%", y: "50%" });
   const lastPos = useRef<{ x: number; y: number } | null>(null);
   const lightboxThumbRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   const goNext = () => {
     setCurrentIndex((currentIndex + 1) % images.length);
@@ -109,7 +111,7 @@ function GalleryLightbox({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.95)",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
       }}
       onClick={() => {
         onClose();
@@ -136,26 +138,26 @@ function GalleryLightbox({
 
       {/* Prev button */}
       <button
-        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/50 md:bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 md:hover:bg-white/20 transition-colors z-10"
         onClick={(e) => {
           e.stopPropagation();
           goPrev();
         }}
       >
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M15 18l-6-6 6-6" />
         </svg>
       </button>
 
       {/* Next button */}
       <button
-        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/50 md:bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 md:hover:bg-white/20 transition-colors z-10"
         onClick={(e) => {
           e.stopPropagation();
           goNext();
         }}
       >
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M9 18l6-6-6-6" />
         </svg>
       </button>
@@ -167,6 +169,23 @@ function GalleryLightbox({
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
+        onTouchStart={(e) => {
+          touchStartX.current = e.touches[0].clientX;
+        }}
+        onTouchMove={(e) => {
+          touchEndX.current = e.touches[0].clientX;
+        }}
+        onTouchEnd={() => {
+          if (touchStartX.current !== null && touchEndX.current !== null) {
+            const diff = touchStartX.current - touchEndX.current;
+            if (Math.abs(diff) > 50) {
+              if (diff > 0) goNext();
+              else goPrev();
+            }
+          }
+          touchStartX.current = null;
+          touchEndX.current = null;
+        }}
       >
         <Image
           src={images[currentIndex]?.url || ""}
