@@ -49,7 +49,7 @@ const LichHenMoiGioi: React.FC = () => {
 
       const data = await response.json();
       console.log("Phản hồi từ server:", data);
-      setThongBao("✅ Gửi yêu cầu thành công! Chúng tôi sẽ liên hệ bạn sớm nhất.");
+      setThongBao("✅ Gửi yêu cầu thành công! Chúng tôi sẽ liên hệ bạn sớm nhất. Nếu không thấy email phản hồi, vui lòng kiểm tra hộp thư Spam.");
       setDuLieuForm({
         hoTen: "",
         email: "",
