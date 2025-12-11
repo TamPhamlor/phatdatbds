@@ -19,7 +19,7 @@ export default function PostLayout({
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <Breadcrumb title={post.title} />
-      <main className="container-std py-6">
+      <main className="container-std py-2">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <Article post={post} relatedPosts={relatedPosts} />
           <Sidebar relatedPosts={relatedPosts} />

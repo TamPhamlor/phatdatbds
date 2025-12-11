@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Post } from "../../component/types";
-import { Share2, Copy, Check, MessageCircle } from "lucide-react";
-import { FaFacebook } from "react-icons/fa";
+import { Copy, Check } from "lucide-react";
 
 interface Tag {
   id: number;
@@ -25,8 +24,8 @@ interface ArticleProps {
 }
 
 export function Article({ post, relatedPosts }: ArticleProps) {
-  const [openShare, setOpenShare] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
@@ -40,10 +39,50 @@ export function Article({ post, relatedPosts }: ArticleProps) {
     }
   };
 
+  const savePost = () => {
+    try {
+      const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+      const postData = {
+        slug: post.slug,
+        title: post.title,
+        cover_image_url: post.cover_image_url,
+        published_at: post.published_at,
+        savedAt: new Date().toISOString()
+      };
+      
+      const isAlreadySaved = savedPosts.some((p: any) => p.slug === post.slug);
+      
+      if (isAlreadySaved) {
+        // Remove from saved
+        const updatedPosts = savedPosts.filter((p: any) => p.slug !== post.slug);
+        localStorage.setItem('savedPosts', JSON.stringify(updatedPosts));
+        setSaved(false);
+      } else {
+        // Add to saved
+        savedPosts.unshift(postData);
+        localStorage.setItem('savedPosts', JSON.stringify(savedPosts));
+        setSaved(true);
+      }
+    } catch (err) {
+      console.error("Lưu bài viết thất bại:", err);
+    }
+  };
+
+  // Check if post is already saved on mount
+  useEffect(() => {
+    try {
+      const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+      const isAlreadySaved = savedPosts.some((p: any) => p.slug === post.slug);
+      setSaved(isAlreadySaved);
+    } catch (err) {
+      console.error("Kiểm tra bài viết đã lưu thất bại:", err);
+    }
+  }, [post.slug]);
+
   return (
     <article className="lg:col-span-8">
-      {/* Cover Image */}
-      <div className="rounded-2xl overflow-hidden bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm relative w-full aspect-[16/9]">
+      {/* Cover Image - mobile: tràn viền full width */}
+      <div className="overflow-hidden md:rounded-2xl md:bg-white/70 md:backdrop-blur-md md:border md:border-emerald-100/50 md:shadow-sm relative w-screen left-1/2 -translate-x-1/2 md:w-full md:left-0 md:translate-x-0 aspect-[16/9]">
         <Image
           src={post.cover_image_url}
           alt={post.title}
@@ -53,83 +92,12 @@ export function Article({ post, relatedPosts }: ArticleProps) {
         />
       </div>
 
-      {/* Info Section */}
-      <section className="mt-4 rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-3 md:p-5">
-        <div className="items-start justify-between gap-3 md:flex-nowrap">
+      {/* Info Section - mobile: bỏ border/padding để đồng bộ với content */}
+      <section className="mt-4 md:rounded-2xl md:bg-white/70 md:backdrop-blur-md md:border md:border-emerald-100/50 md:shadow-sm p-0 md:p-5">
+        <div>
           <h1 className="text-2xl md:text-3xl mb-1 md:mb-2 font-semibold text-gray-900">
             {post.title}
           </h1>
-          <div className="relative flex gap-2">
-            {/* Share Button */}
-            <div className="relative">
-              <div className="relative inline-block">
-                <button
-                  onClick={() => setOpenShare(!openShare)}
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-emerald-100 bg-white/80 backdrop-blur-sm p-2 sm:px-3 sm:py-1.5 text-sm hover:bg-emerald-50 hover:border-emerald-200 transition-all"
-                >
-                  <Share2 className="w-4 h-4 sm:mr-1 flex-shrink-0 text-emerald-600" />
-                  <span className="hidden sm:inline text-gray-700">Chia sẻ</span>
-                </button>
-
-                {openShare && (
-                  <div className="absolute mt-2 w-44 rounded-xl border border-emerald-100 bg-white/95 backdrop-blur-md shadow-lg shadow-emerald-500/10 p-2 z-50">
-                    <a
-                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                        currentUrl
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-2 py-2 text-sm rounded-lg hover:bg-emerald-50 transition-colors"
-                    >
-                      <FaFacebook className="w-4 h-4 text-blue-600" />
-                      Facebook
-                    </a>
-
-                    <a
-                      href={`https://zalo.me/share?url=${encodeURIComponent(
-                        currentUrl
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-2 py-2 text-sm rounded-lg hover:bg-emerald-50 transition-colors"
-                    >
-                      <MessageCircle className="w-4 h-4 text-sky-500" />
-                      Zalo
-                    </a>
-
-                    <button
-                      onClick={copyLink}
-                      className="flex items-center gap-2 px-2 py-2 text-sm w-full rounded-lg hover:bg-emerald-50 transition-colors"
-                    >
-                      {copied ? (
-                        <>
-                          <Check className="w-4 h-4 text-emerald-600" />
-                          Đã sao chép
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-4 h-4 text-gray-500" />
-                          Sao chép liên kết
-                        </>
-                      )}
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Save Button */}
-            <button className="inline-flex items-center justify-center rounded-full border border-emerald-100 bg-white/80 backdrop-blur-sm p-2 sm:px-3 sm:py-1.5 text-sm hover:bg-emerald-50 hover:border-emerald-200 transition-all">
-              <svg
-                className="w-4 h-4 sm:mr-1 text-emerald-600"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="m12 21-1.45-1.32C6 15.36 3 12.28 3 8.5A4.5 4.5 0 0 1 7.5 4 5.4 5.4 0 0 1 12 6.09 5.4 5.4 0 0 1 16.5 4 4.5 4.5 0 0 1 21 8.5c0 3.78-3 6.86-7.55 11.18L12 21z" />
-              </svg>
-              <span className="hidden sm:inline text-gray-700">Lưu</span>
-            </button>
-          </div>
         </div>
 
         {/* Author */}
@@ -169,18 +137,7 @@ export function Article({ post, relatedPosts }: ArticleProps) {
           </div>
         </div>
 
-        {/* Tags */}
-        <div className="mt-4 flex flex-wrap gap-2">
-          {post.tags.map((tag: Tag) => (
-            <Link
-              key={tag.id}
-              href={`/tin-tuc?tag=${encodeURIComponent(tag.name)}`}
-              className="inline-flex items-center rounded-full border border-emerald-100 bg-white/80 px-3 py-1 text-xs text-gray-700 hover:bg-emerald-50 hover:border-emerald-200 transition-all"
-            >
-              #{tag.name}
-            </Link>
-          ))}
-        </div>
+
       </section>
 
       {/* Content - mobile: bỏ padding/border để tăng diện tích */}
@@ -211,8 +168,76 @@ export function Article({ post, relatedPosts }: ArticleProps) {
         />
       </section>
 
-      {/* Related Posts - chỉ hiện trên mobile */}
-      <section className="lg:hidden mt-4 rounded-2xl bg-white/70 backdrop-blur-md border border-emerald-100/50 shadow-sm p-5">
+      {/* Share, Save & Tags - cuối bài viết */}
+      <section className="mt-6 md:rounded-2xl md:bg-white/70 md:backdrop-blur-md md:border md:border-emerald-100/50 md:shadow-sm p-0 md:p-5">
+        {/* Tags */}
+        <div className="mb-4">
+          <div className="text-sm font-medium text-gray-700 mb-2">Thẻ bài viết:</div>
+          <div className="flex flex-wrap gap-2">
+            {post.tags.map((tag: Tag) => (
+              <Link
+                key={tag.id}
+                href={`/tin-tuc?tag=${encodeURIComponent(tag.name)}`}
+                className="inline-flex items-center rounded-full border border-emerald-100 bg-white/80 px-3 py-1 text-xs text-gray-700 hover:bg-emerald-50 hover:border-emerald-200 transition-all"
+              >
+                #{tag.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Share & Save Buttons - Gọn với gradient emerald */}
+        <div className="pt-4 border-t border-emerald-100/50">
+          <div className="text-sm font-medium text-gray-700 mb-3">Chia sẻ bài viết này:</div>
+          <div className="flex flex-col sm:flex-row gap-3">
+            {/* Copy Link Button */}
+            <button
+              onClick={copyLink}
+              className={`flex-1 inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
+                copied
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white'
+                  : 'bg-gradient-to-r from-emerald-400 to-teal-400 text-white hover:from-emerald-500 hover:to-teal-500'
+              }`}
+            >
+              {copied ? (
+                <>
+                  <Check className="w-4 h-4 mr-2" />
+                  Đã sao chép
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4 mr-2" />
+                  Sao chép liên kết
+                </>
+              )}
+            </button>
+
+            {/* Save Button */}
+            <button
+              onClick={savePost}
+              className={`flex-1 inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
+                saved
+                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white'
+                  : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-emerald-100 hover:to-teal-100 hover:text-emerald-700'
+              }`}
+            >
+              <svg
+                className="w-4 h-4 mr-2"
+                viewBox="0 0 24 24"
+                fill={saved ? "currentColor" : "none"}
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="m12 21-1.45-1.32C6 15.36 3 12.28 3 8.5A4.5 4.5 0 0 1 7.5 4 5.4 5.4 0 0 1 12 6.09 5.4 5.4 0 0 1 16.5 4 4.5 4.5 0 0 1 21 8.5c0 3.78-3 6.86-7.55 11.18L12 21z" />
+              </svg>
+              {saved ? 'Đã lưu' : 'Lưu bài viết'}
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Related Posts - chỉ hiện trên mobile, đồng bộ với content */}
+      <section className="lg:hidden mt-4 md:rounded-2xl md:bg-white/70 md:backdrop-blur-md md:border md:border-emerald-100/50 md:shadow-sm p-0 md:p-5">
         <div className="flex items-center justify-between mb-3">
           <div className="font-semibold text-gray-900">Bài viết liên quan</div>
           <Link href="/tin-tuc" className="text-sm text-emerald-600 hover:text-emerald-700 hover:underline transition-colors">
