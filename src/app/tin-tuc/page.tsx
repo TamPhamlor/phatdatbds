@@ -7,19 +7,20 @@ interface PageProps {
   searchParams: Promise<{ tag?: string; q?: string; cat?: string }>;
 }
 
-export default async function Home({ searchParams }: PageProps) {
-  const params = await searchParams;
-  let posts: Post[] = [];
-
+async function fetchPosts(): Promise<Post[]> {
   try {
-    const res = await fetch("https://phatdatbatdongsan.com/api/v1/posts", {
-      next: { revalidate: 60 }, // Luôn fetch mới
-    });
+    const res = await apiRequestWithCache("/api/v1/posts", 60);
     const data: ApiResponse = await res.json();
-    if (data.success) posts = data.data.data;
+    if (data.success) return data.data.data;
   } catch (error) {
     console.error("Error fetching posts:", error);
   }
+  return [];
+}
+
+export default async function Home({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const posts = await fetchPosts();
 
   return (
     <div className="bg-gray-50">

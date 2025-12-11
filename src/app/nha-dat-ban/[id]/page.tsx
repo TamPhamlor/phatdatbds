@@ -9,12 +9,11 @@ export const revalidate = 60;
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ?? "https://phatdatbatdongsan.com";
 
+import { apiRequestWithCache } from '@/lib/api';
+
 async function getListing(id: string): Promise<Listing | null> {
   try {
-    const res = await fetch(
-      `https://phatdatbatdongsan.com/api/v1/listings/${id}`,
-      { next: { revalidate: 60 } }
-    );
+    const res = await apiRequestWithCache(`/api/v1/listings/${id}`, 60);
     if (!res.ok) return null;
     const data = await res.json();
     return (data && data.data) ? (data.data as Listing) : null;

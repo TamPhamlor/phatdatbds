@@ -221,7 +221,7 @@ const LichHenMoiGioi: React.FC = () => {
     setThongBao("");
 
     try {
-      const response = await fetch("https://api.phatdatbatdongsan.com/api/v1/contact-us", {
+      const response = await fetch("/api/v1/contact-us", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -236,7 +236,7 @@ const LichHenMoiGioi: React.FC = () => {
 
       const data = await response.json();
       console.log("Phản hồi từ server:", data);
-      setThongBao("✅ Gửi yêu cầu thành công! Chúng tôi sẽ liên hệ bạn sớm nhất.");
+      setThongBao("success");
       setDuLieuForm({
         hoTen: "",
         email: "",
@@ -246,7 +246,7 @@ const LichHenMoiGioi: React.FC = () => {
       });
     } catch (error) {
       console.error("Lỗi:", error);
-      setThongBao("❌ Có lỗi xảy ra, vui lòng thử lại sau.");
+      setThongBao("error");
     } finally {
       setLoading(false);
     }
@@ -349,10 +349,21 @@ const LichHenMoiGioi: React.FC = () => {
           </div>
         </form>
 
-        {thongBao && (
-          <p className={`mt-4 text-sm text-center px-4 py-2 rounded-full ${thongBao.includes("✅") ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`}>
-            {thongBao}
-          </p>
+        {thongBao === "success" && (
+          <div className="mt-4 bg-green-50 border-2 border-green-200 rounded-xl p-4 text-center flex flex-col items-center gap-2">
+            <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-green-700 text-sm">Cảm ơn bạn! Chúng tôi sẽ liên hệ trong thời gian sớm nhất. Nếu không thấy email phản hồi, vui lòng kiểm tra hộp thư Spam.</p>
+          </div>
+        )}
+        {thongBao === "error" && (
+          <div className="mt-4 bg-red-50 border-2 border-red-200 rounded-xl p-4 text-center flex flex-col items-center gap-2">
+            <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-red-700 text-sm">Có lỗi xảy ra, vui lòng thử lại sau.</p>
+          </div>
         )}
       </div>
     </section>

@@ -4,19 +4,16 @@ import { Post } from "../component/types";
 import PostLayout from "./PostLayout";
 import { generateArticleSchema, SITE_URL } from "@/lib/seo";
 
+import { apiRequestWithCache } from '@/lib/api';
+
 async function fetchPost(slug: string): Promise<Post> {
-  const res = await fetch(`https://phatdatbatdongsan.com/api/v1/posts/${slug}`, {
-    next: { revalidate: 86400 }
-  });
+  const res = await apiRequestWithCache(`/api/v1/posts/${slug}`, 86400);
   const data = await res.json();
   return data.data as Post;
 }
 
 async function fetchRelatedPosts(categoryCode: string, excludeId: number): Promise<Post[]> {
-  const res = await fetch(
-    `https://phatdatbatdongsan.com/api/v1/posts?category=${categoryCode}&limit=5`,
-    { next: { revalidate: 60 } }
-  );
+  const res = await apiRequestWithCache(`/api/v1/posts?category=${categoryCode}&limit=5`, 60);
   const data = await res.json();
   if (!data.success) return [];
   return data.data.data.filter((p: Post) => p.id !== excludeId);

@@ -20,11 +20,11 @@ function parseNumber(value: string | string[] | undefined): number | undefined {
 }
 
 // ---- API get listings ----
+import { apiRequestWithCache } from '@/lib/api';
+
 export async function getListings(filters: Filters): Promise<Listing[]> {
   try {
-    const res = await fetch("https://phatdatbatdongsan.com/api/v1/listings", {
-      next: { revalidate: 60 }
-    });
+    const res = await apiRequestWithCache("/api/v1/listings", 60);
     let listings = await res.json();
     listings = listings.data || [];
 
@@ -85,9 +85,7 @@ export async function getListings(filters: Filters): Promise<Listing[]> {
 // ---- API get meta ----
 export async function getMetaListing(): Promise<MetaListing | null> {
   try {
-    const res = await fetch("https://phatdatbatdongsan.com/api/v1/meta_listing", {
-      next: { revalidate: 3600 }
-    });
+    const res = await apiRequestWithCache("/api/v1/meta_listing", 3600);
     const data: MetaListing = await res.json();
     return data;
   } catch (error) {

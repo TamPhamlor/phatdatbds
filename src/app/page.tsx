@@ -1,6 +1,7 @@
 // app/page.tsx
 
 import { getMetaListing, MetaListing } from "@/lib/meta";
+import { apiRequestWithCache } from '@/lib/api';
 import HomeClient from "./components/HomeClient";
 
 interface ApiImage {
@@ -89,9 +90,17 @@ export default async function Page() {
   let loadErr: string | null = null;
 
   try {
+import { apiRequestWithCache } from '@/lib/api';
+
+export default async function HomePage() {
+  let listings: Listing[] = [];
+  let loadErr: string | null = null;
+  let meta: MetaListing | null = null;
+
+  try {
     // Server fetch — không dùng useEffect
     // Relative URL hoạt động trong App Router khi render server
-    const res = await fetch("https://phatdatbatdongsan.com/api/v1/listings", {
+    const res = await apiRequestWithCache("/api/v1/listings", 60);
       next: { revalidate: 60 } // luôn lấy mới; tùy bạn đổi sang revalidate
     });
 

@@ -24,6 +24,7 @@ interface FilterState {
 }
 interface SupportFormState {
   name: string;
+  phone: string;
   email: string;
   need: string;
   message: string;
@@ -150,6 +151,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
   // ---- Support form ----
   const [supportForm, setSupportForm] = useState<SupportFormState>({
     name: "",
+    phone: "",
     email: "",
     need: "Mua",
     message: "",
@@ -174,7 +176,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
     setSupportLoading(true);
     try {
       const response = await fetch(
-        "https://api.phatdatbatdongsan.com/api/v1/contact-us",
+        "/api/v1/contact-us",
         {
           method: "POST",
           headers: {
@@ -183,7 +185,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
           body: JSON.stringify({
             name: supportForm.name,
             email: supportForm.email,
-            phone: "",
+            phone: supportForm.phone,
             message: `[Nhu cầu: ${supportForm.need}] ${supportForm.message}${supportForm.query ? ` | Tìm kiếm: ${supportForm.query}` : ""}`,
           }),
         }
@@ -197,6 +199,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
       setSupportForm((prev) => ({
         ...prev,
         name: "",
+        phone: "",
         email: "",
         message: "",
       }));
@@ -995,8 +998,8 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                         <span className="text-gray-300">|</span>
                       </div>
                       <input
-                        value={supportForm.email}
-                        onChange={(e) => setSupportForm((prev) => ({ ...prev, email: e.target.value }))}
+                        value={supportForm.phone}
+                        onChange={(e) => setSupportForm((prev) => ({ ...prev, phone: e.target.value }))}
                         required
                         type="tel"
                         className="h-12 w-full rounded-xl bg-gray-50 border border-gray-200 pl-24 pr-4 text-base focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-500 focus:bg-white transition-all"
@@ -1066,9 +1069,11 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                 </button>
 
                 {supportSuccess && (
-                  <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 text-center">
-                    <p className="text-green-700 font-medium">✅ Cảm ơn bạn! Chúng tôi sẽ liên hệ trong thời gian sớm nhất.</p>
-                    <p className="text-green-600 text-sm mt-1">Nếu không thấy email phản hồi, vui lòng kiểm tra hộp thư Spam.</p>
+                  <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 text-center flex flex-col items-center gap-2">
+                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p className="text-green-700 text-sm">Cảm ơn bạn! Chúng tôi sẽ liên hệ trong thời gian sớm nhất. Nếu không thấy email phản hồi, vui lòng kiểm tra hộp thư Spam.</p>
                   </div>
                 )}
                 {supportError && (

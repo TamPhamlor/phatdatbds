@@ -20,7 +20,7 @@ export default function ContactPage() {
 
     try {
       const response = await fetch(
-        "https://api.phatdatbatdongsan.com/api/v1/contact-us",
+        "/api/v1/contact-us",
         {
           method: "POST",
           headers: {

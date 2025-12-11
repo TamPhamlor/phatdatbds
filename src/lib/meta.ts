@@ -9,13 +9,11 @@ export type MetaListing = {
   wards: Record<number | string, Ward[]>;
 };
 
+import { apiRequestWithCache } from './api';
+
 export const getMetaListing = cache(async (): Promise<MetaListing | null> => {
   try {
-    const res = await fetch("https://phatdatbatdongsan.com/api/v1/meta_listing", {
-      // Chọn 1 trong 2:
-      // cache: "no-store", // luôn gọi API
-      next: { revalidate: 86400 }, // hoặc cache 1h, tuỳ nhu cầu
-    });
+    const res = await apiRequestWithCache("/api/v1/meta_listing", 86400);
     return (await res.json()) as MetaListing;
   } catch (e) {
     console.error("Error fetching meta_listing:", e);
