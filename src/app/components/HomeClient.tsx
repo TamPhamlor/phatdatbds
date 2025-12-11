@@ -504,7 +504,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                     aria-label={`Xem chi tiết: ${item.title}`}
                     className="block h-full"
                   >
-                    <SlideCard item={item} index={index} />
+                    <SlideCard item={item} />
                   </Link>
                 </SwiperSlide>
               ))}

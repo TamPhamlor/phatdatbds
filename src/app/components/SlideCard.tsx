@@ -14,19 +14,16 @@ interface CardItem {
 
 interface CardProps {
   item: CardItem;
-  index?: number; // Index để hiển thị số thứ tự
 }
 
 // Lightbox component - render với inline style để tránh bị ảnh hưởng bởi parent CSS
 function ImageLightbox({
   src,
   alt,
-  index,
   onClose,
 }: {
   src: string;
   alt: string;
-  index?: number;
   onClose: () => void;
 }) {
   const handleClose = useCallback(() => {
@@ -156,7 +153,7 @@ function ImageLightbox({
   );
 }
 
-const Card: React.FC<CardProps> = ({ item, index }) => {
+const Card: React.FC<CardProps> = ({ item }) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -285,7 +282,6 @@ const Card: React.FC<CardProps> = ({ item, index }) => {
           <ImageLightbox
             src={item.img}
             alt={item.title}
-            index={index}
             onClose={closeLightbox}
           />,
           document.body

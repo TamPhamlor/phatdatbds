@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { PHONE_CONTACT, formatPhone, telLink } from "@/lib/config";
+import { PHONE_CONTACT, telLink } from "@/lib/config";
 
 // Custom DatePicker component với màu emerald - dùng Portal
 function DatePicker({

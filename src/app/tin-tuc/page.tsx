@@ -1,5 +1,6 @@
 import { ClientFilter } from "./ClientFilter";
 import { ApiResponse, Post } from "./component/types";
+import { apiRequestWithCache } from '@/lib/api';
 
 export const dynamic = "force-dynamic"; // Buộc SSR
 
