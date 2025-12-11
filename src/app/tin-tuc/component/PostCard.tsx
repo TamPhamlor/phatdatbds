@@ -6,25 +6,7 @@ interface PostCardProps {
   post: Post;
 }
 
-// SVG Icons
-const HeartIcon = () => (
-  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-  </svg>
-);
 
-const CommentIcon = () => (
-  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-  </svg>
-);
-
-const EyeIcon = () => (
-  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
 
 export default function PostCard({ post }: PostCardProps) {
   const category = post.post_types?.[0]?.name || "Tin tức";
@@ -56,7 +38,7 @@ export default function PostCard({ post }: PostCardProps) {
       <div className="order-2 px-3 pt-3 pb-2 flex items-center gap-2">
         <Image
           className="rounded-full ring-2 ring-emerald-100"
-          src={`https://i.pravatar.cc/40?img=${post.author_id}`}
+          src={`https://picsum.photos/seed/${post.author_id}/40/40`}
           alt="tác giả"
           width={32}
           height={32}
@@ -79,21 +61,22 @@ export default function PostCard({ post }: PostCardProps) {
         </h3>
         <p className="mt-1 text-sm text-gray-600 line-clamp-2">{post.summary}</p>
 
-        {/* Stats & CTA */}
+        {/* Tags & CTA */}
         <div className="mt-auto pt-3 flex items-center justify-between">
-          <div className="flex items-center gap-3 text-xs text-gray-500">
-            <span className="inline-flex items-center gap-1 hover:text-emerald-600 transition-colors">
-              <HeartIcon />
-              <span>124</span>
-            </span>
-            <span className="inline-flex items-center gap-1 hover:text-emerald-600 transition-colors">
-              <CommentIcon />
-              <span>12</span>
-            </span>
-            <span className="inline-flex items-center gap-1 hover:text-emerald-600 transition-colors">
-              <EyeIcon />
-              <span>1.2k</span>
-            </span>
+          <div className="flex items-center gap-1 flex-wrap">
+            {post.tags.slice(0, 2).map((tag) => (
+              <span
+                key={tag.id}
+                className="inline-flex items-center rounded-full bg-emerald-50 text-emerald-700 px-2 py-0.5 text-[10px] font-medium border border-emerald-100"
+              >
+                #{tag.name}
+              </span>
+            ))}
+            {post.tags.length > 2 && (
+              <div className="inline-flex items-center rounded-full bg-emerald-50 text-emerald-700 px-2 py-0.5 text-[10px] font-medium border border-emerald-100">
+                +{post.tags.length - 2}
+              </div>
+            )}
           </div>
           <span className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 text-xs font-medium group-hover:shadow-lg group-hover:shadow-emerald-500/25 transition-all">
             Xem chi tiết
