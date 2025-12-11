@@ -1,5 +1,5 @@
-
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 interface SlideCardProps {
@@ -7,9 +7,10 @@ interface SlideCardProps {
   text: string;
   cta: string;
   image: string;
+  href?: string;
 }
 
-const SlideCard: React.FC<SlideCardProps> = ({ title, text, cta, image }) => {
+const SlideCard: React.FC<SlideCardProps> = ({ title, text, cta, image, href = "/lien-he" }) => {
   return (
     <div
       className="
@@ -34,7 +35,8 @@ const SlideCard: React.FC<SlideCardProps> = ({ title, text, cta, image }) => {
         <h5 className="font-semibold text-lg text-[var(--color-text)]">{title}</h5>
         <p className="text-sm mt-1 flex-1 text-[var(--color-mute)]">{text}</p>
 
-        <button
+        <Link
+          href={href}
           className="
             btn btn-dark mt-4 w-max
             rounded-[var(--radius-xl2)]
@@ -45,7 +47,7 @@ const SlideCard: React.FC<SlideCardProps> = ({ title, text, cta, image }) => {
           "
         >
           {cta}
-        </button>
+        </Link>
       </div>
     </div>
   );

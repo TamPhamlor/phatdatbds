@@ -1,4 +1,5 @@
 import { Listing } from "@/app/types/products";
+import { formatPricePerM2 } from "@/lib/utils";
 
 interface PropertyInfoProps {
   listing: Listing;
@@ -19,9 +20,9 @@ const PropertyInfo: React.FC<PropertyInfoProps> = ({ listing }) => {
             {listing.price_total_text}
           </span>
           <span className="text-red-500 font-medium">VNĐ</span>
-          {listing.price_per_m2 && (
+          {listing.price_per_m2 && formatPricePerM2(listing.price_per_m2) && (
             <span className="text-sm text-gray-500">
-              • {listing.price_per_m2}/m²
+              • {formatPricePerM2(listing.price_per_m2)}/m²
             </span>
           )}
         </div>

@@ -563,9 +563,9 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                     <span>Đẩy tin lên top nhanh chóng</span>
                   </li>
                 </ul>
-                <button className="btn bg-white text-emerald-600 hover:bg-emerald-50 border-0 w-full font-semibold shadow-lg">
+                <Link href="/lien-he" className="btn bg-white text-emerald-600 hover:bg-emerald-50 border-0 w-full font-semibold shadow-lg text-center">
                   Đăng tin ngay
-                </button>
+                </Link>
               </div>
             </div>
 
@@ -602,9 +602,9 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
                     <span>Cam kết bán trong 30 ngày</span>
                   </li>
                 </ul>
-                <button className="btn btn-dark w-full font-semibold">
+                <Link href="/lien-he" className="btn btn-dark w-full font-semibold text-center">
                   Tìm hiểu thêm
-                </button>
+                </Link>
               </div>
             </div>
           </div>
