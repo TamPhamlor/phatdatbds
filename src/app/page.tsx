@@ -85,13 +85,6 @@ const mapApiToListing = (it: ApiListing): Listing => {
   };
 };
 
-export default async function Page() {
-  let listings: Listing[] = [];
-  let loadErr: string | null = null;
-
-  try {
-import { apiRequestWithCache } from '@/lib/api';
-
 export default async function HomePage() {
   let listings: Listing[] = [];
   let loadErr: string | null = null;
@@ -101,8 +94,6 @@ export default async function HomePage() {
     // Server fetch — không dùng useEffect
     // Relative URL hoạt động trong App Router khi render server
     const res = await apiRequestWithCache("/api/v1/listings", 60);
-      next: { revalidate: 60 } // luôn lấy mới; tùy bạn đổi sang revalidate
-    });
 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -112,6 +103,7 @@ export default async function HomePage() {
   } catch (e) {
     loadErr = e instanceof Error ? e.message : "Không tải được danh sách";
   }
-  const meta: MetaListing | null = await getMetaListing();
+  
+  meta = await getMetaListing();
   return <HomeClient listings={listings} loadErr={loadErr} meta={meta} />;
 }
