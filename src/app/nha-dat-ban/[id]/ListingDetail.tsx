@@ -16,9 +16,16 @@ interface ListingDetailProps {
 }
 
 const ListingDetail: React.FC<ListingDetailProps> = ({ listing }) => {
-  // Scroll to top khi vào trang
+  // Scroll to top khi vào trang - fix iOS Safari
   useEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
     window.scrollTo(0, 0);
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
