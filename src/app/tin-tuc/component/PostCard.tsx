@@ -78,9 +78,7 @@ export default function PostCard({ post }: PostCardProps) {
               </div>
             )}
           </div>
-          <span className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 text-xs font-medium group-hover:shadow-lg group-hover:shadow-emerald-500/25 transition-all">
-            Xem chi tiết
-          </span>
+          <span className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 text-xs font-medium group-hover:shadow-lg group-hover:shadow-emerald-500/25 transition-all whitespace-nowrap">Xem chi tiết</span>
         </div>
       </div>
     </Link>
