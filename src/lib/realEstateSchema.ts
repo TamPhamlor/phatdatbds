@@ -161,40 +161,43 @@ export function generateListingPageSchema(listings: Listing[], totalCount?: numb
     mainEntity: {
       "@type": "ItemList",
       numberOfItems: totalCount || listings.length,
-      itemListElement: listings.slice(0, 10).map((listing, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        item: {
-          "@type": "RealEstateListing",
-          "@id": `${BASE_URL}/nha-dat-ban/${listing.id}`,
-          name: listing.title,
-          description: listing.description?.replace(/<[^>]*>/g, '').slice(0, 160) || "Bất động sản tại Nhơn Trạch",
-          url: `${BASE_URL}/nha-dat-ban/${listing.id}`,
-          image: listing.images?.find(img => img.is_cover)?.url || listing.images?.[0]?.url,
-          offers: {
-            "@type": "Offer",
-            price: listing.price_total || "0",
-            priceCurrency: "VND",
-            availability: "https://schema.org/InStock",
-            seller: {
-              "@type": "Organization",
-              name: "Phát Đạt Bất Động Sản"
+      itemListElement: listings.slice(0, 10).map((listing, index) => {
+        const imageUrl = listing.images?.find(img => img.is_cover)?.url || listing.images?.[0]?.url || "";
+        return {
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "RealEstateListing",
+            "@id": `${BASE_URL}/nha-dat-ban/${listing.slug || listing.id}`,
+            name: listing.title,
+            description: listing.description?.replace(/<[^>]*>/g, '').slice(0, 160) || "Bất động sản tại Nhơn Trạch",
+            url: `${BASE_URL}/nha-dat-ban/${listing.slug || listing.id}`,
+            image: imageUrl,
+            offers: {
+              "@type": "Offer",
+              price: listing.price_total || "0",
+              priceCurrency: "VND",
+              availability: "https://schema.org/InStock",
+              seller: {
+                "@type": "Organization",
+                name: "Phát Đạt Bất Động Sản"
+              }
+            },
+            floorSize: listing.area_land ? {
+              "@type": "QuantitativeValue",
+              value: parseFloat(listing.area_land),
+              unitCode: "MTK"
+            } : undefined,
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Nhơn Trạch",
+              addressRegion: "Đồng Nai",
+              addressCountry: "VN",
+              streetAddress: listing.address || ""
             }
-          },
-          floorSize: listing.area_land ? {
-            "@type": "QuantitativeValue",
-            value: parseFloat(listing.area_land),
-            unitCode: "MTK"
-          } : undefined,
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: "Nhơn Trạch",
-            addressRegion: "Đồng Nai",
-            addressCountry: "VN",
-            streetAddress: listing.address || ""
           }
-        }
-      }))
+        };
+      })
     },
 
     provider: generateOrganizationSchema(),
