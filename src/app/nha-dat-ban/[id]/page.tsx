@@ -1,7 +1,9 @@
 // src/app/nha-dat-ban/[id]/page.tsx
+import { redirect } from "next/navigation";
 import { Listing, Image as ListingImage } from "@/app/types/products";
 import ListingDetail from "./ListingDetail";
 import type { Metadata } from "next";
+import { generateRealEstateListingSchema } from "@/lib/realEstateSchema";
 
 export const revalidate = 60;
 
@@ -33,9 +35,17 @@ export async function generateMetadata(
   const id = Array.isArray(resolved.id) ? resolved.id[0] : resolved.id;
   const listing = await getListing(id);
 
-  const title = listing?.title || `Tin rao #${id} | Nhà đất bán`;
+  // Nếu không tìm thấy listing, trả về metadata mặc định
+  if (!listing) {
+    return {
+      title: "Bất động sản không tồn tại | Phát Đạt Bất Động Sản",
+      description: "Bất động sản bạn tìm kiếm không tồn tại hoặc đã được gỡ bỏ.",
+    };
+  }
+
+  const title = listing.title || `Tin rao #${id} | Nhà đất bán`;
   const desc =
-    (listing?.description ?? "").replace(/<[^>]*>/g, '').slice(0, 180) ||
+    (listing.description ?? "").replace(/<[^>]*>/g, '').slice(0, 180) ||
     "Tin rao bất động sản - thông tin chi tiết, hình ảnh, giá, pháp lý.";
 
   const cover =
@@ -85,21 +95,13 @@ export default async function ListingDetailPage({
     : resolvedParams.id;
   const listing = await getListing(id);
 
+  // ✅ Nếu không tìm thấy bất động sản, redirect đến trang 404 HTML tĩnh
   if (!listing) {
-    return <div className="container-std py-6">Không tìm thấy dữ liệu</div>;
+    redirect('/not-found.html');
   }
 
-  // JSON-LD (SEO) cho RealEstateListing
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "RealEstateListing",
-    name: listing.title ?? `Tin rao #${id}`,
-    description: (listing.description ?? "Tin rao bất động sản chi tiết.").replace(/<[^>]*>/g, ''),
-    url: `${BASE_URL}/nha-dat-ban/${id}`,
-    image: (listing.images ?? [])
-      .map((img: ListingImage) => img.url)
-      .slice(0, 6),
-  };
+  // JSON-LD (SEO) cho RealEstateListing - Schema đầy đủ
+  const jsonLd = generateRealEstateListingSchema(listing, id);
 
   return (
     <>

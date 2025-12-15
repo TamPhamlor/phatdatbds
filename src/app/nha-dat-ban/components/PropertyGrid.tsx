@@ -15,10 +15,12 @@ export default function PropertyGrid({
 }: PropertyGridProps) {
   const handleClearFilters = () => {
     // Xóa toàn bộ query string filter đang có và reload
-    const url = new URL(window.location.href);
-    url.search = '';
-    window.history.replaceState({}, '', url.toString());
-    window.location.reload();
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.search = '';
+      window.history.replaceState({}, '', url.toString());
+      window.location.reload();
+    }
   };
 
   // ======= HIỂN THỊ KHÔNG CÓ KẾT QUẢ =======

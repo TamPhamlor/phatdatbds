@@ -16,7 +16,7 @@ function DatePicker({
   placeholder?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [currentMonth, setCurrentMonth] = useState<Date | null>(null);
   const [mounted, setMounted] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -24,11 +24,12 @@ function DatePicker({
 
   useEffect(() => {
     setMounted(true);
+    setCurrentMonth(new Date());
   }, []);
 
   // Tính vị trí calendar khi mở
   useEffect(() => {
-    if (isOpen && buttonRef.current) {
+    if (isOpen && buttonRef.current && typeof window !== 'undefined') {
       const rect = buttonRef.current.getBoundingClientRect();
       setPosition({
         top: rect.bottom + window.scrollY + 8,
@@ -39,17 +40,38 @@ function DatePicker({
 
   // Close khi click outside
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        buttonRef.current && !buttonRef.current.contains(e.target as Node) &&
-        calendarRef.current && !calendarRef.current.contains(e.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    if (typeof document !== 'undefined') {
+      const handleClickOutside = (e: MouseEvent) => {
+        if (
+          buttonRef.current && !buttonRef.current.contains(e.target as Node) &&
+          calendarRef.current && !calendarRef.current.contains(e.target as Node)
+        ) {
+          setIsOpen(false);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
   }, []);
+
+  // Don't render calendar until mounted and currentMonth is set
+  if (!mounted || !currentMonth) {
+    return (
+      <button
+        ref={buttonRef}
+        type="button"
+        className="w-full flex items-center gap-2 rounded-full border border-emerald-100 bg-white/80 px-4 py-2.5 text-sm text-left focus:outline-none focus:border-emerald-300 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+      >
+        <svg className="w-4 h-4 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        <span className="text-gray-400">{placeholder}</span>
+      </button>
+    );
+  }
 
   const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
@@ -90,7 +112,7 @@ function DatePicker({
   today.setHours(0, 0, 0, 0);
 
   const isSelectedDate = (day: number) => {
-    if (!value) return false;
+    if (!value || !currentMonth) return false;
     const selected = new Date(value);
     return selected.getDate() === day && 
            selected.getMonth() === currentMonth.getMonth() && 
@@ -98,6 +120,7 @@ function DatePicker({
   };
 
   const isToday = (day: number) => {
+    if (!currentMonth) return false;
     const now = new Date();
     return now.getDate() === day && 
            now.getMonth() === currentMonth.getMonth() && 
@@ -105,6 +128,7 @@ function DatePicker({
   };
 
   const isPastDate = (day: number) => {
+    if (!currentMonth) return false;
     const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
     return date < today;
   };
@@ -194,7 +218,7 @@ function DatePicker({
       </button>
 
       {/* Calendar via Portal */}
-      {mounted && isOpen && createPortal(calendarContent, document.body)}
+      {mounted && isOpen && typeof document !== 'undefined' && createPortal(calendarContent, document.body)}
     </div>
   );
 }

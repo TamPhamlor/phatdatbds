@@ -34,12 +34,13 @@ export function MobileSidebar({
     setTags(sortedTags);
   }, [posts]);
 
+  // ✅ Tối ưu: Chỉ hiển thị tối đa 4 bài viết mới nhất để giảm tải (MobileSidebar)
   const sortedPosts = [...posts]
     .sort(
       (a, b) =>
         new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
     )
-    .slice(0, 5);
+    .slice(0, 4); // Giới hạn tối đa 4 bài viết nổi bật
 
   return (
     <div className="lg:hidden space-y-6">
@@ -130,12 +131,13 @@ export default function Sidebar({
     setTags(sortedTags);
   }, [posts]);
 
+  // ✅ Tối ưu: Chỉ hiển thị tối đa 4 bài viết mới nhất để giảm tải (Desktop Sidebar)
   const sortedPosts = [...posts]
     .sort(
       (a, b) =>
         new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
     )
-    .slice(0, 5);
+    .slice(0, 4); // Giới hạn tối đa 4 bài viết nổi bật
 
   // Bài viết nổi bật với bố cục mới
   const HotPostsList = ({ id }: { id: string }) => (
@@ -171,20 +173,6 @@ export default function Sidebar({
             <div className="mt-1 flex items-center gap-2 text-[11px] text-gray-400">
               <span>
                 {new Date(post.published_at).toLocaleDateString("vi-VN")}
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-0.5">
-                <svg
-                  className="w-3 h-3"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-                1.2k
               </span>
             </div>
           </div>

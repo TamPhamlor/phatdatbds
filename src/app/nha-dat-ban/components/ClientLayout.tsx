@@ -7,6 +7,7 @@ import DetailPanel from './DetailPanel';
 import MobileFilterDrawer from './MobileFilterDrawer';
 import MobileDetailDrawer from './MobileDetailDrawer';
 import FilterPanel from './FilterPanel';
+import NoSSR from './NoSSR';
 import { MetaListing } from '@/app/types/products';
 
 interface ClientLayoutProps {
@@ -29,16 +30,21 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
 
   // Detect screen size after mount
   useEffect(() => {
-    setMounted(true);
     const checkMobile = () => {
-      const mobile = window.innerWidth < 1024;
-      setIsMobile(mobile);
-      // Không auto mở filter nữa
+      if (typeof window !== 'undefined') {
+        const mobile = window.innerWidth < 1024;
+        setIsMobile(mobile);
+      }
     };
     
+    // Set mounted first, then check mobile
+    setMounted(true);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }
   }, []);
 
   // Don't render filter until mounted to avoid hydration mismatch
@@ -105,31 +111,33 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
       </div>
       <div className="relative py-4">
         {/* Filter Panel - Fixed positioning */}
-        {showFilter && (
-          <Suspense fallback={null}>
-            <div 
-              className="fixed z-50 flex flex-col"
-              style={{
-                left: 'max(1rem, calc((100vw - 1152px) / 2))', // responsive left position
-                top: 'calc(var(--header-h) + 60px)',
-                width: '380px',
-                height: 'calc(100vh - var(--header-h) - 80px)'
-              }}
-            >
-              {/* Close button at top right */}
-              <button
-                onClick={handleToggleFilter}
-                className="absolute -top-3 -right-3 z-10 w-9 h-9 rounded-full bg-white border-2 border-emerald-500 text-emerald-600 shadow-lg hover:bg-emerald-50 hover:border-emerald-600 hover:scale-110 transition-all flex items-center justify-center"
-                aria-label="Đóng bộ lọc"
+        <NoSSR>
+          {showFilter && (
+            <Suspense fallback={null}>
+              <div 
+                className="fixed z-50 flex flex-col"
+                style={{
+                  left: 'max(1rem, calc((100vw - 1152px) / 2))', // responsive left position
+                  top: 'calc(var(--header-h) + 60px)',
+                  width: '380px',
+                  height: 'calc(100vh - var(--header-h) - 80px)'
+                }}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-              <FilterPanel meta={meta} />
-            </div>
-          </Suspense>
-        )}
+                {/* Close button at top right */}
+                <button
+                  onClick={handleToggleFilter}
+                  className="absolute -top-3 -right-3 z-10 w-9 h-9 rounded-full bg-white border-2 border-emerald-500 text-emerald-600 shadow-lg hover:bg-emerald-50 hover:border-emerald-600 hover:scale-110 transition-all flex items-center justify-center"
+                  aria-label="Đóng bộ lọc"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+                <FilterPanel meta={meta} />
+              </div>
+            </Suspense>
+          )}
+        </NoSSR>
 
         <div className="container-std">
           <div className="flex items-start gap-4">
@@ -143,25 +151,29 @@ export default function ClientLayout({ projects, meta }: ClientLayoutProps) {
             </div>
             
             {/* Detail Panel - sticky sidebar */}
-            {state.detailOpen && selectedListing && (
-              <div className="hidden lg:block w-[380px] shrink-0">
-                <div className="sticky" style={{ top: 'calc(var(--header-h) + 76px)' }}>
-                  <DetailPanel
-                    listing={selectedListing}
-                    onClose={() => setState((prev) => ({ ...prev, detailOpen: false }))}
-                  />
+            <NoSSR>
+              {state.detailOpen && selectedListing && (
+                <div className="hidden lg:block w-[380px] shrink-0">
+                  <div className="sticky" style={{ top: 'calc(var(--header-h) + 76px)' }}>
+                    <DetailPanel
+                      listing={selectedListing}
+                      onClose={() => setState((prev) => ({ ...prev, detailOpen: false }))}
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </NoSSR>
           </div>
         </div>
       </div>
-      <MobileFilterDrawer isOpen={mobileFilterOpen} onClose={closeMobileFilter} meta={meta} />
-      <MobileDetailDrawer
-        isOpen={mobileDetailOpen}
-        onClose={closeMobileDetail}
-        listing={selectedListing}
-      />
+      <NoSSR>
+        <MobileFilterDrawer isOpen={mobileFilterOpen} onClose={closeMobileFilter} meta={meta} />
+        <MobileDetailDrawer
+          isOpen={mobileDetailOpen}
+          onClose={closeMobileDetail}
+          listing={selectedListing}
+        />
+      </NoSSR>
     </>
   );
 }

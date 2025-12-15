@@ -1,15 +1,22 @@
 // app/tin-tuc/[slug]/page.tsx
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Post } from "../component/types";
 import PostLayout from "./PostLayout";
 import { generateArticleSchema, SITE_URL } from "@/lib/seo";
 
 import { apiRequestWithCache } from '@/lib/api';
 
-async function fetchPost(slug: string): Promise<Post> {
-  const res = await apiRequestWithCache(`/api/v1/posts/${slug}`, 86400);
-  const data = await res.json();
-  return data.data as Post;
+async function fetchPost(slug: string): Promise<Post | null> {
+  try {
+    const res = await apiRequestWithCache(`/api/v1/posts/${slug}`, 86400);
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data?.data || null;
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return null;
+  }
 }
 
 async function fetchRelatedPosts(categoryCode: string, excludeId: number): Promise<Post[]> {
@@ -27,6 +34,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await Promise.resolve(params);
   const post = await fetchPost(slug);
+
+  // Nếu không tìm thấy bài viết, trả về metadata mặc định
+  if (!post) {
+    return {
+      title: "Bài viết không tồn tại | Phát Đạt Bất Động Sản",
+      description: "Bài viết bạn tìm kiếm không tồn tại hoặc đã được gỡ bỏ.",
+    };
+  }
 
   return {
     title: post.meta_title || post.title,
@@ -53,6 +68,12 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = await Promise.resolve(params);
   const post = await fetchPost(slug);
+  
+  // ✅ Nếu không tìm thấy bài viết, redirect đến trang 404 HTML tĩnh
+  if (!post) {
+    redirect('/not-found.html');
+  }
+  
   const relatedPosts = await fetchRelatedPosts(post.category?.code || "", post.id);
 
   const articleSchema = generateArticleSchema({

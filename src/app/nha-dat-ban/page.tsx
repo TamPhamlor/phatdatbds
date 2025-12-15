@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import CategoryFilter from "./components/CategoryFilter";
 import ClientLayout from "./components/ClientLayout";
+import HydrationSafe from "./components/HydrationSafe";
 import { Listing, Filters } from "./components/types";
 import { MetaListing } from "../types/products";
+import { generateListingPageSchema } from "@/lib/realEstateSchema";
 
 // Metadata
 export const metadata: Metadata = {
@@ -127,10 +129,21 @@ export default async function NhaDatBanPage({
     getMetaListing(),
   ]);
 
+  // Schema SEO cho trang danh sách bất động sản
+  const listingPageSchema = generateListingPageSchema(projects);
+
   return (
-    <>
-      <CategoryFilter meta={meta}/>
-      <ClientLayout projects={projects} meta={meta} />
-    </>
+    <div suppressHydrationWarning>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(listingPageSchema) }}
+      />
+      <HydrationSafe fallback={<div className="h-16 bg-gradient-to-r from-emerald-50/90 via-white/90 to-emerald-50/90" />}>
+        <CategoryFilter meta={meta}/>
+      </HydrationSafe>
+      <HydrationSafe fallback={<div className="container-std py-8"><div className="text-center text-gray-500">Đang tải...</div></div>}>
+        <ClientLayout projects={projects} meta={meta} />
+      </HydrationSafe>
+    </div>
   );
 }

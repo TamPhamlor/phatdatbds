@@ -1,6 +1,4 @@
 import Image from 'next/image'
-import { Card, CardContent, Box, Stack, Typography, Button } from '@mui/material'
-import SearchOffIcon from '@mui/icons-material/SearchOff'
 import { Listing } from './types'
 
 type PropertyCardProps =
@@ -11,24 +9,26 @@ export default function PropertyCard(props: PropertyCardProps) {
   // ----- EMPTY STATE NGAY TRONG COMPONENT -----
   if (!props.listing || props.isEmpty) {
     return (
-      <Card variant="outlined" sx={{ borderRadius: 2 }}>
-        <CardContent>
-          <Box sx={{ py: 3, px: 2, display: 'flex', justifyContent: 'center' }}>
-            <Stack spacing={2} alignItems="center" sx={{ maxWidth: 520, textAlign: 'center' }}>
-              <SearchOffIcon sx={{ fontSize: 48, color: 'text.disabled' }} />
-              <Typography variant="h6">Không tồn tại</Typography>
-              <Typography variant="body2" color="text.secondary">
-                Không tìm thấy bất động sản phù hợp. Hãy thử đổi bộ lọc hoặc từ khóa.
-              </Typography>
-              {props.onClearFilters ? (
-                <Button variant="outlined" onClick={props.onClearFilters}>
-                  Xoá bộ lọc
-                </Button>
-              ) : null}
-            </Stack>
-          </Box>
-        </CardContent>
-      </Card>
+      <div className="relative overflow-hidden rounded-2xl bg-white border border-gray-200 p-6">
+        <div className="flex flex-col items-center justify-center text-center space-y-4">
+          <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 13l6 6" />
+          </svg>
+          <h6 className="font-semibold text-gray-900">Không tồn tại</h6>
+          <p className="text-sm text-gray-600 max-w-xs">
+            Không tìm thấy bất động sản phù hợp. Hãy thử đổi bộ lọc hoặc từ khóa.
+          </p>
+          {props.onClearFilters && (
+            <button 
+              onClick={props.onClearFilters}
+              className="px-4 py-2 border border-emerald-500 text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors"
+            >
+              Xoá bộ lọc
+            </button>
+          )}
+        </div>
+      </div>
     )
   }
 

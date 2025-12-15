@@ -54,7 +54,7 @@ export default function CategoryFilter({ meta }: Props) {
     router.push(`/nha-dat-ban?${params.toString()}`);
     
     // Scroll to top trên mobile
-    if (window.innerWidth < 1024) {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
