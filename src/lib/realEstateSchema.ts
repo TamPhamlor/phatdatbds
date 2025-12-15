@@ -71,10 +71,10 @@ export function generateRealEstateListingSchema(listing: Listing, id: string) {
     address: {
       "@type": "PostalAddress",
       streetAddress: listing.address || listing.street || "",
-      addressLocality: listing.ward?.name || "Nhơn Trạch",
-      addressRegion: listing.province?.name || "Đồng Nai",
+      addressLocality: "Nhơn Trạch",
+      addressRegion: "Đồng Nai",
       addressCountry: "VN",
-      postalCode: listing.ward?.code || ""
+      postalCode: ""
     },
 
     floorSize: listing.area_land ? {
@@ -105,9 +105,7 @@ export function generateRealEstateListingSchema(listing: Listing, id: string) {
       }))
     }),
 
-    ...(listing.legal_status && {
-      legalStatus: listing.legal_status.name
-    }),
+
 
     breadcrumb: {
       "@type": "BreadcrumbList",
@@ -142,10 +140,10 @@ export function generateRealEstateListingSchema(listing: Listing, id: string) {
       "bất động sản Nhơn Trạch",
       "nhà đất Đồng Nai", 
       "mua bán nhà đất",
-      listing.property_type?.name || "bất động sản",
-      listing.ward?.name || "Nhơn Trạch",
-      listing.province?.name || "Đồng Nai"
-    ].filter(Boolean).join(", ")
+      "bất động sản",
+      "Nhơn Trạch",
+      "Đồng Nai"
+    ].join(", ")
   };
 }
 
@@ -190,8 +188,8 @@ export function generateListingPageSchema(listings: Listing[], totalCount?: numb
           } : undefined,
           address: {
             "@type": "PostalAddress",
-            addressLocality: listing.ward?.name || "Nhơn Trạch",
-            addressRegion: listing.province?.name || "Đồng Nai",
+            addressLocality: "Nhơn Trạch",
+            addressRegion: "Đồng Nai",
             addressCountry: "VN",
             streetAddress: listing.address || ""
           }

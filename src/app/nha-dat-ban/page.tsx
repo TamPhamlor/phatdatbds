@@ -3,7 +3,7 @@ import CategoryFilter from "./components/CategoryFilter";
 import ClientLayout from "./components/ClientLayout";
 import HydrationSafe from "./components/HydrationSafe";
 import { Listing, Filters } from "./components/types";
-import { MetaListing } from "../types/products";
+import { MetaListing, Listing as ProductListing } from "../types/products";
 import { generateListingPageSchema } from "@/lib/realEstateSchema";
 
 // Metadata
@@ -130,7 +130,7 @@ export default async function NhaDatBanPage({
   ]);
 
   // Schema SEO cho trang danh sách bất động sản
-  const listingPageSchema = generateListingPageSchema(projects);
+  const listingPageSchema = generateListingPageSchema(projects as unknown as ProductListing[]);
 
   return (
     <div suppressHydrationWarning>
