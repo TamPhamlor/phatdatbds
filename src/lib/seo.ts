@@ -24,7 +24,7 @@ export const organizationSchema = {
   image: `${SITE_URL}/logo_phat_dat_bat_don_san.png`,
   description: SITE_DESCRIPTION,
   telephone: PHONE_NUMBER,
-  email: "contact@phatdatbatdongsan.com",
+  email: "phatdatbatdongsan.com@gmail.com",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Nhơn Trạch",

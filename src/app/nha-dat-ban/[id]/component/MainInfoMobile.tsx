@@ -9,6 +9,8 @@ interface MainInfoMobileProps {
 
 const getStatusText = (status: string) => {
   const statusMap: Record<string, string> = {
+    published: "Đang bán",
+    available: "Đang bán",
     active: "Đang bán",
     sold: "Đã bán",
     pending: "Đang chờ",
