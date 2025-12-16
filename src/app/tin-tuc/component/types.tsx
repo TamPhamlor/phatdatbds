@@ -62,6 +62,7 @@ export interface Post {
   tags: Tag[];
   post_types: PostType[];
   category?: PostType;
+  relative?: Post[];
 }
 
 export interface ApiResponse {

@@ -9,6 +9,7 @@ import PhotoGallery from "./component/PhotoGallery";
 import AgentSchedule from "./component/AgentSchedule";
 import Sidebar from "./component/Sidebar";
 import MobileActionBar from "./component/MobileActionBar";
+import RelatedListings from "./component/RelatedListings";
 import { useEffect } from "react";
 
 interface ListingDetailProps {
@@ -67,6 +68,9 @@ const ListingDetail: React.FC<ListingDetailProps> = ({ listing }) => {
             <Tabs listing={listing} />
             <PhotoGallery images={listing.images} />
             <AgentSchedule />
+            {listing.relative && listing.relative.length > 0 && (
+              <RelatedListings listings={listing.relative} />
+            )}
           </div>
           <Sidebar listing={listing} />
         </div>

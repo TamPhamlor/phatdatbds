@@ -59,6 +59,9 @@ export interface Listing {
 
   // Field bổ sung từ API
   price_total_text: string;
+  
+  // Bất động sản liên quan
+  relative?: Listing[];
 }
 
 

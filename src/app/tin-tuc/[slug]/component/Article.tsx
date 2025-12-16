@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Post } from "../../component/types";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, X, ZoomIn, ZoomOut } from "lucide-react";
 
 interface Tag {
   id: number;
@@ -24,8 +24,6 @@ interface SavedPost {
   savedAt: string;
 }
 
-
-
 interface ArticleProps {
   post: Post;
   relatedPosts: Post[];
@@ -34,8 +32,94 @@ interface ArticleProps {
 export function Article({ post, relatedPosts }: ArticleProps) {
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [lightboxCaption, setLightboxCaption] = useState<string>("");
+  const [isZoomed, setIsZoomed] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  // Đóng lightbox
+  const closeLightbox = useCallback(() => {
+    setLightboxImage(null);
+    setLightboxCaption("");
+    setIsZoomed(false);
+    document.body.style.overflow = "";
+  }, []);
+
+  // Toggle zoom
+  const toggleZoom = useCallback(() => {
+    setIsZoomed((prev) => !prev);
+  }, []);
+
+  // Xử lý overflow và ESC key khi lightbox mở
+  useEffect(() => {
+    if (!lightboxImage) return;
+    
+    document.body.style.overflow = "hidden";
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeLightbox();
+      }
+    };
+    
+    document.addEventListener("keydown", handleKeyDown);
+    
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [lightboxImage, closeLightbox]);
+
+  // Dùng event delegation để xử lý click ảnh
+  const handleContentClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    
+    // Tìm img hoặc figure gần nhất
+    const img = target.closest("img") as HTMLImageElement | null;
+    const figure = target.closest("figure") as HTMLElement | null;
+    
+    let imgSrc: string | null = null;
+    let caption = "";
+    
+    if (img) {
+      imgSrc = img.src;
+      caption = img.alt || "";
+    }
+    
+    if (figure) {
+      const figImg = figure.querySelector("img");
+      const figCaption = figure.querySelector("figcaption");
+      if (figImg) {
+        imgSrc = figImg.src;
+        // Ưu tiên figcaption, sau đó là alt
+        caption = figCaption?.textContent || figImg.alt || "";
+      }
+    }
+    
+    if (imgSrc) {
+      e.preventDefault();
+      e.stopPropagation();
+      setLightboxImage(imgSrc);
+      setLightboxCaption(caption);
+    }
+  }, []);
+
+  // Set cursor cho ảnh và figure
+  useEffect(() => {
+    const container = contentRef.current;
+    if (!container) return;
+
+    const figures = container.querySelectorAll("figure");
+    figures.forEach((figure) => {
+      (figure as HTMLElement).style.cursor = "zoom-in";
+    });
+
+    const images = container.querySelectorAll("img");
+    images.forEach((img) => {
+      (img as HTMLElement).style.cursor = "zoom-in";
+    });
+  }, [post.content]);
 
   const copyLink = async () => {
     try {
@@ -151,9 +235,13 @@ export function Article({ post, relatedPosts }: ArticleProps) {
       {/* Content - mobile: bỏ padding/border để tăng diện tích */}
       <section className="mt-4 md:rounded-2xl md:bg-white/70 md:backdrop-blur-md md:border md:border-emerald-100/50 md:shadow-sm p-0 md:p-8">
         <div
+          ref={contentRef}
+          onClick={handleContentClick}
           className="article-content prose prose-sm md:prose-base max-w-none
             [&>*]:!text-[15px] [&>*]:!md:text-base
-            [&>p]:mb-5 [&>p]:leading-7 [&>p]:text-gray-700
+            [&>p]:mb-2 [&>p]:leading-7 [&>p]:text-gray-700
+            [&>div]:mb-2
+            [&_p+p]:mt-2 [&_div+div]:mt-2 [&_p+div]:mt-2 [&_div+p]:mt-2
             prose-headings:font-semibold prose-headings:text-gray-900 prose-headings:mt-6 prose-headings:mb-3 md:prose-headings:mt-8 md:prose-headings:mb-4
             prose-h2:!text-lg prose-h2:md:!text-xl
             prose-h3:!text-base prose-h3:md:!text-lg
@@ -243,6 +331,80 @@ export function Article({ post, relatedPosts }: ArticleProps) {
           </div>
         </div>
       </section>
+
+      {/* Lightbox Modal */}
+      {lightboxImage && (
+        <div
+          className="fixed inset-0 z-[9999] flex flex-col bg-black/70 backdrop-blur-sm"
+          onClick={closeLightbox}
+        >
+          {/* Toolbar */}
+          <div className="absolute top-4 right-4 flex gap-2 z-20">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleZoom();
+              }}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              title={isZoomed ? "Thu nhỏ" : "Phóng to"}
+            >
+              {isZoomed ? <ZoomOut className="w-5 h-5" /> : <ZoomIn className="w-5 h-5" />}
+            </button>
+            <button
+              onClick={closeLightbox}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              title="Đóng"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Image container - flex grow để chiếm hết không gian */}
+          <div className="flex-1 flex items-center justify-center overflow-hidden">
+            <div
+              className={`relative transition-transform duration-300 ${
+                isZoomed 
+                  ? "cursor-zoom-out overflow-auto max-h-full w-full" 
+                  : "cursor-zoom-in w-full md:w-auto flex items-center justify-center"
+              }`}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleZoom();
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={lightboxImage}
+                alt={lightboxCaption || "Ảnh phóng to"}
+                className={`transition-all duration-300 ${
+                  isZoomed
+                    ? "max-w-none w-auto h-auto"
+                    : "max-h-[70vh] w-full md:w-auto md:max-w-[90vw] object-contain md:rounded-lg shadow-2xl"
+                }`}
+              />
+            </div>
+          </div>
+
+          {/* Caption - cố định ở dưới, luôn hiển thị */}
+          {lightboxCaption && (
+            <div 
+              className="flex-none bg-black/50 py-3 px-4 text-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="text-white/90 text-sm max-w-2xl mx-auto">
+                {lightboxCaption}
+              </p>
+            </div>
+          )}
+
+          {/* Hint - chỉ hiện trên desktop, khi không có caption */}
+          {!lightboxCaption && (
+            <div className="hidden md:block absolute bottom-4 left-1/2 -translate-x-1/2 text-white/50 text-sm">
+              Nhấn ESC hoặc click bên ngoài để đóng
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Related Posts - chỉ hiện trên mobile, đồng bộ với content */}
       <section className="lg:hidden mt-4 md:rounded-2xl md:bg-white/70 md:backdrop-blur-md md:border md:border-emerald-100/50 md:shadow-sm p-0 md:p-5">

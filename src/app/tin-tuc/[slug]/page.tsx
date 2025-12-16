@@ -7,23 +7,26 @@ import { generateArticleSchema, SITE_URL } from "@/lib/seo";
 
 import { apiRequestWithCache } from '@/lib/api';
 
-async function fetchPost(slug: string): Promise<Post | null> {
+interface PostResponse {
+  success: boolean;
+  data: Post;
+  relative: Post[];
+}
+
+async function fetchPost(slug: string): Promise<{ post: Post; relative: Post[] } | null> {
   try {
     const res = await apiRequestWithCache(`/api/v1/posts/${slug}`, 86400);
     if (!res.ok) return null;
-    const data = await res.json();
-    return data?.data || null;
+    const json: PostResponse = await res.json();
+    if (!json?.data) return null;
+    return {
+      post: json.data,
+      relative: json.relative || [],
+    };
   } catch (error) {
     console.error("Error fetching post:", error);
     return null;
   }
-}
-
-async function fetchRelatedPosts(categoryCode: string, excludeId: number): Promise<Post[]> {
-  const res = await apiRequestWithCache(`/api/v1/posts?category=${categoryCode}&limit=5`, 60);
-  const data = await res.json();
-  if (!data.success) return [];
-  return data.data.data.filter((p: Post) => p.id !== excludeId);
 }
 
 // ✅ SEO Metadata
@@ -33,15 +36,17 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const { slug } = await Promise.resolve(params);
-  const post = await fetchPost(slug);
+  const result = await fetchPost(slug);
 
   // Nếu không tìm thấy bài viết, trả về metadata mặc định
-  if (!post) {
+  if (!result) {
     return {
       title: "Bài viết không tồn tại | Phát Đạt Bất Động Sản",
       description: "Bài viết bạn tìm kiếm không tồn tại hoặc đã được gỡ bỏ.",
     };
   }
+
+  const post = result.post;
 
   return {
     title: post.meta_title || post.title,
@@ -67,14 +72,14 @@ export async function generateMetadata({
 // ✅ Page render
 export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = await Promise.resolve(params);
-  const post = await fetchPost(slug);
+  const result = await fetchPost(slug);
   
   // ✅ Nếu không tìm thấy bài viết, redirect đến trang 404 HTML tĩnh
-  if (!post) {
+  if (!result) {
     redirect('/not-found.html');
   }
   
-  const relatedPosts = await fetchRelatedPosts(post.category?.code || "", post.id);
+  const { post, relative: relatedPosts } = result;
 
   const articleSchema = generateArticleSchema({
     title: post.title,

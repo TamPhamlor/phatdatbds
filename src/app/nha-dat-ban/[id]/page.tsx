@@ -13,12 +13,22 @@ const BASE_URL =
 
 import { apiRequestWithCache } from '@/lib/api';
 
-async function getListing(id: string): Promise<Listing | null> {
+interface ListingResponse {
+  success: boolean;
+  data: Listing;
+  relative: Listing[];
+}
+
+async function getListing(id: string): Promise<{ listing: Listing; relative: Listing[] } | null> {
   try {
     const res = await apiRequestWithCache(`/api/v1/listings/${id}`, 60);
     if (!res.ok) return null;
-    const data = await res.json();
-    return (data && data.data) ? (data.data as Listing) : null;
+    const json: ListingResponse = await res.json();
+    if (!json?.data) return null;
+    return {
+      listing: json.data,
+      relative: json.relative || [],
+    };
   } catch {
     return null;
   }
@@ -33,16 +43,17 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const resolved = await params;
   const id = Array.isArray(resolved.id) ? resolved.id[0] : resolved.id;
-  const listing = await getListing(id);
+  const result = await getListing(id);
 
   // Nếu không tìm thấy listing, trả về metadata mặc định
-  if (!listing) {
+  if (!result) {
     return {
       title: "Bất động sản không tồn tại | Phát Đạt Bất Động Sản",
       description: "Bất động sản bạn tìm kiếm không tồn tại hoặc đã được gỡ bỏ.",
     };
   }
 
+  const listing = result.listing;
   const title = listing.title || `Tin rao #${id} | Nhà đất bán`;
   const desc =
     (listing.description ?? "").replace(/<[^>]*>/g, '').slice(0, 180) ||
@@ -93,12 +104,17 @@ export default async function ListingDetailPage({
   const id = Array.isArray(resolvedParams.id)
     ? resolvedParams.id[0]
     : resolvedParams.id;
-  const listing = await getListing(id);
+  const result = await getListing(id);
 
   // ✅ Nếu không tìm thấy bất động sản, redirect đến trang 404 HTML tĩnh
-  if (!listing) {
+  if (!result) {
     redirect('/not-found.html');
   }
+
+  const { listing, relative } = result;
+
+  // Gắn relative vào listing để truyền xuống component
+  const listingWithRelative = { ...listing, relative };
 
   // JSON-LD (SEO) cho RealEstateListing - Schema đầy đủ
   const jsonLd = generateRealEstateListingSchema(listing, id);
@@ -109,7 +125,7 @@ export default async function ListingDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ListingDetail listing={listing} />
+      <ListingDetail listing={listingWithRelative} />
     </>
   );
 }
