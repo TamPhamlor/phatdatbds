@@ -2,6 +2,19 @@
 
 import { useState } from 'react';
 import { PHONE_CONTACT, formatPhone, telLink } from "@/lib/config";
+import Dropdown from '@/app/components/Dropdown';
+
+// Helper để lấy text của chủ đề
+const getSubjectText = (value: string) => {
+  const subjectMap: Record<string, string> = {
+    mua: "Tư vấn mua bất động sản",
+    ban: "Đăng tin bán bất động sản", 
+    thue: "Tư vấn cho thuê",
+    phaply: "Tư vấn pháp lý",
+    khac: "Khác"
+  };
+  return subjectMap[value] || value;
+};
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -31,7 +44,7 @@ export default function ContactPage() {
             email: formData.email,
             phone: formData.phone,
             message: formData.subject 
-              ? `[${formData.subject}] ${formData.message}` 
+              ? `[${getSubjectText(formData.subject)}] ${formData.message}` 
               : formData.message,
           }),
         }
@@ -230,19 +243,29 @@ export default function ContactPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Chủ đề</label>
-                <select
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-emerald-200 bg-white/80 backdrop-blur-sm focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all"
-                >
-                  <option value="">Chọn chủ đề</option>
-                  <option value="mua">Tư vấn mua bất động sản</option>
-                  <option value="ban">Đăng tin bán bất động sản</option>
-                  <option value="thue">Tư vấn cho thuê</option>
-                  <option value="phaplý">Tư vấn pháp lý</option>
-                  <option value="khac">Khác</option>
-                </select>
+                <Dropdown
+                  label=""
+                  options={[
+                    "Chọn chủ đề",
+                    "Tư vấn mua bất động sản",
+                    "Đăng tin bán bất động sản", 
+                    "Tư vấn cho thuê",
+                    "Tư vấn pháp lý",
+                    "Khác"
+                  ]}
+                  value={formData.subject ? getSubjectText(formData.subject) : "Chọn chủ đề"}
+                  onChange={(selectedText) => {
+                    const valueMap: Record<string, string> = {
+                      "Chọn chủ đề": "",
+                      "Tư vấn mua bất động sản": "mua",
+                      "Đăng tin bán bất động sản": "ban",
+                      "Tư vấn cho thuê": "thue", 
+                      "Tư vấn pháp lý": "phaply",
+                      "Khác": "khac"
+                    };
+                    setFormData(prev => ({ ...prev, subject: valueMap[selectedText] || "" }));
+                  }}
+                />
               </div>
 
               <div>
