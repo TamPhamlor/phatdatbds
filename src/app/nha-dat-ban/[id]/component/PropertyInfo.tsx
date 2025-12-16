@@ -54,15 +54,21 @@ const PropertyInfo: React.FC<PropertyInfoProps> = ({ listing }) => {
 
       {/* Thông tin nhanh */}
       <div className="mt-4 flex flex-wrap gap-2">
-        <span className="rounded-full border border-emerald-100 bg-emerald-50/50 px-3 py-1.5 text-sm text-emerald-700">
-          {listing.bedrooms} Phòng ngủ
-        </span>
-        <span className="rounded-full border border-emerald-100 bg-emerald-50/50 px-3 py-1.5 text-sm text-emerald-700">
-          {listing.bathrooms} Phòng tắm
-        </span>
-        <span className="rounded-full border border-emerald-100 bg-emerald-50/50 px-3 py-1.5 text-sm text-emerald-700">
-          {listing.area_land} m²
-        </span>
+        {listing.bedrooms > 0 && (
+          <span className="rounded-full border border-emerald-100 bg-emerald-50/50 px-3 py-1.5 text-sm text-emerald-700">
+            {listing.bedrooms} Phòng ngủ
+          </span>
+        )}
+        {listing.bathrooms > 0 && (
+          <span className="rounded-full border border-emerald-100 bg-emerald-50/50 px-3 py-1.5 text-sm text-emerald-700">
+            {listing.bathrooms} Phòng tắm
+          </span>
+        )}
+        {listing.area_land && parseFloat(listing.area_land) > 0 && (
+          <span className="rounded-full border border-emerald-100 bg-emerald-50/50 px-3 py-1.5 text-sm text-emerald-700">
+            {listing.area_land} m²
+          </span>
+        )}
         {listing.direction && (
           <span className="rounded-full border border-emerald-100 bg-emerald-50/50 px-3 py-1.5 text-sm text-emerald-700">
             Hướng {listing.direction}
