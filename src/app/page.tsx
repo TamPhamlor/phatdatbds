@@ -27,6 +27,7 @@ interface ApiListing {
   images?: ApiImage[];
   ward?: ApiWard | null;
   province?: ApiProvince | null;
+  status?: string | null;
 }
 
 interface ApiResponse { data: ApiListing[]; }
@@ -39,6 +40,7 @@ export interface Listing {
   beds: string;   // m² hiển thị
   price: string;  // chuỗi đã format
   slug: string;
+  status?: string; // trạng thái: sold, available, etc.
 }
 
 // ---- Utils (server side) ----
@@ -81,7 +83,8 @@ const mapApiToListing = (it: ApiListing): Listing => {
     address,
     beds,
     price,
-    slug: it.slug, 
+    slug: it.slug,
+    status: it.status || undefined,
   };
 };
 

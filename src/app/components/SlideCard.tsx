@@ -10,6 +10,7 @@ interface CardItem {
   address: string;
   beds: string;
   price: string;
+  status?: string;
 }
 
 interface CardProps {
@@ -191,6 +192,18 @@ const Card: React.FC<CardProps> = ({ item }) => {
           />
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+          
+          {/* Tag Đã bán */}
+          {item.status?.toLowerCase() === "sold" && (
+            <div className="absolute top-3 left-3 z-10">
+              <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-red-500 text-white text-xs font-semibold shadow-lg">
+                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                Đã bán
+              </span>
+            </div>
+          )}
           {/* Zoom icon */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
             <span className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
