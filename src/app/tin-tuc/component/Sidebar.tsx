@@ -193,11 +193,8 @@ export default function Sidebar({
   useEffect(() => {
     const fetchPinnedListing = async () => {
       try {
-        console.log("Fetching pinned listing:", PINNED_LISTING_SLUG);
         const res = await fetch(`/api/v1/listings/${PINNED_LISTING_SLUG}`);
-        console.log("Response status:", res.status);
         const json = await res.json();
-        console.log("Response data:", json);
         if (json?.data) {
           setPinnedListing(json.data);
         }
