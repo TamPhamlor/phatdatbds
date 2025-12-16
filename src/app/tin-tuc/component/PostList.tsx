@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Post } from "./types";
 import PostCard from "./PostCard";
 import NoResults from "@/app/components/NoResults";
+import { ProjectAdDynamic } from "../[slug]/component/ProjectAdDynamic";
 
 interface PostListProps {
   posts: Post[];
@@ -81,8 +82,16 @@ export default function PostList({ posts }: PostListProps) {
       {sortedPosts && sortedPosts.length > 0 ? (
         <>
           <div id="grid" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {paginatedPosts.map((post) => (
-              <PostCard key={post.id} post={post} />
+            {paginatedPosts.map((post, index) => (
+              <div key={post.id} className="contents">
+                <PostCard post={post} />
+                {/* Hiển thị ProjectAd sau bài viết thứ 2 trên mobile */}
+                {index === 1 && (
+                  <div className="sm:hidden col-span-1">
+                    <ProjectAdDynamic />
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 

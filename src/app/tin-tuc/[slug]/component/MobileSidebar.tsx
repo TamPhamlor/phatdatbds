@@ -1,5 +1,5 @@
 import { PostSearch } from "./PostSearch";
-import { ProjectAd } from "./ProjectAd";
+import { ProjectAdDynamic } from "./ProjectAdDynamic";
 
 export function MobileSidebar() {
   return (
@@ -18,12 +18,7 @@ export function MobileSidebar() {
       </summary>
       <div className="p-4 space-y-4 pt-0">
         <PostSearch isMobile />
-        <ProjectAd
-          title="Khách sạn Williamsburg - Castilling"
-          location="Số 10 Evergreen, Phường Tràng Tiền, Quận Hoàn Kiếm, Hà Nội"
-          price="≈ 8.600.000 VNĐ"
-          imageUrl="https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1200"
-        />
+        <ProjectAdDynamic />
       </div>
     </details>
   );

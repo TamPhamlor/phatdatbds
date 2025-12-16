@@ -29,7 +29,7 @@ export async function extApiFetch(path: string, options: FetchOptions = {}) {
 
   const headers = new Headers(options.headers ?? {});
   headers.set("Accept", "application/json");
-  headers.set("Authorization", `Bearer ${key}`);
+  headers.set("X-API-Key", key);
 
   const next = options.next ?? (getRevalidate() ? { revalidate: getRevalidate() } : undefined);
 

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Post } from "./types";
+import { Listing } from "@/app/types/products";
 
 interface SidebarProps {
   posts: Post[];
@@ -10,6 +11,9 @@ interface SidebarProps {
   onHotPostClick: (title: string) => void;
   activeTag: string;
 }
+
+// Slug của listing được ghim
+const PINNED_LISTING_SLUG = "ban-lo-dat-cln-dgt-xa-dai-phuoc-nhon-trach-3113m2-to-79-thua-27";
 
 // Export MobileSidebar riêng để dùng ở cuối trang
 export function MobileSidebar({
@@ -181,54 +185,116 @@ export default function Sidebar({
     </div>
   );
 
-  // Card quảng cáo nổi bật
-  const AdCard = () => (
-    <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 p-[2px] shadow-lg shadow-emerald-500/25">
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-teal-500/20 animate-pulse"></div>
-      <div className="relative rounded-2xl bg-white/95 backdrop-blur-sm p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <span className="text-sm font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-            Dự án được ghim
-          </span>
+  // State cho listing được ghim
+  const [pinnedListing, setPinnedListing] = useState<Listing | null>(null);
+  const [loadingPinned, setLoadingPinned] = useState(true);
+
+  // Fetch listing được ghim
+  useEffect(() => {
+    const fetchPinnedListing = async () => {
+      try {
+        console.log("Fetching pinned listing:", PINNED_LISTING_SLUG);
+        const res = await fetch(`/api/v1/listings/${PINNED_LISTING_SLUG}`);
+        console.log("Response status:", res.status);
+        const json = await res.json();
+        console.log("Response data:", json);
+        if (json?.data) {
+          setPinnedListing(json.data);
+        }
+      } catch (error) {
+        console.error("Error fetching pinned listing:", error);
+      } finally {
+        setLoadingPinned(false);
+      }
+    };
+    fetchPinnedListing();
+  }, []);
+
+  // Render AdCard content
+  const renderAdCard = () => {
+    if (loadingPinned) {
+      return (
+        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 p-[2px] shadow-lg shadow-emerald-500/25">
+          <div className="relative rounded-2xl bg-white/95 backdrop-blur-sm p-4">
+            <div className="animate-pulse space-y-3">
+              <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+              <div className="h-36 bg-gray-200 rounded-xl"></div>
+              <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+              <div className="h-3 bg-gray-200 rounded w-full"></div>
+            </div>
+          </div>
         </div>
-        <div className="rounded-xl overflow-hidden relative w-full h-36 ring-2 ring-emerald-200/50">
-          <Image
-            src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=800"
-            alt="Khách sạn Williamsburg - Castilling"
-            fill
-            className="object-cover"
-            unoptimized
-          />
-          <div className="absolute top-2 left-2">
-            <span className="px-2 py-1 text-[10px] font-bold bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full shadow-lg">
-              HOT 🔥
+      );
+    }
+
+    if (!pinnedListing) {
+      return (
+        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 p-[2px] shadow-lg shadow-emerald-500/25">
+          <div className="relative rounded-2xl bg-white/95 backdrop-blur-sm p-4">
+            <div className="text-sm text-gray-500 text-center py-4">
+              Không thể tải dự án được ghim
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const coverImage =
+      pinnedListing.images?.find((i) => i.is_cover)?.url ||
+      pinnedListing.images?.[0]?.url;
+
+    return (
+      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 p-[2px] shadow-lg shadow-emerald-500/25">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-teal-500/20 animate-pulse"></div>
+        <div className="relative rounded-2xl bg-white/95 backdrop-blur-sm p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="text-sm font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              Dự án được ghim
             </span>
           </div>
-        </div>
-        <div className="mt-3 font-semibold text-gray-900">
-          Khách sạn Williamsburg - Castilling
-        </div>
-        <div className="text-sm text-gray-500">
-          Số 10 Evergreen, Phường Tràng Tiền, Quận Hoàn Kiếm, Hà Nội
-        </div>
-        <div className="mt-3 flex items-center justify-between">
-          <div className="text-sm font-bold text-emerald-600">
-            8.6 triệu<span className="text-gray-500 font-normal">/tháng</span>
+          <Link href={`/nha-dat-ban/${pinnedListing.slug}`}>
+            <div className="rounded-xl overflow-hidden relative w-full h-36 ring-2 ring-emerald-200/50">
+              {coverImage && (
+                <Image
+                  src={coverImage}
+                  alt={pinnedListing.title}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              )}
+              <div className="absolute top-2 left-2">
+                <span className="px-2 py-1 text-[10px] font-bold bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full shadow-lg">
+                  HOT 🔥
+                </span>
+              </div>
+            </div>
+          </Link>
+          <div className="mt-3 font-semibold text-gray-900 line-clamp-2">
+            {pinnedListing.title}
           </div>
-          <a
-            href="#"
-            className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-1.5 text-xs font-medium hover:shadow-lg hover:shadow-emerald-500/25 transition-all hover:-translate-y-0.5"
-          >
-            Xem chi tiết
-          </a>
+          <div className="text-sm text-gray-500 line-clamp-1">
+            {pinnedListing.address}
+          </div>
+          <div className="mt-3 flex items-center justify-between">
+            <div className="text-sm font-bold text-emerald-600">
+              {pinnedListing.price_total_text || pinnedListing.price_total}
+            </div>
+            <Link
+              href={`/nha-dat-ban/${pinnedListing.slug}`}
+              className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-1.5 text-xs font-medium hover:shadow-lg hover:shadow-emerald-500/25 transition-all hover:-translate-y-0.5"
+            >
+              Xem chi tiết
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // Glass card wrapper
   const GlassCard = ({
@@ -278,7 +344,7 @@ export default function Sidebar({
       {/* Desktop Sidebar */}
       <aside className="hidden lg:block lg:col-span-4">
         <div className="lg:sticky lg:top-20 space-y-4">
-          <AdCard />
+          {renderAdCard()}
           <GlassCard title="Bài viết nổi bật" icon={<FireIcon />}>
             <HotPostsList id="hotList" />
           </GlassCard>
