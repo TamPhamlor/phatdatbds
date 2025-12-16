@@ -68,6 +68,12 @@ const Icon = {
       <path strokeWidth="1.8" d="M6 4h9l3 3v13H6z" /><path strokeWidth="1.8" d="M9 12h6M9 16h6M9 8h3" />
     </svg>
   ),
+  Status: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
+      <circle cx="12" cy="12" r="3" strokeWidth="1.8" />
+      <path strokeWidth="1.8" d="M12 1v6m0 6v6m11-7h-6m-6 0H1" />
+    </svg>
+  ),
   Amenities: (props: React.SVGProps<SVGSVGElement>) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
       <path strokeWidth="1.8" strokeLinecap="round" d="M5 12l2-2m-2 2l2 2M12 5l2-2m-2 2l2 2M17 17l2-2m-2 2l2 2" />
@@ -111,6 +117,7 @@ export default function FilterPanel({ detailOpen = false, meta, onFilter }: Filt
   const clearDirection = () => pushFilters({ ...filters, direction: undefined });
   const clearLegal = () => pushFilters({ ...filters, legal_status_id: undefined });
   const clearAmenities = () => pushFilters({ ...filters, amenities: undefined });
+  const clearStatus = () => pushFilters({ ...filters, status: undefined });
 
   // Apply per-section
   const applyLocation = () => pushFilters({ ...filters });
@@ -122,6 +129,7 @@ export default function FilterPanel({ detailOpen = false, meta, onFilter }: Filt
   const applyDirection = () => pushFilters({ ...filters });
   const applyLegal = () => pushFilters({ ...filters });
   const applyAmenities = () => pushFilters({ ...filters });
+  const applyStatus = () => pushFilters({ ...filters });
 
   // Sync từ URL → state
   useEffect(() => {
@@ -142,6 +150,7 @@ export default function FilterPanel({ detailOpen = false, meta, onFilter }: Filt
       ward_id: searchParams.get('ward_id') ? parseInt(searchParams.get('ward_id')!) : undefined,
 
       legal_status_id: searchParams.get('legal_status_id') ? parseInt(searchParams.get('legal_status_id')!) : undefined,
+      status: searchParams.get('status') || undefined,
     };
     setFilters(newFilters);
   }, [searchParams]);
@@ -236,6 +245,7 @@ const isFloorsActive = filters.floors != null;
 const isDirectionActive = !!filters.direction;
 const isLegalActive = filters.legal_status_id != null;
 const isAmenitiesActive = (filters.amenities?.length ?? 0) > 0;
+const isStatusActive = !!filters.status;
 
   return (
     <aside className="w-full md:w-[380px] shrink-0 transition-all duration-300 block h-full">
@@ -481,6 +491,32 @@ const isAmenitiesActive = (filters.amenities?.length ?? 0) > 0;
               onChange={(name) => handleFilterChange('direction', name === "Bất kỳ" ? undefined : name)}
             />
             <BodyButtons onClear={clearDirection} onApply={applyDirection} />
+          </div>
+        </details>
+
+        {/* ========== TRẠNG THÁI ========== */}
+        <details open={detailOpen} className={sectionCls(isStatusActive)}>
+          <SectionHeader icon={<Icon.Status className={iconCls} />} title="Trạng thái" />
+          <div className="mt-3 space-y-2 text-sm">
+            <Dropdown
+              label="Trạng thái"
+              options={["Bất kỳ", "Đang bán", "Đã bán"]}
+              value={
+                !filters.status ? "Bất kỳ" :
+                filters.status === "published" ? "Đang bán" :
+                filters.status === "sold" ? "Đã bán" :
+                "Bất kỳ"
+              }
+              onChange={(name) => {
+                const statusMap: Record<string, string | undefined> = {
+                  "Bất kỳ": undefined,
+                  "Đang bán": "published",
+                  "Đã bán": "sold",
+                };
+                handleFilterChange('status', statusMap[name]);
+              }}
+            />
+            <BodyButtons onClear={clearStatus} onApply={applyStatus} />
           </div>
         </details>
 

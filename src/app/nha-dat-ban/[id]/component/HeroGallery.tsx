@@ -7,6 +7,7 @@ import { Listing } from "@/app/types/products";
 
 interface HeroGalleryProps {
   images: Listing["images"];
+  listing?: Listing;
 }
 
 // Lightbox component rendered via Portal
@@ -229,7 +230,7 @@ function GalleryLightbox({
   );
 }
 
-const HeroGallery: React.FC<HeroGalleryProps> = ({ images }) => {
+const HeroGallery: React.FC<HeroGalleryProps> = ({ images, listing }) => {
   // Tìm index của ảnh cover, nếu không có thì dùng 0
   const coverIndex = images.findIndex((img) => img.is_cover);
   const [selectedIndex, setSelectedIndex] = useState(coverIndex >= 0 ? coverIndex : 0);
@@ -270,6 +271,24 @@ const HeroGallery: React.FC<HeroGalleryProps> = ({ images }) => {
             unoptimized
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+          
+          {/* Status tag */}
+          {listing?.status === 'sold' && (
+            <div className="absolute top-4 left-4 z-10">
+              <div className="px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded-full shadow-lg">
+                Đã bán
+              </div>
+            </div>
+          )}
+          
+          {listing?.status === 'published' && (
+            <div className="absolute top-4 left-4 z-10">
+              <div className="px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-full shadow-lg">
+                Đang bán
+              </div>
+            </div>
+          )}
+          
           <div className="absolute bottom-3 right-3 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-xs font-medium text-gray-700 opacity-0 group-hover:opacity-100 transition-opacity">
             Nhấn để phóng to
           </div>

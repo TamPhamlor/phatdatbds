@@ -19,6 +19,7 @@ export interface Listing {
   property_type_id?: number;
   province_id?: number;
   ward_id?: number;
+  status: string;
   images: { id: number; url: string; is_cover: boolean; sort_order: number }[];
   author?: string;
   published_at: string;
@@ -48,6 +49,7 @@ export interface Filters {
   province_id?: number;
   ward_id?: number;
   legal_status_id?: number;
+  status?: string;
 }
 
 export interface FilterState {

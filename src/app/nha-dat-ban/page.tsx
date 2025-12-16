@@ -75,6 +75,9 @@ export async function getListings(filters: Filters): Promise<Listing[]> {
       // Legal status
       if (filters.legal_status_id && listing.legal_status_id !== filters.legal_status_id) pass = false;
 
+      // Status
+      if (filters.status && listing.status !== filters.status) pass = false;
+
       return pass;
     });
   } catch (error) {
@@ -122,6 +125,7 @@ export default async function NhaDatBanPage({
     province_id: parseNumber(resolvedSearchParams.province_id),
     ward_id: parseNumber(resolvedSearchParams.ward_id),
     legal_status_id: parseNumber(resolvedSearchParams.legal_status_id),
+    status: resolvedSearchParams.status as string | undefined,
   };
 
   const [projects, meta] = await Promise.all([

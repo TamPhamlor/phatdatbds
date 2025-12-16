@@ -61,7 +61,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({ listing }) => {
       <main className="container-std py-6 pb-24 lg:pb-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-8 space-y-5">
-            <HeroGallery images={listing.images} />
+            <HeroGallery images={listing.images} listing={listing} />
             <PropertyInfo listing={listing} />
             <MainInfoMobile listing={listing} />
             <Tabs listing={listing} />

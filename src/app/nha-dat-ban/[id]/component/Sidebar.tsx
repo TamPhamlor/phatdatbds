@@ -12,12 +12,27 @@ interface SidebarProps {
 // Helper để format status
 const getStatusText = (status: string) => {
   const statusMap: Record<string, string> = {
+    published: "Đang bán",
+    available: "Đang bán",
     active: "Đang bán",
     sold: "Đã bán",
-    pending: "Đang chờ",
+    pending: "Đang thương lượng",
     draft: "Nháp",
   };
   return statusMap[status] || "Đang bán";
+};
+
+// Helper để lấy màu status
+const getStatusColor = (status: string) => {
+  const colorMap: Record<string, string> = {
+    published: "text-green-600",
+    available: "text-green-600",
+    active: "text-green-600",
+    sold: "text-red-600",
+    pending: "text-orange-600",
+    draft: "text-gray-600",
+  };
+  return colorMap[status] || "text-green-600";
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ listing }) => {
@@ -25,7 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ listing }) => {
 
   // Tạo danh sách các thông tin với icon
   const allInfo = [
-    { label: "Trạng thái", value: getStatusText(listing.status), highlight: true, icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
+    { label: "Trạng thái", value: getStatusText(listing.status), highlight: true, icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", color: getStatusColor(listing.status) },
     { label: "Diện tích đất", value: listing.area_land ? `${listing.area_land} m²` : null, icon: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" },
     { label: "Diện tích xây dựng", value: listing.area_built && parseFloat(listing.area_built) > 0 ? `${listing.area_built} m²` : null, icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" },
     { label: "Chiều ngang", value: listing.width && parseFloat(listing.width) > 0 ? `${listing.width} m` : null, icon: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" },
@@ -64,7 +79,7 @@ const Sidebar: React.FC<SidebarProps> = ({ listing }) => {
                   </svg>
                   {item.label}
                 </dt>
-                <dd className={`font-semibold ${item.highlight ? "text-emerald-600" : "text-gray-900"}`}>{item.value}</dd>
+                <dd className={`font-semibold ${item.color || (item.highlight ? "text-emerald-600" : "text-gray-900")}`}>{item.value}</dd>
               </div>
             ))}
           </dl>

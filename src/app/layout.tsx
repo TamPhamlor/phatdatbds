@@ -8,7 +8,7 @@ import HeaderProgress from "./components/HeaderProgress";
 import { NetworkProgressProvider } from "./components/NetworkProgress";
 import ZoomResetHandler from "./components/ZoomResetHandler";
 import { Suspense } from "react";
-import { Analytics } from "@vercel/analytics/next";
+// import { Analytics } from "@vercel/analytics/next"; // Disabled - not using Vercel hosting
 import {
   organizationSchema,
   websiteSchema,
@@ -127,7 +127,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </NetworkProgressProvider>
         <Footer />
-        <Analytics />
+        {/* <Analytics /> */}
       </body>
     </html>
   );

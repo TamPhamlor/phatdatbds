@@ -95,31 +95,37 @@ const Tabs: React.FC<TabsProps> = ({ listing }) => {
             </svg>
           </button>
 
-          <div className="rounded-xl border border-emerald-100 bg-emerald-50/30 p-4">
-            <div className="flex items-center gap-2 font-semibold text-gray-900 mb-3">
-              <svg className="w-5 h-5 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-              </svg>
-              Điểm nổi bật
-            </div>
-            <ul className="space-y-2 text-sm text-gray-700">
-              {[
-                listing.bedrooms > 0 && `${listing.bedrooms} phòng ngủ rộng rãi`,
-                listing.bathrooms > 0 && `${listing.bathrooms} phòng tắm tiện nghi`,
-                listing.floors > 0 && `${listing.floors} tầng thiết kế hiện đại`,
-                listing.direction && `Hướng ${listing.direction} thoáng mát`,
-                listing.frontage && "Mặt tiền đường lớn",
-                listing.road_width && parseFloat(listing.road_width) > 0 && `Đường trước nhà ${listing.road_width}m`,
-              ].filter(Boolean).map((item, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <svg className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="20 6 9 17 4 12" />
+          {(() => {
+            const highlights = [
+              listing.bedrooms > 0 && `${listing.bedrooms} phòng ngủ rộng rãi`,
+              listing.bathrooms > 0 && `${listing.bathrooms} phòng tắm tiện nghi`,
+              listing.floors > 0 && `${listing.floors} tầng thiết kế hiện đại`,
+              listing.direction && `Hướng ${listing.direction} thoáng mát`,
+              listing.frontage && "Mặt tiền đường lớn",
+              listing.road_width && parseFloat(listing.road_width) > 0 && `Đường trước nhà ${listing.road_width}m`,
+            ].filter(Boolean);
+
+            return highlights.length > 0 ? (
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50/30 p-4">
+                <div className="flex items-center gap-2 font-semibold text-gray-900 mb-3">
+                  <svg className="w-5 h-5 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
+                  Điểm nổi bật
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  {highlights.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <svg className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null;
+          })()}
         </div>
 
         {/* Tiện ích */}

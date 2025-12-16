@@ -61,6 +61,23 @@ export default function PropertyCard(props: PropertyCardProps) {
           unoptimized
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
+        
+        {/* Status tag */}
+        {listing.status === 'sold' && (
+          <div className="absolute top-3 left-3 z-10">
+            <div className="px-3 py-1.5 bg-red-500 text-white text-xs font-semibold rounded-full shadow-lg">
+              Đã bán
+            </div>
+          </div>
+        )}
+        
+        {listing.status === 'published' && (
+          <div className="absolute top-3 left-3 z-10">
+            <div className="px-3 py-1.5 bg-green-500 text-white text-xs font-semibold rounded-full shadow-lg">
+              Đang bán
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="p-4 space-y-2.5 flex-1 flex flex-col">
