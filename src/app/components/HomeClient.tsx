@@ -38,6 +38,7 @@ const SlideCard = dynamic(() => import("@/app/components/SlideCard"), { ssr: fal
 const ResourceCard = dynamic(() => import("@/app/components/ResourceCard"), { ssr: false });
 const Dropdown = dynamic(() => import("@/app/components/Dropdown"), { ssr: false });
 const ScrollReveal = dynamic(() => import("@/app/components/ScrollReveal"), { ssr: false });
+const CustomerFeedback = dynamic(() => import("@/app/components/CustomerFeedback"), { ssr: false });
 
 // =================== Mock/UI options ===================
 const types: string[] = ["Tất cả", "Đất nền", "Nhà phố", "Biệt thự"];
@@ -896,6 +897,9 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
           </div>
         </div>
       </section>
+
+      {/* Customer Feedback */}
+      <CustomerFeedback />
 
       {/* Support CTA */}
       <section id="cta-support" className="py-16 md:py-20">
