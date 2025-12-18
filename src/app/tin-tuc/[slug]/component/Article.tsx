@@ -123,6 +123,8 @@ export function Article({ post, relatedPosts }: ArticleProps) {
 
   const copyLink = async () => {
     try {
+      // Lấy URL hiện tại ngay khi click để đảm bảo đúng đường dẫn
+      const currentUrl = window.location.href;
       await navigator.clipboard.writeText(currentUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);

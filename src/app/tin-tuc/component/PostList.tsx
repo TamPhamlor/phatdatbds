@@ -41,13 +41,17 @@ export default function PostList({ posts }: PostListProps) {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll lên đầu danh sách
-    const gridElement = document.getElementById("grid");
-    if (gridElement) {
-      gridElement.scrollIntoView({ behavior: "smooth", block: "start" });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    // Scroll lên đầu danh sách - dùng setTimeout để đảm bảo state đã update
+    setTimeout(() => {
+      const gridElement = document.getElementById("grid");
+      if (gridElement) {
+        const rect = gridElement.getBoundingClientRect();
+        const scrollTop = window.pageYOffset + rect.top - 20; // offset 20px
+        window.scrollTo({ top: scrollTop, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }, 0);
   };
 
   // Tạo mảng số trang để hiển thị
