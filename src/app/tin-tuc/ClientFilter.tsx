@@ -1,12 +1,23 @@
 "use client";
-import { useState } from "react";
+
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
 import { Post, FilterState } from "./component/types";
 import Toolbar from "./component/Toolbar";
 import Sidebar, { MobileSidebar } from "./component/Sidebar";
 import PostList from "./component/PostList";
 
+interface Pagination {
+  currentPage: number;
+  lastPage: number;
+  total: number;
+  perPage: number;
+}
+
 interface ClientFilterProps {
   posts: Post[];
+  pagination: Pagination | null;
+  allPostsForTags: Post[];
   initialTag?: string;
   initialQuery?: string;
   initialCat?: string;
@@ -14,50 +25,77 @@ interface ClientFilterProps {
 
 export function ClientFilter({
   posts,
+  pagination,
+  allPostsForTags,
   initialTag = "",
   initialQuery = "",
   initialCat = "all",
 }: ClientFilterProps) {
-  const [state, setState] = useState<FilterState>({
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const state: FilterState = {
     q: initialQuery,
     cat: initialCat,
     tag: initialTag,
-  });
+  };
 
-  const normalize = (s: string) =>
-    (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'd');
+  // Cập nhật URL với params mới
+  const updateUrl = useCallback(
+    (newState: Partial<FilterState & { page?: number }>) => {
+      const params = new URLSearchParams(searchParams.toString());
 
-  const applyFilter = () => {
-    const qn = normalize(state.q);
-    const tnorm = normalize(state.tag);
-    return posts.filter((p) => {
-      const okCat = state.cat === 'all' || p.post_types.some((pt) => pt.code === state.cat);
-      const okTitle = !qn || normalize(p.title).includes(qn);
-      const okTag = !tnorm || p.tags.map((t) => normalize(t.name)).includes(tnorm);
-      return okCat && okTitle && okTag;
-    });
+      // Reset page khi thay đổi filter
+      if (newState.q !== undefined || newState.cat !== undefined || newState.tag !== undefined) {
+        params.delete("page");
+      }
+
+      if (newState.q !== undefined) {
+        if (newState.q) params.set("q", newState.q);
+        else params.delete("q");
+      }
+
+      if (newState.cat !== undefined) {
+        if (newState.cat && newState.cat !== "all") params.set("cat", newState.cat);
+        else params.delete("cat");
+      }
+
+      if (newState.tag !== undefined) {
+        if (newState.tag) params.set("tag", newState.tag);
+        else params.delete("tag");
+      }
+
+      if (newState.page !== undefined) {
+        if (newState.page > 1) params.set("page", newState.page.toString());
+        else params.delete("page");
+      }
+
+      const queryString = params.toString();
+      router.push(`/tin-tuc${queryString ? `?${queryString}` : ""}`);
+    },
+    [router, searchParams]
+  );
+
+  const setState = (newState: FilterState) => {
+    updateUrl(newState);
   };
 
   const handleReset = () => {
-    setState({ q: '', cat: 'all', tag: '' });
-    if (window.innerWidth < 1024) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-  const handleTagClick = (tag: string) => {
-    setState({ ...state, tag: state.tag === tag ? '' : tag });
-    if (window.innerWidth < 1024) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-  const handleHotPostClick = (title: string) => {
-    setState({ ...state, q: title });
-    if (window.innerWidth < 1024) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    router.push("/tin-tuc");
   };
 
-  const filteredPosts = applyFilter();
+  const handleTagClick = (tag: string) => {
+    updateUrl({ tag: state.tag === tag ? "" : tag });
+  };
+
+  const handleHotPostClick = (title: string) => {
+    updateUrl({ q: title });
+  };
+
+  const handlePageChange = (page: number) => {
+    updateUrl({ page });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -73,13 +111,11 @@ export function ClientFilter({
               <polyline points="10,9 9,9 8,9" />
             </svg>
             <span className="font-medium">
-              Tìm thấy <span className="text-emerald-600 font-semibold">{filteredPosts.length}</span> bài viết
-              {(state.q || state.tag || state.cat !== 'all') && (
-                <span className="text-gray-400 ml-1">phù hợp</span>
-              )}
+              Tìm thấy <span className="text-emerald-600 font-semibold">{pagination?.total || posts.length}</span> bài viết
+              {(state.q || state.tag || state.cat !== "all") && <span className="text-gray-400 ml-1">phù hợp</span>}
             </span>
           </div>
-          {filteredPosts.length > 0 && (
+          {posts.length > 0 && (
             <div className="text-xs text-gray-400">
               Sắp xếp theo mới nhất
             </div>
@@ -89,17 +125,20 @@ export function ClientFilter({
       <div className="container-std pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <Sidebar
-            posts={posts}
+            posts={allPostsForTags}
             onTagClick={handleTagClick}
             onHotPostClick={handleHotPostClick}
             activeTag={state.tag}
           />
-          <PostList posts={filteredPosts} />
+          <PostList
+            posts={posts}
+            pagination={pagination}
+            onPageChange={handlePageChange}
+          />
         </div>
-        {/* Mobile Sidebar - hiển thị ở cuối trang trên mobile */}
         <div className="mt-8">
           <MobileSidebar
-            posts={posts}
+            posts={allPostsForTags}
             onTagClick={handleTagClick}
             onHotPostClick={handleHotPostClick}
             activeTag={state.tag}
