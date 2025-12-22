@@ -99,6 +99,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="vi">
       <head>
         <meta charSet="utf-8" />
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-HP499F93L8"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-HP499F93L8');
+            `,
+          }}
+        />
         {/* JSON-LD Schema */}
         <script
           type="application/ld+json"
