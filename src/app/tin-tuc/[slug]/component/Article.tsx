@@ -362,11 +362,11 @@ export function Article({ post, relatedPosts }: ArticleProps) {
           </div>
 
           {/* Image container - flex grow để chiếm hết không gian */}
-          <div className="flex-1 flex items-center justify-center overflow-hidden">
+          <div className="flex-1 flex items-center justify-center overflow-auto">
             <div
               className={`relative transition-transform duration-300 ${
                 isZoomed 
-                  ? "cursor-zoom-out overflow-auto max-h-full w-full" 
+                  ? "cursor-zoom-out" 
                   : "cursor-zoom-in w-full md:w-auto flex items-center justify-center"
               }`}
               onClick={(e) => {
