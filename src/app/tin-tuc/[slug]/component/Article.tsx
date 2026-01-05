@@ -37,8 +37,6 @@ export function Article({ post, relatedPosts }: ArticleProps) {
   const [isZoomed, setIsZoomed] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
-
   // Đóng lightbox
   const closeLightbox = useCallback(() => {
     setLightboxImage(null);

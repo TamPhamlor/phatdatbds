@@ -1,6 +1,7 @@
 // app/layout.tsx
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -99,18 +100,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="vi">
       <head>
         <meta charSet="utf-8" />
-        {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-HP499F93L8"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-HP499F93L8');
-            `,
-          }}
-        />
         {/* JSON-LD Schema */}
         <script
           type="application/ld+json"
@@ -132,6 +121,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className={`${inter.variable} antialiased`}>
+        {/* Google Analytics - using next/script */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-HP499F93L8"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-HP499F93L8');
+          `}
+        </Script>
         <ZoomResetHandler />
         <NetworkProgressProvider>
           <Suspense fallback={null}><HeaderProgress /></Suspense>
