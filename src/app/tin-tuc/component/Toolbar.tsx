@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { FilterState } from "./types";
 
 interface ToolbarProps {
@@ -19,6 +20,32 @@ const categories = [
 ];
 
 export default function Toolbar({ state, setState, onReset }: ToolbarProps) {
+  const [localQuery, setLocalQuery] = useState(state.q);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sync localQuery khi state.q thay đổi từ bên ngoài (reset filter)
+  useEffect(() => {
+    setLocalQuery(state.q);
+  }, [state.q]);
+
+  // Debounce search
+  useEffect(() => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+    debounceRef.current = setTimeout(() => {
+      if (localQuery !== state.q) {
+        setState({ ...state, q: localQuery });
+      }
+    }, 300);
+
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, [localQuery]);
+
   const hasFilters = state.cat !== "all" || state.q || state.tag;
 
   return (
