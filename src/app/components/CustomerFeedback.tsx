@@ -46,11 +46,11 @@ const CustomerFeedback: React.FC = () => {
 
   const nextSet = useCallback(() => {
     setCurrentSet((prev) => (prev + 1) % totalSets);
-  }, []);
+  }, [totalSets]);
 
   const prevSet = useCallback(() => {
     setCurrentSet((prev) => (prev - 1 + totalSets) % totalSets);
-  }, []);
+  }, [totalSets]);
 
   // Touch handlers for swipe
   const handleTouchStart = (e: React.TouchEvent) => {

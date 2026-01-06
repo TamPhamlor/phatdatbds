@@ -37,8 +37,6 @@ export function Article({ post, relatedPosts }: ArticleProps) {
   const [isZoomed, setIsZoomed] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
-
   // Đóng lightbox
   const closeLightbox = useCallback(() => {
     setLightboxImage(null);
@@ -123,6 +121,8 @@ export function Article({ post, relatedPosts }: ArticleProps) {
 
   const copyLink = async () => {
     try {
+      // Lấy URL hiện tại ngay khi click để đảm bảo đúng đường dẫn
+      const currentUrl = window.location.href;
       await navigator.clipboard.writeText(currentUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -360,11 +360,11 @@ export function Article({ post, relatedPosts }: ArticleProps) {
           </div>
 
           {/* Image container - flex grow để chiếm hết không gian */}
-          <div className="flex-1 flex items-center justify-center overflow-hidden">
+          <div className="flex-1 flex items-center justify-center overflow-auto">
             <div
               className={`relative transition-transform duration-300 ${
                 isZoomed 
-                  ? "cursor-zoom-out overflow-auto max-h-full w-full" 
+                  ? "cursor-zoom-out" 
                   : "cursor-zoom-in w-full md:w-auto flex items-center justify-center"
               }`}
               onClick={(e) => {

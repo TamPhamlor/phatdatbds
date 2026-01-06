@@ -14,6 +14,10 @@ import { apiRequestWithCache } from './api';
 export const getMetaListing = cache(async (): Promise<MetaListing | null> => {
   try {
     const res = await apiRequestWithCache("/api/v1/meta_listing", 86400);
+    if (!res.ok) {
+      console.error("Error fetching meta_listing:", res.status);
+      return null;
+    }
     return (await res.json()) as MetaListing;
   } catch (e) {
     console.error("Error fetching meta_listing:", e);

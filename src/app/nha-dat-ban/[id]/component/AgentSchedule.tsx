@@ -258,7 +258,7 @@ const LichHenMoiGioi: React.FC = () => {
 
       if (!response.ok) throw new Error("Gửi yêu cầu thất bại");
 
-      const data = await response.json();
+      await response.json();
       setThongBao("success");
       setDuLieuForm({
         hoTen: "",
