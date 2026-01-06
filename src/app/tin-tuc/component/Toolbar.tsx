@@ -28,7 +28,7 @@ export default function Toolbar({ state, setState, onReset }: ToolbarProps) {
     setLocalQuery(state.q);
   }, [state.q]);
 
-  // Debounce search
+  // Debounce search - 2s delay
   useEffect(() => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
@@ -37,7 +37,7 @@ export default function Toolbar({ state, setState, onReset }: ToolbarProps) {
       if (localQuery !== state.q) {
         setState({ ...state, q: localQuery });
       }
-    }, 300);
+    }, 2000);
 
     return () => {
       if (debounceRef.current) {
@@ -66,13 +66,16 @@ export default function Toolbar({ state, setState, onReset }: ToolbarProps) {
                 type="text"
                 placeholder="Tìm kiếm bài viết theo tiêu đề, nội dung..."
                 className="w-full pl-12 pr-12 py-4 text-base bg-white border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-emerald-500 placeholder:text-gray-400"
-                value={state.q}
-                onChange={(e) => setState({ ...state, q: e.target.value })}
+                value={localQuery}
+                onChange={(e) => setLocalQuery(e.target.value)}
               />
-              {state.q && (
+              {localQuery && (
                 <button
                   type="button"
-                  onClick={() => setState({ ...state, q: "" })}
+                  onClick={() => {
+                    setLocalQuery("");
+                    setState({ ...state, q: "" });
+                  }}
                   className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-red-500"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -164,11 +167,14 @@ export default function Toolbar({ state, setState, onReset }: ToolbarProps) {
                     type="text"
                     placeholder="Tìm bài viết..."
                     className="w-full pl-10 pr-10 py-3 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-emerald-500"
-                    value={state.q}
-                    onChange={(e) => setState({ ...state, q: e.target.value })}
+                    value={localQuery}
+                    onChange={(e) => setLocalQuery(e.target.value)}
                   />
-                  {state.q && (
-                    <button type="button" onClick={() => setState({ ...state, q: "" })} className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-red-500">
+                  {localQuery && (
+                    <button type="button" onClick={() => {
+                      setLocalQuery("");
+                      setState({ ...state, q: "" });
+                    }} className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-red-500">
                       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                         <line x1="18" y1="6" x2="6" y2="18" />
                         <line x1="6" y1="6" x2="18" y2="18" />
