@@ -42,7 +42,7 @@ body {
 
 /* Container */
 .container-std {
-  max-width: 72rem; /* tương đương maxWidth.6xl */
+  max-width: 90rem; /* 1440px - phù hợp màn hình lớn */
   margin-left: auto;
   margin-right: auto;
   padding-left: 1rem;  /* spacing.4 */
@@ -60,6 +60,13 @@ body {
   .container-std {
     padding-left: 2rem; /* spacing.8 */
     padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container-std {
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 }
 

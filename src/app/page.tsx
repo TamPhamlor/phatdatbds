@@ -3,6 +3,7 @@
 import { getMetaListing, MetaListing } from "@/lib/meta";
 import { apiRequestWithCache } from '@/lib/api';
 import HomeClient from "./components/HomeClient";
+import { Post } from "./tin-tuc/component/types";
 
 interface ApiImage {
   id: number;
@@ -31,6 +32,26 @@ interface ApiListing {
 }
 
 interface ApiResponse { data: ApiListing[]; }
+
+interface PostsApiResponse {
+  success: boolean;
+  data: {
+    data: Post[];
+  };
+}
+
+async function fetchLatestPosts(): Promise<Post[]> {
+  try {
+    const res = await apiRequestWithCache("/api/v1/posts?per_page=6", 60);
+    const data: PostsApiResponse = await res.json();
+    if (data.success) {
+      return data.data.data;
+    }
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
+  return [];
+}
 
 export interface Listing {
   id: number;
@@ -108,5 +129,7 @@ export default async function HomePage() {
   }
   
   meta = await getMetaListing();
-  return <HomeClient listings={listings} loadErr={loadErr} meta={meta} />;
+  const latestPosts = await fetchLatestPosts();
+  
+  return <HomeClient listings={listings} loadErr={loadErr} meta={meta} latestPosts={latestPosts} />;
 }

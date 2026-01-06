@@ -33,23 +33,26 @@ export default function Toolbar({ state, setState, onReset }: ToolbarProps) {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
-    debounceRef.current = setTimeout(() => {
-      if (localQuery !== state.q) {
+    
+    // Chỉ set timeout nếu localQuery khác state.q
+    if (localQuery !== state.q) {
+      debounceRef.current = setTimeout(() => {
         setState({ ...state, q: localQuery });
-      }
-    }, 2000);
+      }, 2000);
+    }
 
     return () => {
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localQuery]);
 
   const hasFilters = state.cat !== "all" || state.q || state.tag;
 
   return (
-    <section className="w-full bg-gradient-to-b from-emerald-50/50 to-white/50">
+    <section className="w-full">
       {/* Desktop */}
       <div className="hidden sm:block">
         <div className="container-std py-6">

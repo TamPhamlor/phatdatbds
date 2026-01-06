@@ -12,6 +12,7 @@ import type { Listing } from "@/app/page";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { MetaListing, Ward } from "@/lib/meta"; // ✨ lấy type chung từ server-only helper
+import type { Post } from "@/app/tin-tuc/component/types";
 
 /** ========= Types cho UI state ========= */
 interface FilterState {
@@ -50,9 +51,10 @@ type Props = {
   listings: Listing[];
   loadErr?: string | null;
   meta: MetaListing | null; // ✨ nhận từ server
+  latestPosts?: Post[]; // ✨ tin tức mới nhất
 };
 
-const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
+const HomeClient: React.FC<Props> = ({ listings, loadErr, meta, latestPosts = [] }) => {
   const router = useRouter();
 
   // ---- Typing Animation ----
@@ -537,6 +539,131 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
           </div>
         </div>
       </section>
+
+      {/* Latest News Section */}
+      {latestPosts.length > 0 && (
+        <section id="latest-news" className="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container-std">
+            <div className="flex items-end justify-between mb-10">
+              <div className="max-w-2xl">
+                <h3 className="text-3xl md:text-4xl font-bold tracking-tight">
+                  Tin tức <span className="text-gradient-emerald">mới nhất</span>
+                </h3>
+                <p className="text-mute text-base mt-3">
+                  Cập nhật thông tin thị trường, kiến thức bất động sản và xu hướng đầu tư tại Nhơn Trạch
+                </p>
+              </div>
+              <Link 
+                href="/tin-tuc" 
+                className="hidden md:inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-semibold transition-colors group"
+              >
+                Xem tất cả
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+            </div>
+
+            {/* Featured Post + Grid Layout */}
+            <div className="grid lg:grid-cols-2 gap-6">
+              {/* Featured Post (First Post) */}
+              {latestPosts[0] && (
+                <Link
+                  href={`/tin-tuc/${latestPosts[0].slug}`}
+                  className="group relative rounded-3xl overflow-hidden bg-white border border-emerald-100/50 shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 flex flex-col h-full"
+                >
+                  <div className="relative flex-1 min-h-[300px] lg:min-h-0 overflow-hidden">
+                    <Image
+                      src={latestPosts[0].cover_image_url}
+                      alt={latestPosts[0].title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                    <div className="absolute top-4 left-4">
+                      <span className="inline-flex items-center rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1.5 text-xs font-semibold shadow-lg">
+                        {latestPosts[0].post_types?.[0]?.name || "Tin tức"}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <h4 className="text-xl lg:text-2xl font-bold text-white mb-2 line-clamp-2 group-hover:text-emerald-200 transition-colors">
+                        {latestPosts[0].title}
+                      </h4>
+                      <p className="text-white/80 text-sm line-clamp-2 mb-3">
+                        {latestPosts[0].summary}
+                      </p>
+                      <div className="flex items-center gap-3">
+                        <Image
+                          src="/phatdat_avatar.jpg"
+                          alt={latestPosts[0].author.full_name}
+                          width={36}
+                          height={36}
+                          className="rounded-full ring-2 ring-white/30"
+                          unoptimized
+                        />
+                        <div>
+                          <p className="text-white text-sm font-medium">{latestPosts[0].author.full_name}</p>
+                          <p className="text-white/60 text-xs">
+                            {new Date(latestPosts[0].published_at).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" })}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              )}
+
+              {/* Other Posts Grid */}
+              <div className="flex flex-col gap-3">
+                {latestPosts.slice(1, 5).map((post) => (
+                  <Link
+                    key={post.id}
+                    href={`/tin-tuc/${post.slug}`}
+                    className="group flex gap-4 p-3 rounded-2xl bg-white border border-emerald-100/50 hover:border-emerald-200 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300 flex-1"
+                  >
+                    <div className="relative w-24 md:w-28 aspect-video flex-shrink-0 rounded-xl overflow-hidden">
+                      <Image
+                        src={post.cover_image_url}
+                        alt={post.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        unoptimized
+                      />
+                    </div>
+                    <div className="flex-1 flex flex-col justify-center min-w-0">
+                      <span className="inline-flex items-center w-fit rounded-full bg-emerald-50 text-emerald-700 px-2 py-0.5 text-[10px] font-medium mb-1.5">
+                        {post.post_types?.[0]?.name || "Tin tức"}
+                      </span>
+                      <h5 className="font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors line-clamp-2 text-sm leading-snug">
+                        {post.title}
+                      </h5>
+                      <div className="flex items-center gap-2 mt-1.5 text-[11px] text-gray-500">
+                        <span>{post.author.full_name}</span>
+                        <span>•</span>
+                        <span>{new Date(post.published_at).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" })}</span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile View All Button */}
+            <div className="mt-8 text-center md:hidden">
+              <Link 
+                href="/tin-tuc" 
+                className="btn btn-primary inline-flex items-center gap-2"
+              >
+                Xem tất cả tin tức
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Manage Property */}
       <section id="manage" className="py-16 md:py-20">

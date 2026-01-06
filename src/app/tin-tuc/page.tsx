@@ -78,14 +78,27 @@ export default async function TinTucPage({ searchParams }: PageProps) {
   const typeId = params.cat ? categoryToTypeId[params.cat] : undefined;
   const page = params.page ? parseInt(params.page, 10) : 1;
 
-  const [postsData, allPostsForTags] = await Promise.all([
-    fetchPosts({
-      search: params.q,
-      typeId,
-      page,
-    }),
-    fetchAllTags(),
-  ]);
+  // Fetch all posts first để lấy tag id nếu có tag filter
+  const allPostsForTags = await fetchAllTags();
+  
+  // Tìm tag id từ tag name
+  let tagId: number | undefined;
+  if (params.tag) {
+    for (const post of allPostsForTags) {
+      const foundTag = post.tags?.find(t => t.name === params.tag);
+      if (foundTag) {
+        tagId = foundTag.id;
+        break;
+      }
+    }
+  }
+
+  const postsData = await fetchPosts({
+    search: params.q,
+    typeId,
+    tagId,
+    page,
+  });
 
   return (
     <div className="bg-gray-50">
