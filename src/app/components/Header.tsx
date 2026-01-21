@@ -141,7 +141,7 @@ const Header: React.FC = () => {
             {/* Menu ngang chỉ hiện trên desktop */}
             <nav className="hidden md:flex items-center gap-2 text-base text-gray-700">
               <Link href="/" className="menu-link">Trang chủ</Link>
-              <Link href="/nha-dat-ban" className="menu-link">Mua bán</Link>
+              <Link href="/gioi-thieu" className="menu-link">Giới thiệu</Link>
               <Link href="/tin-tuc" className="menu-link">Tin tức</Link>
               <Link href="/cau-hoi-thuong-gap" className="menu-link">Câu hỏi thường gặp</Link>
             </nav>
@@ -169,25 +169,23 @@ const Header: React.FC = () => {
         `}
       >
         <div className="flex justify-around items-center py-3 px-2">
-          {/* Mua bán */}
+          {/* Giới thiệu */}
           <Link
-            href="/nha-dat-ban"
-            className={`mobile-nav-item ${
-              isActive("/nha-dat-ban") ? "mobile-nav-active" : ""
-            }`}
+            href="/gioi-thieu"
+            className={`mobile-nav-item ${isActive("/gioi-thieu") ? "mobile-nav-active" : ""
+              }`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
-            <span className="text-xs font-medium mt-1">Mua bán</span>
+            <span className="text-xs font-medium mt-1">Giới thiệu</span>
           </Link>
 
           {/* Tin tức */}
           <Link
             href="/tin-tuc"
-            className={`mobile-nav-item ${
-              isActive("/tin-tuc") ? "mobile-nav-active" : ""
-            }`}
+            className={`mobile-nav-item ${isActive("/tin-tuc") ? "mobile-nav-active" : ""
+              }`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
@@ -209,9 +207,8 @@ const Header: React.FC = () => {
           {/* Liên hệ */}
           <Link
             href="#cta-support"
-            className={`mobile-nav-item ${
-              isActive("#cta-support") ? "mobile-nav-active" : ""
-            }`}
+            className={`mobile-nav-item ${isActive("#cta-support") ? "mobile-nav-active" : ""
+              }`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />

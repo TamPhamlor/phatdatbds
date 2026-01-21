@@ -443,7 +443,8 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
         </div>
       </section>
 
-      {/* Explore Rentals Carousel (data từ props) */}
+      {/* HIDDEN: Explore Rentals Carousel (data từ props) - Commented out as requested */}
+      {/*
       <section id="explore" className="py-16 md:py-20">
         <div className="container-std">
           <div className="flex items-end justify-between mb-8">
@@ -533,6 +534,7 @@ const HomeClient: React.FC<Props> = ({ listings, loadErr, meta }) => {
           </div>
         </div>
       </section>
+      */}
 
       {/* Manage Property */}
       <section id="manage" className="py-16 md:py-20">

@@ -76,6 +76,7 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
           </svg>
         </summary>
         <div className="p-4 space-y-4">
+          {/* HIDDEN: Dự án được ghim (Advertisement) - Commented out as requested
           <div className="rounded-2xl border border-gray-200 p-4">
             <div className="text-sm font-semibold mb-3">Dự án được ghim</div>
             <div className="rounded-xl overflow-hidden relative w-full h-36">
@@ -98,6 +99,7 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
               </a>
             </div>
           </div>
+          */}
           <div className="rounded-2xl border border-gray-200 p-4">
             <div className="text-sm font-semibold mb-3">Bài viết hot</div>
             {renderHotList('hotListMobile')}
@@ -108,9 +110,8 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
               {tags.map((tag) => (
                 <button
                   key={tag.name}
-                  className={`tagBtn inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-1 text-xs text-gray-700 hover:bg-gray-50 ${
-                    activeTag === tag.name ? 'ring-1 ring-indigo-100 shadow text-gray-900' : ''
-                  }`}
+                  className={`tagBtn inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-1 text-xs text-gray-700 hover:bg-gray-50 ${activeTag === tag.name ? 'ring-1 ring-indigo-100 shadow text-gray-900' : ''
+                    }`}
                   onClick={() => onTagClick(tag.name)}
                 >
                   #{tag.name} <span className="text-gray-400">({tag.count})</span>
@@ -124,6 +125,7 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
       {/* Desktop Sidebar */}
       <aside className="hidden lg:block lg:col-span-3">
         <div className="lg:sticky lg:top-20 space-y-4">
+          {/* HIDDEN: Dự án được ghim (Advertisement) - Commented out as requested
           <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
             <div className="text-sm font-semibold mb-3">Dự án được ghim</div>
             <div className="rounded-xl overflow-hidden relative w-full h-36">
@@ -146,6 +148,7 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
               </a>
             </div>
           </div>
+          */}
           <div className="rounded-2xl border border-gray-200 bg-white shadow-sm p-4">
             <div className="text-sm font-semibold mb-3">Bài viết hot</div>
             {renderHotList('hotList')}
@@ -156,9 +159,8 @@ export default function Sidebar({ posts, onTagClick, onHotPostClick, activeTag }
               {tags.map((tag) => (
                 <button
                   key={tag.name}
-                  className={`tagBtn inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-1 text-xs text-gray-700 hover:bg-gray-50 ${
-                    activeTag === tag.name ? 'ring-1 ring-indigo-100 shadow text-gray-900' : ''
-                  }`}
+                  className={`tagBtn inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-3 py-1 text-xs text-gray-700 hover:bg-gray-50 ${activeTag === tag.name ? 'ring-1 ring-indigo-100 shadow text-gray-900' : ''
+                    }`}
                   onClick={() => onTagClick(tag.name)}
                 >
                   #{tag.name} <span className="text-gray-400">({tag.count})</span>
